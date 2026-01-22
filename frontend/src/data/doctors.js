@@ -6,7 +6,7 @@ export const doctors = [
         experience: "15 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_priya_sharma_1769084064040.png"
+        img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Rajesh Kumar",
@@ -15,7 +15,7 @@ export const doctors = [
         experience: "12 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_rajesh_kumar_1769084200177.png"
+        img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Anjali Verma",
@@ -24,7 +24,7 @@ export const doctors = [
         experience: "10 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_anjali_verma_1769084081515.png"
+        img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Vikram Singh",
@@ -33,7 +33,7 @@ export const doctors = [
         experience: "20 Years Exp",
         languages: ["Hindi", "Punjabi"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_vikram_singh_1769084223498.png"
+        img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Arjun Reddy",
@@ -42,7 +42,7 @@ export const doctors = [
         experience: "18 Years Exp",
         languages: ["Telugu", "Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_arjun_reddy_1769084244105.png"
+        img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Anita Patel",
@@ -51,7 +51,7 @@ export const doctors = [
         experience: "8 Years Exp",
         languages: ["Gujarati", "Hindi", "English"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_anita_patel_1769084098941.png"
+        img: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Karan Malhotra",
@@ -60,7 +60,7 @@ export const doctors = [
         experience: "14 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_karan_malhotra_1769084273408.png"
+        img: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Meera Iyer",
@@ -69,7 +69,7 @@ export const doctors = [
         experience: "16 Years Exp",
         languages: ["Tamil", "Hindi", "English"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_meera_iyer_1769084115943.png"
+        img: "https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Suresh Nair",
@@ -78,7 +78,7 @@ export const doctors = [
         experience: "22 Years Exp",
         languages: ["Malayalam", "Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_suresh_nair_1769084294863.png"
+        img: "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Kavita Desai",
@@ -87,7 +87,7 @@ export const doctors = [
         experience: "5 Years Exp",
         languages: ["Marathi", "Hindi", "English"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_kavita_desai_1769084135510.png"
+        img: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Aditya Kapoor",
@@ -96,7 +96,7 @@ export const doctors = [
         experience: "19 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_aditya_kapoor_1769084311895.png"
+        img: "https://images.unsplash.com/photo-1625130045485-f9ef83cd2d42?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Sneha Gupta",
@@ -105,7 +105,7 @@ export const doctors = [
         experience: "9 Years Exp",
         languages: ["Hindi", "Bengali"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_sneha_gupta_1769084166174.png"
+        img: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Rohit Joshi",
@@ -114,7 +114,7 @@ export const doctors = [
         experience: "4 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_rohit_joshi_1769084331704.png"
+        img: "https://images.unsplash.com/photo-1650831206001-06c1e2b2e9a4?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Divya Pillai",
@@ -123,7 +123,7 @@ export const doctors = [
         experience: "11 Years Exp",
         languages: ["Malayalam", "Tamil", "English"],
         gender: "Female",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_divya_pillai_1769084183123.png"
+        img: "https://images.unsplash.com/photo-1584467735815-f778f274cdb6?w=400&h=400&fit=crop&crop=face"
     },
     {
         name: "Dr. Nikhil Rao",
@@ -132,6 +132,6 @@ export const doctors = [
         experience: "13 Years Exp",
         languages: ["Kannada", "Hindi", "English"],
         gender: "Male",
-        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_nikhil_rao_1769084348818.png"
+        img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
     },
 ];
