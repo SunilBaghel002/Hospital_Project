@@ -404,7 +404,7 @@ export const servicesData = [
     ],
     reviews: {
       text: "The level of detail in their diagnostic report was incredible. They found a thinning issue in my cornea that my previous doctor missed for years.",
-      author: "Michael R.",
+      author: "Mukesh R.",
       role: "Patient"
     },
     faq: [
@@ -441,7 +441,7 @@ export const servicesData = [
     ],
     reviews: {
       text: "I was terrified of eye surgery, but the robotic procedure was fast and painless. I was seeing clearly the very next day. Truly a miracle.",
-      author: "Sarah J.",
+      author: "Sunita J.",
       role: "Cataract Patient"
     },
     faq: [
@@ -478,7 +478,7 @@ export const servicesData = [
     ],
     reviews: {
       text: "They made my son feel so comfortable. He actually looks forward to his eye appointments now. The myopia control program has stabilized his prescription.",
-      author: "Emily T.",
+      author: "Ekta T.",
       role: "Parent"
     },
     faq: [
@@ -515,7 +515,7 @@ export const servicesData = [
     ],
     reviews: {
       text: "They saved my eye after a bad chemical splash at work. The team was waiting for me when I arrived. I can't thank them enough for their speed and skill.",
-      author: "David L.",
+      author: "Dinesh L.",
       role: "Trauma Patient"
     },
     faq: [

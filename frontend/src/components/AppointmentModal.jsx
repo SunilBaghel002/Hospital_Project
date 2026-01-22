@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { X, CheckCircle, ChevronRight, ChevronLeft, CreditCard, Calendar, User, Stethoscope, Loader2, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, ChevronRight, ChevronLeft, CreditCard, Calendar, User, Stethoscope, Loader2, AlertCircle, Lock } from 'lucide-react';
 import { doctors } from '../data/doctors';
 import { appointmentAPI } from '../services/api';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function AppointmentModal({ isOpen, onClose, initialDoctor = null }) {
     const [step, setStep] = useState(1);
@@ -10,20 +12,25 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         phone: '',
         email: '',
         doctor: '',
-        date: '',
+        date: null,
         time: ''
     });
     const [isSuccess, setIsSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [referenceId, setReferenceId] = useState('');
-    const [availableSlots, setAvailableSlots] = useState([
-        '09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'
-    ]);
+    const [availableSlots, setAvailableSlots] = useState([]);
+    const [bookedSlots, setBookedSlots] = useState([]);
     const [loadingSlots, setLoadingSlots] = useState(false);
 
-    // All time slots
-    const allTimeSlots = ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'];
+    // All time slots with their hour values for comparison
+    const allTimeSlots = [
+        { label: '09:00 AM', hour: 9 },
+        { label: '10:00 AM', hour: 10 },
+        { label: '11:00 AM', hour: 11 },
+        { label: '02:00 PM', hour: 14 },
+        { label: '04:00 PM', hour: 16 }
+    ];
 
     useEffect(() => {
         if (isOpen) {
@@ -47,15 +54,27 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
             if (formData.date && formData.doctor) {
                 setLoadingSlots(true);
                 try {
-                    const response = await appointmentAPI.getAvailableSlots(formData.date, formData.doctor);
-                    setAvailableSlots(response.availableSlots || allTimeSlots);
+                    const dateString = formData.date.toISOString().split('T')[0];
+                    const response = await appointmentAPI.getAvailableSlots(dateString, formData.doctor);
+
+                    // Get all slot labels
+                    const allSlotLabels = allTimeSlots.map(s => s.label);
+                    const available = response.availableSlots || allSlotLabels;
+
+                    // Calculate booked slots (slots that are NOT available)
+                    const booked = allSlotLabels.filter(slot => !available.includes(slot));
+
+                    setAvailableSlots(available);
+                    setBookedSlots(booked);
+
                     // Reset time if previously selected time is no longer available
-                    if (formData.time && !response.availableSlots?.includes(formData.time)) {
+                    if (formData.time && !available.includes(formData.time)) {
                         setFormData(prev => ({ ...prev, time: '' }));
                     }
                 } catch (err) {
                     console.error('Error fetching slots:', err);
-                    setAvailableSlots(allTimeSlots); // Fallback
+                    setAvailableSlots(allTimeSlots.map(s => s.label));
+                    setBookedSlots([]);
                 } finally {
                     setLoadingSlots(false);
                 }
@@ -71,7 +90,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         setError('');
         setStep(prev => prev + 1);
     };
-    
+
     const handlePrev = () => {
         setError('');
         setStep(prev => prev - 1);
@@ -129,7 +148,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                 email: formData.email,
                 phone: formData.phone,
                 doctor: formData.doctor,
-                date: formData.date,
+                date: formData.date.toISOString().split('T')[0],
                 time: formData.time,
                 amount: 150.00
             });
@@ -147,23 +166,48 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
 
     const resetAndClose = () => {
         setStep(1);
-        setFormData({ name: '', phone: '', email: '', doctor: '', date: '', time: '' });
+        setFormData({ name: '', phone: '', email: '', doctor: '', date: null, time: '' });
         setIsSuccess(false);
         setError('');
         setReferenceId('');
+        setBookedSlots([]);
+        setAvailableSlots([]);
         onClose();
     };
 
     const getMinDate = () => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        return tomorrow.toISOString().split('T')[0];
+        return new Date();
     };
 
     const getMaxDate = () => {
         const maxDate = new Date();
         maxDate.setMonth(maxDate.getMonth() + 3);
-        return maxDate.toISOString().split('T')[0];
+        return maxDate;
+    };
+
+    // Check if a time slot should be hidden (past time for today)
+    const isSlotPast = (slotHour) => {
+        if (!formData.date) return false;
+
+        const today = new Date();
+        const selectedDate = new Date(formData.date);
+
+        // Check if selected date is today
+        if (selectedDate.toDateString() === today.toDateString()) {
+            const currentHour = today.getHours();
+            return slotHour <= currentHour;
+        }
+        return false;
+    };
+
+    // Check if a slot is booked
+    const isSlotBooked = (slotLabel) => {
+        return bookedSlots.includes(slotLabel);
+    };
+
+    // Get filtered time slots (hide past slots for today)
+    const getVisibleTimeSlots = () => {
+        return allTimeSlots.filter(slot => !isSlotPast(slot.hour));
     };
 
     return (
@@ -216,7 +260,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-gray-500 text-sm">Date</span>
                                 <span className="font-semibold text-brand-dark">
-                                    {new Date(formData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                    {formData.date?.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                                 </span>
                             </div>
                             <div className="flex justify-between items-center">
@@ -301,16 +345,16 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                         <div className="space-y-1">
                                             <label className="text-sm font-semibold text-gray-700 ml-1">Select Specialist</label>
                                             <div className="relative">
-                                                <Stethoscope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                                <Stethoscope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={18} />
                                                 <select
                                                     required
-                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark appearance-none"
+                                                    className="w-full pl-12 pr-10 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark appearance-none cursor-pointer"
                                                     value={formData.doctor}
                                                     onChange={e => setFormData({ ...formData, doctor: e.target.value, time: '' })}
                                                 >
                                                     <option value="">Choose a Doctor...</option>
                                                     {doctors.map((doc, idx) => (
-                                                        <option key={idx} value={doc.name}>{doc.name} - {doc.specialty}</option>
+                                                        <option key={idx} value={doc.name}>{doc.name} - {doc.role}</option>
                                                     ))}
                                                 </select>
                                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -321,16 +365,19 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
 
                                         <div className="space-y-1">
                                             <label className="text-sm font-semibold text-gray-700 ml-1">Select Date</label>
-                                            <div className="relative">
-                                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                                <input
-                                                    required
-                                                    type="date"
-                                                    min={getMinDate()}
-                                                    max={getMaxDate()}
-                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                    value={formData.date}
-                                                    onChange={e => setFormData({ ...formData, date: e.target.value, time: '' })}
+                                            <div className="relative appointment-datepicker">
+                                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-10" size={18} />
+                                                <DatePicker
+                                                    selected={formData.date}
+                                                    onChange={(date) => setFormData({ ...formData, date: date, time: '' })}
+                                                    minDate={getMinDate()}
+                                                    maxDate={getMaxDate()}
+                                                    dateFormat="MMMM d, yyyy"
+                                                    placeholderText="Choose a date..."
+                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark cursor-pointer"
+                                                    calendarClassName="appointment-calendar"
+                                                    showPopperArrow={false}
+                                                    popperPlacement="bottom-start"
                                                 />
                                             </div>
                                         </div>
@@ -340,28 +387,36 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                 Available Time Slots
                                                 {loadingSlots && <Loader2 className="inline ml-2 animate-spin" size={14} />}
                                             </label>
-                                            
+
                                             {formData.date && formData.doctor ? (
                                                 <div className="grid grid-cols-2 gap-2">
                                                     {loadingSlots ? (
                                                         <div className="col-span-2 text-center py-4 text-gray-500">
                                                             Loading available slots...
                                                         </div>
-                                                    ) : availableSlots.length > 0 ? (
-                                                        availableSlots.map((slot) => (
-                                                            <button
-                                                                key={slot}
-                                                                type="button"
-                                                                onClick={() => setFormData({ ...formData, time: slot })}
-                                                                className={`py-3 px-4 rounded-xl font-medium transition-all ${
-                                                                    formData.time === slot
-                                                                        ? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-                                                                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                                                                }`}
-                                                            >
-                                                                {slot}
-                                                            </button>
-                                                        ))
+                                                    ) : getVisibleTimeSlots().length > 0 ? (
+                                                        getVisibleTimeSlots().map((slot) => {
+                                                            const isBooked = isSlotBooked(slot.label);
+                                                            const isSelected = formData.time === slot.label;
+
+                                                            return (
+                                                                <button
+                                                                    key={slot.label}
+                                                                    type="button"
+                                                                    disabled={isBooked}
+                                                                    onClick={() => !isBooked && setFormData({ ...formData, time: slot.label })}
+                                                                    className={`py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${isBooked
+                                                                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-dashed border-gray-200'
+                                                                            : isSelected
+                                                                                ? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+                                                                                : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-brand-blue/30 border-2 border-transparent'
+                                                                        }`}
+                                                                >
+                                                                    {isBooked && <Lock size={14} />}
+                                                                    {slot.label}
+                                                                </button>
+                                                            );
+                                                        })
                                                     ) : (
                                                         <div className="col-span-2 text-center py-4 text-gray-500 bg-gray-50 rounded-xl">
                                                             No slots available for this date. Please try another date.
@@ -394,7 +449,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                 <div className="flex justify-between">
                                                     <span className="text-gray-500">Date</span>
                                                     <span className="font-medium text-brand-dark">
-                                                        {new Date(formData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                                                        {formData.date?.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between">
@@ -408,7 +463,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                         <div className="bg-gradient-to-r from-brand-blue to-brand-purple p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
                                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
                                             <p className="opacity-80 text-sm font-medium mb-1">Total Amount</p>
-                                            <h3 className="text-3xl font-bold">$150.00</h3>
+                                            <h3 className="text-3xl font-bold">₹1,500.00</h3>
                                             <div className="mt-4 flex items-center gap-2 opacity-60 text-xs">
                                                 <CreditCard size={14} /> Secure Encryption
                                             </div>
@@ -491,6 +546,108 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                     </>
                 )}
             </div>
+
+            {/* Custom Datepicker Styles */}
+            <style>{`
+                .appointment-datepicker .react-datepicker-wrapper {
+                    width: 100%;
+                }
+                
+                .appointment-datepicker .react-datepicker {
+                    font-family: inherit;
+                    border: none;
+                    border-radius: 1rem;
+                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                    overflow: hidden;
+                }
+                
+                .appointment-datepicker .react-datepicker__header {
+                    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+                    border: none;
+                    padding: 1rem;
+                }
+                
+                .appointment-datepicker .react-datepicker__current-month {
+                    color: white;
+                    font-weight: 700;
+                    font-size: 1rem;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .appointment-datepicker .react-datepicker__day-names {
+                    display: flex;
+                    justify-content: space-around;
+                }
+                
+                .appointment-datepicker .react-datepicker__day-name {
+                    color: rgba(255, 255, 255, 0.7);
+                    font-weight: 600;
+                    font-size: 0.75rem;
+                    width: 2.5rem;
+                    margin: 0;
+                }
+                
+                .appointment-datepicker .react-datepicker__month {
+                    margin: 0;
+                    padding: 0.5rem;
+                }
+                
+                .appointment-datepicker .react-datepicker__week {
+                    display: flex;
+                    justify-content: space-around;
+                }
+                
+                .appointment-datepicker .react-datepicker__day {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    line-height: 2.5rem;
+                    margin: 0.125rem;
+                    border-radius: 0.75rem;
+                    font-weight: 500;
+                    transition: all 0.2s;
+                }
+                
+                .appointment-datepicker .react-datepicker__day:hover {
+                    background: #f1f5f9;
+                    border-radius: 0.75rem;
+                }
+                
+                .appointment-datepicker .react-datepicker__day--selected {
+                    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%) !important;
+                    color: white !important;
+                    font-weight: 700;
+                }
+                
+                .appointment-datepicker .react-datepicker__day--keyboard-selected {
+                    background: #e2e8f0;
+                }
+                
+                .appointment-datepicker .react-datepicker__day--disabled {
+                    color: #cbd5e1 !important;
+                    cursor: not-allowed;
+                }
+                
+                .appointment-datepicker .react-datepicker__day--today {
+                    font-weight: 700;
+                    color: #2563eb;
+                }
+                
+                .appointment-datepicker .react-datepicker__navigation {
+                    top: 1rem;
+                }
+                
+                .appointment-datepicker .react-datepicker__navigation-icon::before {
+                    border-color: white;
+                }
+                
+                .appointment-datepicker .react-datepicker__navigation:hover *::before {
+                    border-color: rgba(255, 255, 255, 0.7);
+                }
+                
+                .appointment-datepicker .react-datepicker-popper {
+                    z-index: 110 !important;
+                }
+            `}</style>
         </div>
     );
 }

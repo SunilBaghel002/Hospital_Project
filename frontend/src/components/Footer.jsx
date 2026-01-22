@@ -44,15 +44,15 @@ export default function Footer() {
                     <ul className="space-y-4 text-gray-500">
                         <li className="flex gap-3">
                             <MapPin className="text-brand-blue shrink-0" size={20} />
-                            <span>123 Vision Street, Medical District, NY 10001</span>
+                            <span>Sector 62, Noida, Uttar Pradesh 201301</span>
                         </li>
                         <li className="flex gap-3">
                             <Phone className="text-brand-blue shrink-0" size={20} />
-                            <span>+1 (555) 123-4567</span>
+                            <span>+91 120 456 7890</span>
                         </li>
                         <li className="flex gap-3">
                             <Mail className="text-brand-blue shrink-0" size={20} />
-                            <span>hello@visionaryeye.com</span>
+                            <span>info@visionaryeye.in</span>
                         </li>
                     </ul>
                 </div>
@@ -63,7 +63,7 @@ export default function Footer() {
                 <h4 className="font-bold text-brand-dark mb-6 text-2xl text-center">Visit Us</h4>
                 <div className="w-full h-80 rounded-[2rem] overflow-hidden shadow-lg border-4 border-white">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1645564756836!5m2!1sen!2s"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56066.65089631422!2d77.33685559999999!3d28.6124282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5a43173357b%3A0x37ffce30c87cc03f!2sSector%2062%2C%20Noida%2C%20Uttar%20Pradesh%20201301!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                         width="100%"
                         height="100%"
                         style={{ border: 0 }}

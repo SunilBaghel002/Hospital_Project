@@ -8,7 +8,7 @@ export default function TopBar() {
                     <div className="bg-red-500 rounded-full p-1 animate-pulse">
                         <Phone size={12} fill="white" />
                     </div>
-                    <span className="text-red-400 font-bold uppercase tracking-wider text-xs md:text-sm">Emergency: 911-EYE-CARE</span>
+                    <span className="text-red-400 font-bold uppercase tracking-wider text-xs md:text-sm">Emergency: 1800-EYE-CARE</span>
                 </div>
                 <div className="hidden md:flex items-center gap-2 text-gray-300">
                     <Clock size={14} />

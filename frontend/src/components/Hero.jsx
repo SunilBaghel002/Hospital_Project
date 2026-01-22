@@ -78,8 +78,8 @@ export default function Hero({ onBook }) {
                     className="absolute inset-0"
                 >
                     <img
-                        src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=2091&auto=format&fit=crop"
-                        alt="Modern Hospital Interior"
+                        src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2128&auto=format&fit=crop"
+                        alt="Modern Indian Hospital Interior"
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent mix-blend-overlay"></div>

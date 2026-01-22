@@ -49,7 +49,7 @@ export default function AboutUs() {
                         <div className="order-1 lg:order-2 relative">
                             <div className="relative z-10 rounded-tl-[100px] rounded-br-[100px] overflow-hidden aspect-[4/5] md:aspect-square shadow-2xl">
                                 <img
-                                    src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop"
+                                    src="https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2080&auto=format&fit=crop"
                                     alt="Surgical Excellence"
                                     className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-out"
                                 />
@@ -75,7 +75,7 @@ export default function AboutUs() {
             {/* 2. Fluid Image & Narrative Section */}
             <section className="relative w-full aspect-video md:aspect-[2.4/1] overflow-hidden">
                 <img
-                    src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1516574187841-6930022476c9?q=80&w=2080&auto=format&fit=crop"
                     alt="Surgical Precision"
                     className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-out scale-105 hover:scale-100"
                 />

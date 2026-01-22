@@ -26,7 +26,7 @@ export default function Testimonials() {
             id: 3,
             name: "Lakshmi Reddy",
             role: "Cataract Surgery",
-            quote: "The colors! I had forgotten how vibrant the world actually is. Dr. Johnson explained every step, and the blade-free procedure was over before I knew it. I'm painting again for the first time in a decade.",
+            quote: "The colors! I had forgotten how vibrant the world actually is. Dr. Sharma explained every step, and the blade-free procedure was over before I knew it. I'm painting again for the first time in a decade.",
             poster: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop",
             video: "https://assets.mixkit.co/videos/preview/mixkit-senior-woman-smiling-portrait-looking-at-camera-3367-large.mp4"
         }

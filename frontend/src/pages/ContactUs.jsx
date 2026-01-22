@@ -35,7 +35,7 @@ export default function ContactUs() {
                                     <div>
                                         <h3 className="text-xl font-bold text-brand-dark mb-1">Phone</h3>
                                         <p className="text-gray-500 mb-1">Mon-Fri from 8am to 8pm.</p>
-                                        <p className="font-medium text-lg text-brand-blue">+1 (555) 123-4567</p>
+                                        <p className="font-medium text-lg text-brand-blue">+91 120 456 7890</p>
                                     </div>
                                 </div>
 
@@ -46,7 +46,7 @@ export default function ContactUs() {
                                     <div>
                                         <h3 className="text-xl font-bold text-brand-dark mb-1">Email</h3>
                                         <p className="text-gray-500 mb-1">Our friendly team is here to help.</p>
-                                        <p className="font-medium text-lg text-brand-blue">hello@visionary.com</p>
+                                        <p className="font-medium text-lg text-brand-blue">info@visionaryeye.in</p>
                                     </div>
                                 </div>
 
@@ -57,7 +57,7 @@ export default function ContactUs() {
                                     <div>
                                         <h3 className="text-xl font-bold text-brand-dark mb-1">Office</h3>
                                         <p className="text-gray-500 mb-1">Come say hello at our office HQ.</p>
-                                        <p className="font-medium text-lg text-brand-blue">123 Visionary Way, Health City, HC 10012</p>
+                                        <p className="font-medium text-lg text-brand-blue">Sector 62, Noida, Uttar Pradesh 201301</p>
                                     </div>
                                 </div>
                             </div>
@@ -97,17 +97,17 @@ export default function ContactUs() {
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-brand-dark ml-1">First Name</label>
-                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="John" />
+                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Rahul" />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-brand-dark ml-1">Last Name</label>
-                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Doe" />
+                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Sharma" />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-brand-dark ml-1">Email</label>
-                                <input type="email" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="john@example.com" />
+                                <input type="email" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="rahul@example.com" />
                             </div>
 
                             <div className="space-y-2">

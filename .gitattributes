@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+
+# Git will normalize line endings to LF on commit and normalize line endings to CRLF on checkout.
+* text=auto eol=lf
