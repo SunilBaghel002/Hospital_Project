@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // Components
@@ -21,6 +21,15 @@ import ContactUs from './pages/ContactUs';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
 
+// Admin Pages
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import PagesManager from './pages/admin/PagesManager';
+import SubPagesManager from './pages/admin/SubPagesManager';
+import SiteSettingsEditor from './pages/admin/SiteSettingsEditor';
+import MediaLibrary from './pages/admin/MediaLibrary';
+
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -42,6 +51,14 @@ function AppContent() {
       if (triggerBtn) triggerBtn.removeEventListener('click', handleOpenModal);
     };
   }, [location]); // Re-run on page change to finding new button
+
+  // Check if current route is admin route
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // Don't render main site layout for admin routes
+  if (isAdminRoute) {
+    return null;
+  }
 
   return (
     <div className="bg-brand-cream/30 min-h-screen font-sans selection:bg-brand-peach/50 selection:text-brand-dark overflow-x-hidden flex flex-col">
@@ -77,10 +94,27 @@ function AppContent() {
   );
 }
 
+function AdminRoutes() {
+  return (
+    <Routes>
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="pages" element={<PagesManager />} />
+        <Route path="subpages" element={<SubPagesManager />} />
+        <Route path="settings" element={<SiteSettingsEditor />} />
+        <Route path="media" element={<MediaLibrary />} />
+      </Route>
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
       <AppContent />
+      <AdminRoutes />
     </BrowserRouter>
   );
 }

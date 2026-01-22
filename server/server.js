@@ -1,8 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 const connectDB = require('./config/db');
+
+// Routes
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const pagesRoutes = require('./routes/pagesRoutes');
+const sectionsRoutes = require('./routes/sectionsRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 // Load env vars
 dotenv.config();
@@ -20,6 +28,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Serve static uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Request Logger
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
@@ -28,6 +39,15 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/pages', pagesRoutes);
+app.use('/api/sections', sectionsRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/upload', uploadRoutes);
+
+// Public routes for frontend (no auth required)
+const publicRoutes = require('./routes/publicRoutes');
+app.use('/api/public', publicRoutes);
 
 // Health Check
 app.get('/api/health', (req, res) => {
@@ -41,12 +61,15 @@ app.get('/api/health', (req, res) => {
 // Root Route
 app.get('/', (req, res) => {
     res.json({
-        message: 'Visionary Eye Care - Appointment API',
-        version: '1.0.0',
+        message: 'Visionary Eye Care - CMS API',
+        version: '2.0.0',
         endpoints: {
-            createAppointment: 'POST /api/appointments',
-            getAppointments: 'GET /api/appointments',
-            getAvailableSlots: 'GET /api/appointments/available-slots?date=YYYY-MM-DD'
+            appointments: '/api/appointments',
+            admin: '/api/admin',
+            pages: '/api/pages',
+            sections: '/api/sections',
+            settings: '/api/settings',
+            upload: '/api/upload'
         }
     });
 });
@@ -71,10 +94,12 @@ app.listen(PORT, () => {
     console.log(`
 ╔════════════════════════════════════════════════════╗
 ║                                                    ║
-║   🏥 Visionary Eye Care - Appointment Server       ║
+║   🏥 Visionary Eye Care - CMS Server              ║
 ║                                                    ║
 ║   Server: http://localhost:${PORT}                   ║
 ║   Environment: ${process.env.NODE_ENV || 'development'}                      ║
+║                                                    ║
+║   Admin Panel: /admin                              ║
 ║                                                    ║
 ╚════════════════════════════════════════════════════╝
     `);

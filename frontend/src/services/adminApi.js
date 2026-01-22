@@ -1,0 +1,208 @@
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3002';
+
+// Get stored token
+const getToken = () => localStorage.getItem('adminToken');
+
+// Set token
+const setToken = (token) => localStorage.setItem('adminToken', token);
+
+// Remove token
+const removeToken = () => localStorage.removeItem('adminToken');
+
+// API request helper with auth
+const apiRequest = async (endpoint, options = {}) => {
+    const token = getToken();
+    
+    const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers
+    };
+    
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+        ...options,
+        headers
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+        // If unauthorized, clear token
+        if (response.status === 401) {
+            removeToken();
+        }
+        throw new Error(data.message || 'Request failed');
+    }
+    
+    return data;
+};
+
+// Admin Authentication API
+export const adminAuthAPI = {
+    login: async (username, password) => {
+        const response = await apiRequest('/api/admin/login', {
+            method: 'POST',
+            body: JSON.stringify({ username, password })
+        });
+        
+        if (response.success && response.data.token) {
+            setToken(response.data.token);
+        }
+        
+        return response;
+    },
+    
+    verify: async () => {
+        return apiRequest('/api/admin/verify');
+    },
+    
+    logout: async () => {
+        try {
+            await apiRequest('/api/admin/logout', { method: 'POST' });
+        } finally {
+            removeToken();
+        }
+    },
+    
+    isAuthenticated: () => {
+        return !!getToken();
+    }
+};
+
+// Pages API
+export const pagesAPI = {
+    getAll: (type = null) => {
+        const query = type ? `?type=${type}` : '';
+        return apiRequest(`/api/pages${query}`);
+    },
+    
+    getOne: (id) => apiRequest(`/api/pages/${id}`),
+    
+    create: (pageData) => apiRequest('/api/pages', {
+        method: 'POST',
+        body: JSON.stringify(pageData)
+    }),
+    
+    update: (id, pageData) => apiRequest(`/api/pages/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(pageData)
+    }),
+    
+    delete: (id) => apiRequest(`/api/pages/${id}`, {
+        method: 'DELETE'
+    }),
+    
+    reorderNavbar: (orderedIds) => apiRequest('/api/pages/reorder/navbar', {
+        method: 'PUT',
+        body: JSON.stringify({ orderedIds })
+    })
+};
+
+// Sections API
+export const sectionsAPI = {
+    getByPage: (pageId) => apiRequest(`/api/sections/page/${pageId}`),
+    
+    getOne: (id) => apiRequest(`/api/sections/${id}`),
+    
+    create: (sectionData) => apiRequest('/api/sections', {
+        method: 'POST',
+        body: JSON.stringify(sectionData)
+    }),
+    
+    update: (id, sectionData) => apiRequest(`/api/sections/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(sectionData)
+    }),
+    
+    delete: (id) => apiRequest(`/api/sections/${id}`, {
+        method: 'DELETE'
+    }),
+    
+    reorder: (pageId, orderedIds) => apiRequest(`/api/sections/reorder/${pageId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ orderedIds })
+    }),
+    
+    toggleVisibility: (id) => apiRequest(`/api/sections/visibility/${id}`, {
+        method: 'PUT'
+    })
+};
+
+// Settings API
+export const settingsAPI = {
+    get: () => apiRequest('/api/settings'),
+    
+    update: (settings) => apiRequest('/api/settings', {
+        method: 'PUT',
+        body: JSON.stringify(settings)
+    })
+};
+
+// Upload API
+export const uploadAPI = {
+    upload: async (file) => {
+        const token = getToken();
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        const response = await fetch(`${API_BASE}/api/upload`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Upload failed');
+        }
+        
+        return data;
+    },
+    
+    uploadMultiple: async (files) => {
+        const token = getToken();
+        const formData = new FormData();
+        
+        files.forEach(file => {
+            formData.append('images', file);
+        });
+        
+        const response = await fetch(`${API_BASE}/api/upload/multiple`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Upload failed');
+        }
+        
+        return data;
+    },
+    
+    list: () => apiRequest('/api/upload/list'),
+    
+    delete: (filename) => apiRequest(`/api/upload/${filename}`, {
+        method: 'DELETE'
+    }),
+    
+    getUrl: (filename) => `${API_BASE}/uploads/${filename}`
+};
+
+// Public API (for frontend dynamic content)
+export const publicAPI = {
+    getNavbar: () => apiRequest('/api/public/navbar'),
+    getPage: (slug) => apiRequest(`/api/public/page/${slug}`),
+    getSubpages: (parentSlug) => apiRequest(`/api/public/subpages/${parentSlug}`),
+    getSettings: () => apiRequest('/api/settings')
+};
