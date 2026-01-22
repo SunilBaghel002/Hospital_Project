@@ -1,84 +1,10 @@
 import { useState } from 'react';
 import { Search, ChevronDown, Calendar, GraduationCap, Clock, Languages, ChevronLeft, ChevronRight } from 'lucide-react';
+import { doctors } from '../data/doctors';
 
 export default function Doctors({ onBook }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [visibleCount, setVisibleCount] = useState(6);
-
-    const doctors = [
-        {
-            name: "Dr. Sarah Johnson",
-            role: "Cataract Specialist",
-            qualification: "MBBS, MD (Ophthal)",
-            experience: "15 Years Exp",
-            languages: ["English", "Spanish"],
-            gender: "Female",
-            img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2070&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. Michael Chen",
-            role: "Retina Surgeon",
-            qualification: "MBBS, MS, FVRS",
-            experience: "12 Years Exp",
-            languages: ["English", "Mandarin"],
-            gender: "Male",
-            img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=2128&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. Emily Davis",
-            role: "Pediatric Ophthalmologist",
-            qualification: "MD, FPOS",
-            experience: "10 Years Exp",
-            languages: ["English"],
-            gender: "Female",
-            img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=2000&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. James Wilson",
-            role: "Glaucoma Specialist",
-            qualification: "MBBS, DO",
-            experience: "20 Years Exp",
-            languages: ["English", "French"],
-            gender: "Male",
-            img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. Robert Lee",
-            role: "Cornea Specialist",
-            qualification: "MD, FACS",
-            experience: "18 Years Exp",
-            languages: ["English", "Korean"],
-            gender: "Male",
-            img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=2070&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. Anita Patel",
-            role: "Refractive Surgeon",
-            qualification: "MBBS, MS",
-            experience: "8 Years Exp",
-            languages: ["English", "Hindi"],
-            gender: "Female",
-            img: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?q=80&w=1974&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. David Kim",
-            role: "Neuro-Ophthalmologist",
-            qualification: "MD, PhD",
-            experience: "14 Years Exp",
-            languages: ["English", "Korean"],
-            gender: "Male",
-            img: "https://images.unsplash.com/photo-1582750433449-d22b1c74caf8?q=80&w=1974&auto=format&fit=crop"
-        },
-        {
-            name: "Dr. Lisa Wong",
-            role: "Oculoplastic Surgeon",
-            qualification: "MD, FPRS",
-            experience: "16 Years Exp",
-            languages: ["English", "Cantonese"],
-            gender: "Female",
-            img: "https://images.unsplash.com/photo-1591604021695-0c69b7c05981?q=80&w=2070&auto=format&fit=crop"
-        },
-    ];
 
     const filteredDoctors = doctors.filter(doc =>
         doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

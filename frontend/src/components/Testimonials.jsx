@@ -11,7 +11,7 @@ export default function Testimonials() {
             name: "Priya Mehta",
             role: "Glaucoma Patient",
             quote: "I was terrified when I was diagnosed with early-stage glaucoma. The team at Visionary Eye Care didn't just treat my eyes; they treated my fears. The laser treatment was painless, and for the first time in years, I feel confident about my future vision.",
-            poster: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/priya_mehta_patient_1769084381335.png",
+            poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop",
             video: "https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-woman-in-a-park-1275-large.mp4" // Placeholder stock video
         },
         {
@@ -19,7 +19,7 @@ export default function Testimonials() {
             name: "Arjun Patel",
             role: "LASIK Patient",
             quote: "Waking up and seeing the alarm clock clearly without reaching for glasses is a miracle I experience every day now. The recovery was faster than I imagined. Best investment I've ever made in myself.",
-            poster: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/arjun_patel_patient_1769084402581.png",
+            poster: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
             video: "https://assets.mixkit.co/videos/preview/mixkit-young-man-looking-at-the-horizon-standing-on-the-beach-1163-large.mp4"
         },
         {
