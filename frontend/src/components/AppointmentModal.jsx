@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { X, CheckCircle, ChevronRight, ChevronLeft, CreditCard, Calendar, User, Stethoscope } from 'lucide-react';
+import { X, CheckCircle, ChevronRight, ChevronLeft, CreditCard, Calendar, User, Stethoscope, Loader2, AlertCircle } from 'lucide-react';
 import { doctors } from '../data/doctors';
+import { appointmentAPI } from '../services/api';
 
 export default function AppointmentModal({ isOpen, onClose, initialDoctor = null }) {
     const [step, setStep] = useState(1);
@@ -9,11 +10,20 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         phone: '',
         email: '',
         doctor: '',
-        service: '',
         date: '',
         time: ''
     });
     const [isSuccess, setIsSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [referenceId, setReferenceId] = useState('');
+    const [availableSlots, setAvailableSlots] = useState([
+        '09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'
+    ]);
+    const [loadingSlots, setLoadingSlots] = useState(false);
+
+    // All time slots
+    const allTimeSlots = ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'];
 
     useEffect(() => {
         if (isOpen) {
@@ -21,49 +31,153 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
             if (initialDoctor) {
                 setFormData(prev => ({ ...prev, doctor: initialDoctor }));
             }
+            // Reset states
+            setStep(1);
+            setError('');
+            setIsSuccess(false);
         } else {
             document.body.style.overflow = 'unset';
         }
         return () => { document.body.style.overflow = 'unset'; }
     }, [isOpen, initialDoctor]);
 
+    // Fetch available slots when date or doctor changes
+    useEffect(() => {
+        const fetchSlots = async () => {
+            if (formData.date && formData.doctor) {
+                setLoadingSlots(true);
+                try {
+                    const response = await appointmentAPI.getAvailableSlots(formData.date, formData.doctor);
+                    setAvailableSlots(response.availableSlots || allTimeSlots);
+                    // Reset time if previously selected time is no longer available
+                    if (formData.time && !response.availableSlots?.includes(formData.time)) {
+                        setFormData(prev => ({ ...prev, time: '' }));
+                    }
+                } catch (err) {
+                    console.error('Error fetching slots:', err);
+                    setAvailableSlots(allTimeSlots); // Fallback
+                } finally {
+                    setLoadingSlots(false);
+                }
+            }
+        };
+
+        fetchSlots();
+    }, [formData.date, formData.doctor]);
+
     if (!isOpen) return null;
 
-    const handleNext = () => setStep(prev => prev + 1);
-    const handlePrev = () => setStep(prev => prev - 1);
+    const handleNext = () => {
+        setError('');
+        setStep(prev => prev + 1);
+    };
+    
+    const handlePrev = () => {
+        setError('');
+        setStep(prev => prev - 1);
+    };
 
-    const handleSubmit = (e) => {
+    const validateStep = () => {
+        if (step === 1) {
+            if (!formData.name.trim()) {
+                setError('Please enter your full name');
+                return false;
+            }
+            if (!formData.phone.trim()) {
+                setError('Please enter your phone number');
+                return false;
+            }
+            if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
+                setError('Please enter a valid email address');
+                return false;
+            }
+        }
+        if (step === 2) {
+            if (!formData.doctor) {
+                setError('Please select a doctor');
+                return false;
+            }
+            if (!formData.date) {
+                setError('Please select a date');
+                return false;
+            }
+            if (!formData.time) {
+                setError('Please select a time slot');
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Validate logic here
+        setError('');
+
+        if (!validateStep()) return;
+
         if (step < 3) {
             handleNext();
-        } else {
-            // Mock API call
-            setTimeout(() => {
+            return;
+        }
+
+        // Step 3: Submit to backend
+        setIsLoading(true);
+
+        try {
+            const response = await appointmentAPI.create({
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                doctor: formData.doctor,
+                date: formData.date,
+                time: formData.time,
+                amount: 150.00
+            });
+
+            if (response.success) {
+                setReferenceId(response.data.referenceId);
                 setIsSuccess(true);
-            }, 500);
+            }
+        } catch (err) {
+            setError(err.message || 'Failed to book appointment. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const resetAndClose = () => {
         setStep(1);
-        setFormData({ name: '', phone: '', email: '', doctor: '', service: '', date: '', time: '' });
+        setFormData({ name: '', phone: '', email: '', doctor: '', date: '', time: '' });
         setIsSuccess(false);
+        setError('');
+        setReferenceId('');
         onClose();
+    };
+
+    const getMinDate = () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return tomorrow.toISOString().split('T')[0];
+    };
+
+    const getMaxDate = () => {
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 3);
+        return maxDate.toISOString().split('T')[0];
     };
 
     return (
         <div className={`fixed inset-0 z-[100] flex items-end justify-end p-4 sm:p-6 pointer-events-none ${isOpen ? 'visible' : 'invisible'}`}>
-            {/* Backdrop - Only blocks clicks, visual dimming */}
+            {/* Backdrop */}
             <div
                 className={`absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity duration-300 pointer-events-auto ${isOpen ? 'opacity-100' : 'opacity-0'}`}
                 onClick={resetAndClose}
             />
 
-            {/* Modal Content - Floating Widget Style */}
+            {/* Modal Content */}
             <div className={`bg-white rounded-[2rem] w-full max-w-md overflow-hidden shadow-2xl border border-white/50 flex flex-col max-h-[85vh] pointer-events-auto transition-all duration-500 ease-in-out transform origin-bottom-right ${isOpen ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'}`}>
 
-                {/* Modern Header */}
+                {/* Header */}
                 <div className="p-6 pb-2 shrink-0 flex justify-between items-start bg-gradient-to-b from-white to-transparent">
                     <div>
                         <p className="text-xs font-bold text-brand-blue uppercase tracking-widest mb-1">Book Online</p>
@@ -85,11 +199,30 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                         </div>
 
                         <h2 className="text-3xl font-bold text-brand-dark mb-2">It's Confirmed!</h2>
-                        <p className="text-gray-500 mb-8 max-w-xs leading-relaxed">We've sent a confirmation email to <span className="text-brand-dark font-medium">{formData.email}</span>.</p>
+                        <p className="text-gray-500 mb-8 max-w-xs leading-relaxed">
+                            We've sent a confirmation email to <span className="text-brand-dark font-medium">{formData.email}</span>.
+                        </p>
 
-                        <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-8 w-full">
+                        <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-4 w-full">
                             <p className="text-xs text-brand-blue uppercase font-bold tracking-wider mb-1">Booking Reference</p>
-                            <p className="text-2xl font-mono font-bold text-brand-dark tracking-widest">#VEC-{Math.floor(1000 + Math.random() * 9000)}</p>
+                            <p className="text-2xl font-mono font-bold text-brand-dark tracking-widest">{referenceId}</p>
+                        </div>
+
+                        <div className="bg-brand-blue/5 p-4 rounded-2xl w-full mb-8 text-left">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-gray-500 text-sm">Doctor</span>
+                                <span className="font-semibold text-brand-dark">{formData.doctor}</span>
+                            </div>
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-gray-500 text-sm">Date</span>
+                                <span className="font-semibold text-brand-dark">
+                                    {new Date(formData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-gray-500 text-sm">Time</span>
+                                <span className="font-semibold text-brand-dark">{formData.time}</span>
+                            </div>
                         </div>
 
                         <button onClick={resetAndClose} className="w-full bg-brand-dark text-white p-4 rounded-xl font-bold hover:shadow-lg transition-all active:scale-95">
@@ -108,6 +241,14 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                             ))}
                         </div>
 
+                        {/* Error Message */}
+                        {error && (
+                            <div className="mx-6 mb-2 p-3 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700 text-sm">
+                                <AlertCircle size={18} />
+                                <span>{error}</span>
+                            </div>
+                        )}
+
                         {/* Form scroll area */}
                         <div className="p-6 pt-2 overflow-y-auto custom-scrollbar flex-1">
                             <form onSubmit={handleSubmit} className="space-y-6 pt-4">
@@ -122,7 +263,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                     autoFocus
                                                     type="text"
                                                     className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                    placeholder="John Doe"
+                                                    placeholder="Enter your full name"
                                                     value={formData.name}
                                                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                                                 />
@@ -135,7 +276,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                 required
                                                 type="tel"
                                                 className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                placeholder="+1 (555) 000-0000"
+                                                placeholder="Enter your phone number"
                                                 value={formData.phone}
                                                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
                                             />
@@ -147,7 +288,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                 required
                                                 type="email"
                                                 className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                placeholder="john@example.com"
+                                                placeholder="Enter your email address"
                                                 value={formData.email}
                                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                                             />
@@ -165,11 +306,11 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                     required
                                                     className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark appearance-none"
                                                     value={formData.doctor}
-                                                    onChange={e => setFormData({ ...formData, doctor: e.target.value })}
+                                                    onChange={e => setFormData({ ...formData, doctor: e.target.value, time: '' })}
                                                 >
-                                                    <option value="">Choose Doctor...</option>
+                                                    <option value="">Choose a Doctor...</option>
                                                     {doctors.map((doc, idx) => (
-                                                        <option key={idx} value={doc.name}>{doc.name}</option>
+                                                        <option key={idx} value={doc.name}>{doc.name} - {doc.specialty}</option>
                                                     ))}
                                                 </select>
                                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -178,40 +319,93 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <div className="space-y-1">
-                                                <label className="text-sm font-semibold text-gray-700 ml-1">Date</label>
+                                        <div className="space-y-1">
+                                            <label className="text-sm font-semibold text-gray-700 ml-1">Select Date</label>
+                                            <div className="relative">
+                                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                                 <input
                                                     required
                                                     type="date"
-                                                    className="w-full px-3 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark text-sm"
+                                                    min={getMinDate()}
+                                                    max={getMaxDate()}
+                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
                                                     value={formData.date}
-                                                    onChange={e => setFormData({ ...formData, date: e.target.value })}
+                                                    onChange={e => setFormData({ ...formData, date: e.target.value, time: '' })}
                                                 />
                                             </div>
-                                            <div className="space-y-1">
-                                                <label className="text-sm font-semibold text-gray-700 ml-1">Time</label>
-                                                <select
-                                                    required
-                                                    className="w-full px-3 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark appearance-none text-sm"
-                                                    value={formData.time}
-                                                    onChange={e => setFormData({ ...formData, time: e.target.value })}
-                                                >
-                                                    <option value="">Time...</option>
-                                                    <option value="09:00 AM">09:00 AM</option>
-                                                    <option value="10:00 AM">10:00 AM</option>
-                                                    <option value="11:00 AM">11:00 AM</option>
-                                                    <option value="02:00 PM">02:00 PM</option>
-                                                    <option value="04:00 PM">04:00 PM</option>
-                                                </select>
-                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-semibold text-gray-700 ml-1">
+                                                Available Time Slots
+                                                {loadingSlots && <Loader2 className="inline ml-2 animate-spin" size={14} />}
+                                            </label>
+                                            
+                                            {formData.date && formData.doctor ? (
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    {loadingSlots ? (
+                                                        <div className="col-span-2 text-center py-4 text-gray-500">
+                                                            Loading available slots...
+                                                        </div>
+                                                    ) : availableSlots.length > 0 ? (
+                                                        availableSlots.map((slot) => (
+                                                            <button
+                                                                key={slot}
+                                                                type="button"
+                                                                onClick={() => setFormData({ ...formData, time: slot })}
+                                                                className={`py-3 px-4 rounded-xl font-medium transition-all ${
+                                                                    formData.time === slot
+                                                                        ? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+                                                                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                                                                }`}
+                                                            >
+                                                                {slot}
+                                                            </button>
+                                                        ))
+                                                    ) : (
+                                                        <div className="col-span-2 text-center py-4 text-gray-500 bg-gray-50 rounded-xl">
+                                                            No slots available for this date. Please try another date.
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className="text-center py-4 text-gray-400 bg-gray-50 rounded-xl">
+                                                    Please select a doctor and date first
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 )}
 
                                 {step === 3 && (
                                     <div className="space-y-5 animate-in slide-in-from-right-8 fade-in duration-300">
-                                        <div className="bg-gradient-to-r from-brand-blue to-brand-purple p-6 rounded-2xl text-white shadow-lg mb-6 relative overflow-hidden">
+                                        {/* Appointment Summary */}
+                                        <div className="bg-brand-blue/5 p-4 rounded-2xl space-y-3">
+                                            <h4 className="font-semibold text-brand-dark">Appointment Summary</h4>
+                                            <div className="space-y-2 text-sm">
+                                                <div className="flex justify-between">
+                                                    <span className="text-gray-500">Patient</span>
+                                                    <span className="font-medium text-brand-dark">{formData.name}</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-gray-500">Doctor</span>
+                                                    <span className="font-medium text-brand-dark">{formData.doctor}</span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-gray-500">Date</span>
+                                                    <span className="font-medium text-brand-dark">
+                                                        {new Date(formData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <span className="text-gray-500">Time</span>
+                                                    <span className="font-medium text-brand-dark">{formData.time}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Payment Card */}
+                                        <div className="bg-gradient-to-r from-brand-blue to-brand-purple p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
                                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
                                             <p className="opacity-80 text-sm font-medium mb-1">Total Amount</p>
                                             <h3 className="text-3xl font-bold">$150.00</h3>
@@ -221,32 +415,42 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                         </div>
 
                                         <div className="space-y-1">
-                                            <label className="text-sm font-semibold text-gray-700 ml-1">Card Details</label>
-                                            <div className="relative">
+                                            <label className="text-sm font-semibold text-gray-700 ml-1">Card Number</label>
+                                            <input
+                                                required
+                                                type="text"
+                                                className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-mono"
+                                                placeholder="Enter your card number"
+                                                maxLength={19}
+                                            />
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="space-y-1">
+                                                <label className="text-sm font-semibold text-gray-700 ml-1">Expiry Date</label>
                                                 <input
                                                     required
                                                     type="text"
-                                                    className="w-full pl-4 pr-4 py-4 bg-gray-50 border border-transparent rounded-t-2xl focus:bg-white focus:border-brand-blue focus:z-10 outline-none transition-all font-mono"
-                                                    placeholder="0000 0000 0000 0000"
+                                                    className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all text-center"
+                                                    placeholder="MM/YY"
+                                                    maxLength={5}
                                                 />
-                                                <div className="flex border-t border-gray-200">
-                                                    <input
-                                                        required
-                                                        type="text"
-                                                        className="w-1/2 px-4 py-4 bg-gray-50 border border-transparent rounded-bl-2xl focus:bg-white focus:border-brand-blue focus:z-10 outline-none transition-all text-center"
-                                                        placeholder="MM/YY"
-                                                    />
-                                                    <div className="w-[1px] bg-gray-200"></div>
-                                                    <input
-                                                        required
-                                                        type="password"
-                                                        className="w-1/2 px-4 py-4 bg-gray-50 border border-transparent rounded-br-2xl focus:bg-white focus:border-brand-blue focus:z-10 outline-none transition-all text-center"
-                                                        placeholder="CVC"
-                                                        maxLength={3}
-                                                    />
-                                                </div>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-sm font-semibold text-gray-700 ml-1">CVC</label>
+                                                <input
+                                                    required
+                                                    type="password"
+                                                    className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all text-center"
+                                                    placeholder="Enter CVC"
+                                                    maxLength={4}
+                                                />
                                             </div>
                                         </div>
+
+                                        <p className="text-xs text-gray-400 text-center mt-4">
+                                            By clicking "Pay Now", you agree to our terms of service and privacy policy.
+                                        </p>
                                     </div>
                                 )}
                             </form>
@@ -258,17 +462,30 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                 <button
                                     type="button"
                                     onClick={handlePrev}
-                                    className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gray-50 text-brand-dark hover:bg-gray-100 transition-colors"
+                                    disabled={isLoading}
+                                    className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gray-50 text-brand-dark hover:bg-gray-100 transition-colors disabled:opacity-50"
                                 >
                                     <ChevronLeft size={24} />
                                 </button>
                             )}
                             <button
-                                onClick={handleSubmit} // Using explicit click instead of form submit to allow button styling flex
-                                className="flex-1 h-14 bg-brand-dark text-white rounded-2xl font-bold text-lg hover:bg-black hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-brand-dark/20"
+                                onClick={handleSubmit}
+                                disabled={isLoading}
+                                className="flex-1 h-14 bg-brand-dark text-white rounded-2xl font-bold text-lg hover:bg-black hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-brand-dark/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                             >
-                                {step === 3 ? 'Pay Now' : 'Continue'}
-                                {step < 3 && <ChevronRight size={20} />}
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="animate-spin" size={20} />
+                                        Processing...
+                                    </>
+                                ) : step === 3 ? (
+                                    'Pay Now'
+                                ) : (
+                                    <>
+                                        Continue
+                                        <ChevronRight size={20} />
+                                    </>
+                                )}
                             </button>
                         </div>
                     </>
