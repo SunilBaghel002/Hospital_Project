@@ -1,137 +1,137 @@
 export const doctors = [
-    { 
-        name: "Dr. Sarah Johnson", 
-        role: "Cataract Specialist", 
-        qualification: "MBBS, MD (Ophthal)", 
+    {
+        name: "Dr. Priya Sharma",
+        role: "Cataract Specialist",
+        qualification: "MBBS, MD (Ophthal)",
         experience: "15 Years Exp",
-        languages: ["English", "Spanish"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Hindi", "English"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_priya_sharma_1769084064040.png"
     },
-    { 
-        name: "Dr. Michael Chen", 
-        role: "Retina Surgeon", 
-        qualification: "MBBS, MS, FVRS", 
+    {
+        name: "Dr. Rajesh Kumar",
+        role: "Retina Surgeon",
+        qualification: "MBBS, MS, FVRS",
         experience: "12 Years Exp",
-        languages: ["English", "Mandarin"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=2128&auto=format&fit=crop" 
+        languages: ["Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_rajesh_kumar_1769084200177.png"
     },
-    { 
-        name: "Dr. Emily Davis", 
-        role: "Pediatric Ophthalmologist", 
-        qualification: "MD, FPOS", 
+    {
+        name: "Dr. Anjali Verma",
+        role: "Pediatric Ophthalmologist",
+        qualification: "MD, FPOS",
         experience: "10 Years Exp",
-        languages: ["English"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=2000&auto=format&fit=crop" 
+        languages: ["Hindi", "English"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_anjali_verma_1769084081515.png"
     },
-    { 
-        name: "Dr. James Wilson", 
-        role: "Glaucoma Specialist", 
-        qualification: "MBBS, DO", 
+    {
+        name: "Dr. Vikram Singh",
+        role: "Glaucoma Specialist",
+        qualification: "MBBS, DO",
         experience: "20 Years Exp",
-        languages: ["English", "French"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Hindi", "Punjabi"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_vikram_singh_1769084223498.png"
     },
-    { 
-        name: "Dr. Robert Lee", 
-        role: "Cornea Specialist", 
-        qualification: "MD, FACS", 
+    {
+        name: "Dr. Arjun Reddy",
+        role: "Cornea Specialist",
+        qualification: "MD, FACS",
         experience: "18 Years Exp",
-        languages: ["English", "Korean"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Telugu", "Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_arjun_reddy_1769084244105.png"
     },
-    { 
-        name: "Dr. Anita Patel", 
-        role: "Refractive Surgeon", 
-        qualification: "MBBS, MS", 
+    {
+        name: "Dr. Anita Patel",
+        role: "Refractive Surgeon",
+        qualification: "MBBS, MS",
         experience: "8 Years Exp",
-        languages: ["English", "Hindi"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?q=80&w=1974&auto=format&fit=crop" 
+        languages: ["Gujarati", "Hindi", "English"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_anita_patel_1769084098941.png"
     },
-    { 
-        name: "Dr. David Kim", 
-        role: "Neuro-Ophthalmologist", 
-        qualification: "MD, PhD", 
+    {
+        name: "Dr. Karan Malhotra",
+        role: "Neuro-Ophthalmologist",
+        qualification: "MD, PhD",
         experience: "14 Years Exp",
-        languages: ["English", "Korean"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1582750433449-d22b1c74caf8?q=80&w=1974&auto=format&fit=crop" 
+        languages: ["Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_karan_malhotra_1769084273408.png"
     },
-    { 
-        name: "Dr. Lisa Wong", 
-        role: "Oculoplastic Surgeon", 
-        qualification: "MD, FPRS", 
+    {
+        name: "Dr. Meera Iyer",
+        role: "Oculoplastic Surgeon",
+        qualification: "MD, FPRS",
         experience: "16 Years Exp",
-        languages: ["English", "Cantonese"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1591604021695-0c69b7c05981?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Tamil", "Hindi", "English"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_meera_iyer_1769084115943.png"
     },
-    { 
-        name: "Dr. Mark Stevens", 
-        role: "Retina Surgeon", 
-        qualification: "MD, FACS", 
+    {
+        name: "Dr. Suresh Nair",
+        role: "Retina Surgeon",
+        qualification: "MD, FACS",
         experience: "22 Years Exp",
-        languages: ["English"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1612531386530-97286d97c2d2?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Malayalam", "Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_suresh_nair_1769084294863.png"
     },
-    { 
-        name: "Dr. Jessica Brown", 
-        role: "Optometrist", 
-        qualification: "OD", 
+    {
+        name: "Dr. Kavita Desai",
+        role: "Optometrist",
+        qualification: "OD",
         experience: "5 Years Exp",
-        languages: ["English", "Spanish"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1623854767648-e7bb8009f0db?q=80&w=1974&auto=format&fit=crop" 
+        languages: ["Marathi", "Hindi", "English"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_kavita_desai_1769084135510.png"
     },
-    { 
-        name: "Dr. Thomas Anderson", 
-        role: "Cataract Specialist", 
-        qualification: "MD", 
+    {
+        name: "Dr. Aditya Kapoor",
+        role: "Cataract Specialist",
+        qualification: "MD",
         experience: "19 Years Exp",
-        languages: ["English"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1663435166418-472e399589d9?q=80&w=2072&auto=format&fit=crop" 
+        languages: ["Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_aditya_kapoor_1769084311895.png"
     },
-    { 
-        name: "Dr. Maria Garcia", 
-        role: "Glaucoma Specialist", 
-        qualification: "MBBS, MS", 
+    {
+        name: "Dr. Sneha Gupta",
+        role: "Glaucoma Specialist",
+        qualification: "MBBS, MS",
         experience: "9 Years Exp",
-        languages: ["English", "Spanish"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1626248356972-ac126131c940?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Hindi", "Bengali"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_sneha_gupta_1769084166174.png"
     },
-    { 
-        name: "Dr. John Doe", 
-        role: "General Ophthalmology", 
-        qualification: "MBBS", 
+    {
+        name: "Dr. Rohit Joshi",
+        role: "General Ophthalmology",
+        qualification: "MBBS",
         experience: "4 Years Exp",
-        languages: ["English"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1618498082410-b4aa22193b38?q=80&w=2070&auto=format&fit=crop" 
+        languages: ["Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_rohit_joshi_1769084331704.png"
     },
-    { 
-        name: "Dr. Samantha White", 
-        role: "Low Vision Specialist", 
-        qualification: "OD, FAAO", 
+    {
+        name: "Dr. Divya Pillai",
+        role: "Low Vision Specialist",
+        qualification: "OD, FAAO",
         experience: "11 Years Exp",
-        languages: ["English"],
-        gender: "Female", 
-        img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop" 
+        languages: ["Malayalam", "Tamil", "English"],
+        gender: "Female",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_divya_pillai_1769084183123.png"
     },
-    { 
-        name: "Dr. Kevin Miller", 
-        role: "Retina Specialist", 
-        qualification: "MD, PhD", 
+    {
+        name: "Dr. Nikhil Rao",
+        role: "Retina Specialist",
+        qualification: "MD, PhD",
         experience: "13 Years Exp",
-        languages: ["English", "German"],
-        gender: "Male", 
-        img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" 
+        languages: ["Kannada", "Hindi", "English"],
+        gender: "Male",
+        img: "/brain/4f7560e8-0a69-483e-9c94-ef2b66d90223/dr_nikhil_rao_1769084348818.png"
     },
 ];
