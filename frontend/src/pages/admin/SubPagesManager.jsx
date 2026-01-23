@@ -15,7 +15,7 @@ import {
     AlertCircle,
     FolderOpen
 } from 'lucide-react';
-import { pagesAPI } from '../../services/adminApi';
+import { pagesAPI, sectionsAPI } from '../../services/adminApi';
 
 export default function SubPagesManager() {
     const navigate = useNavigate();
@@ -23,6 +23,7 @@ export default function SubPagesManager() {
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [deleteConfirm, setDeleteConfirm] = useState(null);
+    const [isCreatingDemo, setIsCreatingDemo] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -39,6 +40,89 @@ export default function SubPagesManager() {
             console.error(err);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleCreateExample = async () => {
+        setIsCreatingDemo(true);
+        try {
+            // 1. Create Page
+            const pageRes = await pagesAPI.create({
+                title: 'Example: Robotic Surgery',
+                slug: 'example-robotic-surgery-' + Date.now().toString().slice(-4),
+                type: 'sub',
+                isPublished: true,
+                navbarOrder: 99
+            });
+
+            if (pageRes.success) {
+                const pageId = pageRes.data._id;
+
+                // 2. Create Sections
+                // Hero
+                await sectionsAPI.create({
+                    pageId, type: 'hero', title: 'Hero', order: 0, isVisible: true,
+                    data: {
+                        title: "Advanced Robotic Surgery",
+                        subtitle: "Precision Meets Care",
+                        tagline: "Minimum Invasive",
+                        backgroundImage: "https://images.unsplash.com/photo-1579684385136-137af18db23c?auto=format&fit=crop&q=80&w=2070",
+                        ctaText: "Book Now",
+                        showBreadcrumb: true
+                    }
+                });
+
+                // Overview
+                await sectionsAPI.create({
+                    pageId, type: 'service_overview', title: 'Overview', order: 1, isVisible: true,
+                    data: {
+                        title: "Overview",
+                        overviewText: "State-of-the-art robotic systems for faster recovery.",
+                        shortDesc: "Future of Surgery",
+                        longDesc: "<p>Robotic surgery allows surgeons to perform many types of complex procedures with more precision, flexibility and control than is possible with conventional techniques. <strong>Benefits include:</strong></p><ul><li>Fewer complications</li><li>Less pain and blood loss</li><li>Quicker recovery</li><li>Smaller, less noticeable scars</li></ul>",
+                        image: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&q=80&w=2070"
+                    }
+                });
+
+                // Scope
+                await sectionsAPI.create({
+                    pageId, type: 'service_scope', title: 'Scope', order: 2, isVisible: true,
+                    data: {
+                        title: "Our Capabilities",
+                        image: "https://images.unsplash.com/photo-1516549655169-df83a0674f66?auto=format&fit=crop&q=80&w=2070",
+                        points: [
+                            { title: "Cardiac Surgery", desc: "Valve repair and bypass" },
+                            { title: "Urology", desc: "Prostate and kidney procedures" },
+                            { title: "Gynecology", desc: "Hysterectomy and fibroid removal" }
+                        ]
+                    }
+                });
+
+                // Experts
+                await sectionsAPI.create({
+                    pageId, type: 'service_experts', title: 'Experts', order: 3, isVisible: true,
+                    data: { roleKeyword: "Surgeon", title: "Our Robotic Surgeons" }
+                });
+
+                // CTA
+                await sectionsAPI.create({
+                    pageId, type: 'cta', title: 'CTA', order: 4, isVisible: true,
+                    data: {
+                        title: "Ready to consult?",
+                        subtitle: "Get expert advice today",
+                        buttonText: "Schedule Visit",
+                        link: "/appointment"
+                    }
+                });
+
+                fetchPages();
+                alert('Example page created successfully! You can now edit it to see how it works.');
+            }
+        } catch (error) {
+            console.error("Failed to create demo", error);
+            alert("Failed to create example page.");
+        } finally {
+            setIsCreatingDemo(false);
         }
     };
 
@@ -96,13 +180,23 @@ export default function SubPagesManager() {
                     <h1 className="text-2xl font-bold text-slate-800">Sub Pages</h1>
                     <p className="text-slate-500">Manage service pages, blog posts, and other sub-pages</p>
                 </div>
-                <Link
-                    to="/admin/pages/new?type=sub"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
-                >
-                    <Plus size={18} />
-                    Add Sub Page
-                </Link>
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleCreateExample}
+                        disabled={isCreatingDemo}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-xl font-medium transition-colors"
+                    >
+                        {isCreatingDemo ? <Loader2 className="animate-spin" size={18} /> : <FileText size={18} />}
+                        Create Example Page
+                    </button>
+                    <Link
+                        to="/admin/subpages/new"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
+                    >
+                        <Plus size={18} />
+                        Add Sub Page
+                    </Link>
+                </div>
             </div>
 
             {/* Error */}
@@ -156,14 +250,14 @@ export default function SubPagesManager() {
 
                                         <div className="flex items-center gap-2">
                                             <span className={`text-xs px-2 py-1 rounded-full ${page.isPublished
-                                                    ? 'bg-green-100 text-green-700'
-                                                    : 'bg-yellow-100 text-yellow-700'
+                                                ? 'bg-green-100 text-green-700'
+                                                : 'bg-yellow-100 text-yellow-700'
                                                 }`}>
                                                 {page.isPublished ? 'Published' : 'Draft'}
                                             </span>
 
                                             <button
-                                                onClick={() => navigate(`/admin/pages/edit/${page._id}`)}
+                                                onClick={() => navigate(`/admin/subpages/edit/${page._id}`)}
                                                 className="p-2 rounded-lg hover:bg-blue-50 text-slate-400 hover:text-blue-500 transition-colors"
                                                 title="Edit"
                                             >
@@ -172,8 +266,8 @@ export default function SubPagesManager() {
                                             <button
                                                 onClick={() => handleTogglePublish(page)}
                                                 className={`p-2 rounded-lg transition-colors ${page.isPublished
-                                                        ? 'hover:bg-yellow-50 text-slate-400 hover:text-yellow-500'
-                                                        : 'hover:bg-green-50 text-slate-400 hover:text-green-500'
+                                                    ? 'hover:bg-yellow-50 text-slate-400 hover:text-yellow-500'
+                                                    : 'hover:bg-green-50 text-slate-400 hover:text-green-500'
                                                     }`}
                                                 title={page.isPublished ? 'Unpublish' : 'Publish'}
                                             >
@@ -229,7 +323,7 @@ export default function SubPagesManager() {
                     </p>
                     {!searchQuery && (
                         <Link
-                            to="/admin/pages/new?type=sub"
+                            to="/admin/subpages/new"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
                         >
                             <Plus size={18} />

@@ -20,6 +20,7 @@ import VisionCareServiceDetail from './pages/VisionCareServiceDetail';
 import ContactUs from './pages/ContactUs';
 import Blogs from './pages/Blogs';
 import BlogDetail from './pages/BlogDetail';
+import DynamicPage from './pages/DynamicPage';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -27,6 +28,8 @@ import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import PagesManager from './pages/admin/PagesManager';
 import SubPagesManager from './pages/admin/SubPagesManager';
+import SubPageEditor from './pages/admin/SubPageEditor';
+import TestServicePage from './pages/TestServicePage';
 import SiteSettingsEditor from './pages/admin/SiteSettingsEditor';
 import MediaLibrary from './pages/admin/MediaLibrary';
 import PageEditor from './pages/admin/PageEditor';
@@ -72,6 +75,7 @@ function AppContent() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home onBook={openBookModal} />} />
+        <Route path="/test" element={<TestServicePage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/doctors" element={<DoctorsPage onBook={openBookModal} />} />
         <Route path="/specialties" element={<Specialities />} />
@@ -97,12 +101,18 @@ function AppContent() {
           <Route path="pages" element={<PagesManager />} />
           <Route path="pages/new" element={<PageEditor />} />
           <Route path="pages/edit/:id" element={<PageEditor />} />
+          <Route path="pages/edit/:id" element={<PageEditor />} />
           <Route path="subpages" element={<SubPagesManager />} />
+          <Route path="subpages/new" element={<SubPageEditor />} />
+          <Route path="subpages/edit/:id" element={<SubPageEditor />} />
           <Route path="doctors" element={<DoctorManager />} />
           <Route path="blogs" element={<BlogManager />} />
           <Route path="settings" element={<SiteSettingsEditor />} />
           <Route path="media" element={<MediaLibrary />} />
         </Route>
+
+        {/* Dynamic CMS Pages - catches custom pages created from admin */}
+        <Route path="/:slug" element={<DynamicPage onBook={openBookModal} />} />
 
         {/* Catch-all Redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />

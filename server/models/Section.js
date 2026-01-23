@@ -33,7 +33,11 @@ const sectionSchema = new mongoose.Schema({
             'partition',      // Section divider
             'about',          // About with feature cards
             'technology',     // Technology showcase
-            'blogs'           // Blog posts listing
+            'blogs',          // Blog posts listing
+            // Service Page Specific Sections
+            'service_overview', // Overview with rich text
+            'service_scope',    // What we offer list
+            'service_experts'   // Expert filtering
         ],
         required: true
     },

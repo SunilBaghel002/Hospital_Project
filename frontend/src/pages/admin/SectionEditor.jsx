@@ -296,23 +296,74 @@ export function CardsEditor({ data = {}, onChange }) {
 export function TestimonialsEditor({ data = {}, onChange }) {
     const testimonials = data.testimonials || [];
     const updateTestimonials = (newTestimonials) => onChange({ ...data, testimonials: newTestimonials });
+    const update = (key, value) => onChange({ ...data, [key]: value });
 
     return (
         <div className="space-y-4">
+            {/* Section Settings */}
+            <div className="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-lg">
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Tagline</label>
+                    <input
+                        type="text"
+                        value={data.tagline || ''}
+                        onChange={(e) => update('tagline', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                        placeholder="e.g., Patient Stories"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Headline</label>
+                    <input
+                        type="text"
+                        value={data.headline || ''}
+                        onChange={(e) => update('headline', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                        placeholder="e.g., Life-Changing Results"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">🔗 CTA Link (optional)</label>
+                    <input
+                        type="text"
+                        value={data.ctaLink || ''}
+                        onChange={(e) => update('ctaLink', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                        placeholder="/testimonials or https://..."
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">CTA Text</label>
+                    <input
+                        type="text"
+                        value={data.ctaText || ''}
+                        onChange={(e) => update('ctaText', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                        placeholder="See More Stories"
+                    />
+                </div>
+            </div>
+
             {/* Preview */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {testimonials.length > 0 ? testimonials.map((t, i) => (
                     <div key={i} className="bg-white p-4 rounded-lg border border-slate-200">
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">
-                                {(t.name || 'A')[0]}
-                            </div>
+                        <div className="flex items-center gap-3 mb-2">
+                            {t.img ? (
+                                <img src={t.img} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
+                            ) : (
+                                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">
+                                    {(t.name || 'A')[0]}
+                                </div>
+                            )}
                             <div>
                                 <p className="text-sm font-medium text-slate-800">{t.name || 'Name'}</p>
+                                <p className="text-xs text-slate-500">{t.role || 'Patient'}</p>
                                 <div className="text-yellow-400 text-xs">{'★'.repeat(t.rating || 5)}</div>
                             </div>
                         </div>
-                        <p className="text-slate-600 text-sm italic">"{t.text || 'Testimonial text...'}"</p>
+                        <p className="text-slate-600 text-sm italic line-clamp-2">"{t.text || 'Testimonial text...'}"</p>
+                        {t.video && <span className="text-xs text-blue-500 mt-1 block">🎬 Has video</span>}
                     </div>
                 )) : (
                     <p className="col-span-2 text-center text-slate-400 text-sm py-4">Add testimonials below</p>
@@ -326,7 +377,7 @@ export function TestimonialsEditor({ data = {}, onChange }) {
                 addLabel="Add Testimonial"
                 emptyMessage="No testimonials added yet"
                 renderItem={(t, update) => (
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                         <div className="grid grid-cols-2 gap-2">
                             <input
                                 type="text"
@@ -335,15 +386,13 @@ export function TestimonialsEditor({ data = {}, onChange }) {
                                 className="px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
                                 placeholder="Patient Name"
                             />
-                            <select
-                                value={t.rating || 5}
-                                onChange={(e) => update({ rating: parseInt(e.target.value) })}
+                            <input
+                                type="text"
+                                value={t.role || ''}
+                                onChange={(e) => update({ role: e.target.value })}
                                 className="px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
-                            >
-                                <option value={5}>⭐⭐⭐⭐⭐ 5 Stars</option>
-                                <option value={4}>⭐⭐⭐⭐ 4 Stars</option>
-                                <option value={3}>⭐⭐⭐ 3 Stars</option>
-                            </select>
+                                placeholder="Role (e.g., LASIK Patient)"
+                            />
                         </div>
                         <textarea
                             value={t.text || ''}
@@ -352,6 +401,37 @@ export function TestimonialsEditor({ data = {}, onChange }) {
                             className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none resize-none"
                             placeholder="What did the patient say?"
                         />
+                        <div className="grid grid-cols-2 gap-2">
+                            <div>
+                                <label className="block text-xs text-slate-500 mb-1">📷 Image URL</label>
+                                <input
+                                    type="text"
+                                    value={t.img || ''}
+                                    onChange={(e) => update({ img: e.target.value })}
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none text-sm"
+                                    placeholder="https://..."
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs text-slate-500 mb-1">🎬 Video URL (optional)</label>
+                                <input
+                                    type="text"
+                                    value={t.video || ''}
+                                    onChange={(e) => update({ video: e.target.value })}
+                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none text-sm"
+                                    placeholder="https://youtube.com/..."
+                                />
+                            </div>
+                        </div>
+                        <select
+                            value={t.rating || 5}
+                            onChange={(e) => update({ rating: parseInt(e.target.value) })}
+                            className="px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none text-sm"
+                        >
+                            <option value={5}>⭐⭐⭐⭐⭐ 5 Stars</option>
+                            <option value={4}>⭐⭐⭐⭐ 4 Stars</option>
+                            <option value={3}>⭐⭐⭐ 3 Stars</option>
+                        </select>
                     </div>
                 )}
             />

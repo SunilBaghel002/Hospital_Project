@@ -88,11 +88,11 @@ export default function PagesManager() {
                     <p className="text-slate-500">Manage pages that appear in your navbar</p>
                 </div>
                 <Link
-                    to="/admin/pages/new"
+                    to="/admin/subpages/new?type=main"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
                 >
                     <Plus size={18} />
-                    Add New Page
+                    Create New Page
                 </Link>
             </div>
 
@@ -133,8 +133,8 @@ export default function PagesManager() {
 
                                 {/* Status Badge */}
                                 <div className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium ${page.isPublished
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-yellow-100 text-yellow-700'
+                                    ? 'bg-green-100 text-green-700'
+                                    : 'bg-yellow-100 text-yellow-700'
                                     }`}>
                                     {page.isPublished ? 'Published' : 'Draft'}
                                 </div>
@@ -154,7 +154,7 @@ export default function PagesManager() {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-1">
                                         <button
-                                            onClick={() => navigate(`/admin/pages/edit/${page._id}`)}
+                                            onClick={() => navigate(`/admin/subpages/edit/${page._id}?type=main`)}
                                             className="p-2 rounded-lg hover:bg-blue-50 text-slate-400 hover:text-blue-500 transition-colors"
                                             title="Edit Page"
                                         >
@@ -163,8 +163,8 @@ export default function PagesManager() {
                                         <button
                                             onClick={() => handleTogglePublish(page)}
                                             className={`p-2 rounded-lg transition-colors ${page.isPublished
-                                                    ? 'hover:bg-yellow-50 text-slate-400 hover:text-yellow-500'
-                                                    : 'hover:bg-green-50 text-slate-400 hover:text-green-500'
+                                                ? 'hover:bg-yellow-50 text-slate-400 hover:text-yellow-500'
+                                                : 'hover:bg-green-50 text-slate-400 hover:text-green-500'
                                                 }`}
                                             title={page.isPublished ? 'Unpublish' : 'Publish'}
                                         >
@@ -221,7 +221,7 @@ export default function PagesManager() {
                     </p>
                     {!searchQuery && (
                         <Link
-                            to="/admin/pages/new"
+                            to="/admin/subpages/new?type=main"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
                         >
                             <Plus size={18} />

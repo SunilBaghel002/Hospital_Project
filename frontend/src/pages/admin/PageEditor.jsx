@@ -56,7 +56,7 @@ const SECTION_TYPES = [
 export default function PageEditor() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const isNew = id === 'new';
+    const isNew = !id; // id is undefined for /pages/new route
 
     const [page, setPage] = useState({
         title: '',
