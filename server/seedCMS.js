@@ -224,9 +224,120 @@ const seedData = async () => {
 
         // ======================= SERVICE SUBPAGES (18 services) =======================
         const ALL_SERVICES = [
-            { id: 'cataract-surgery', title: 'Cataract Surgery', heroTitle: 'Restore Your Vision', heroSubtitle: 'Advanced Cataract Solutions', heroTagline: 'See the world in full color again.', overviewTitle: 'Blade-Free Precision', overviewText: 'Our blade-free laser cataract surgery offers precision and safety that traditional manual surgery cannot match.', scopeTitle: 'Comprehensive Care Journey', scopePoints: ['Advanced Diagnostics', 'Femto-Laser Assisted', 'Premium IOLs', 'Dropless Surgery'] },
-            // ... (Keeping list concise for seed file, but functionally complete)
-            { id: 'lasik-correction', title: 'LASIK Correction', heroTitle: 'Freedom From Glasses', heroSubtitle: 'Contoura® Vision LASIK', heroTagline: 'Wake up and see the world clearly.', overviewTitle: 'Beyond 20/20 Vision', overviewText: 'Topography-guided LASIK maps 22,000 unique elevation points on your cornea.', scopeTitle: 'Refractive Excellence', scopePoints: ['Eligibility Exam', 'Contoura® Vision', 'Blade-Free Flap', 'Lifetime Enhancement'] }
+            {
+                id: 'cataract-surgery',
+                title: 'Cataract Surgery',
+                heroTitle: 'Restore Your Vision',
+                heroSubtitle: 'Advanced Cataract Solutions',
+                heroTagline: 'See the world in full color again.',
+                overviewTitle: 'Blade-Free Precision',
+                overviewText: 'Our blade-free laser cataract surgery offers precision and safety that traditional manual surgery cannot match. We use the most advanced Femtosecond laser technology to ensure your procedure is painless, accurate, and provides rapid recovery.',
+                scopeTitle: 'Comprehensive Care Journey',
+                scopePoints: ['Advanced Diagnostics', 'Femto-Laser Assisted', 'Premium IOLs', 'Dropless Surgery'],
+                faqs: [
+                    { question: "Is cataract surgery painful?", answer: "No, the procedure is performed under local anesthesia (eye drops) and is painless. You may feel mild pressure but no pain." },
+                    { question: "How long does recovery take?", answer: "Most patients notice improved vision within 24 hours. Full recovery typically takes 2-4 weeks." }
+                ]
+            },
+            {
+                id: 'lasik-correction',
+                title: 'LASIK Correction',
+                heroTitle: 'Freedom From Glasses',
+                heroSubtitle: 'Contoura® Vision LASIK',
+                heroTagline: 'Wake up and see the world clearly.',
+                overviewTitle: 'Beyond 20/20 Vision',
+                overviewText: 'Topography-guided LASIK maps 22,000 unique elevation points on your cornea for highly personalized treatment. This results in sharper vision, fewer side effects, and better night vision compared to standard LASIK.',
+                scopeTitle: 'Refractive Excellence',
+                scopePoints: ['Eligibility Exam', 'Contoura® Vision', 'Blade-Free Flap', 'Lifetime Enhancement'],
+                faqs: [
+                    { question: "Am I eligible for LASIK?", answer: "We perform a comprehensive 7-point check to determine eligibility. Most healthy adults over 18 with stable prescriptions are good candidates." },
+                    { question: "Is it permanent?", answer: "Yes, LASIK permanently reshapes your cornea. However, age-related reading vision changes (presbyopia) may still occur later in life." }
+                ]
+            },
+            {
+                id: 'glaucoma-treatment',
+                title: 'Glaucoma Treatment',
+                heroTitle: 'Protect Your Sight',
+                heroSubtitle: 'Advanced Glaucoma Management',
+                heroTagline: 'Silent thief of sight, stopped here.',
+                overviewTitle: 'Early Detection is Key',
+                overviewText: 'Glaucoma often has no symptoms until permanent damage occurs. We specialize in early detection using OCT technology and offer treatments ranging from drops and lasers to Minimally Invasive Glaucoma Surgery (MIGS).',
+                scopeTitle: 'Preserving Vision',
+                scopePoints: ['OCT Imaging', 'Laser Therapy (SLT)', 'MIGS Surgery', 'Pressure Monitoring'],
+                faqs: [
+                    { question: "Can glaucoma damage be reversed?", answer: "No, vision lost to glaucoma cannot be restored. This is why early detection and regular monitoring are critical." }
+                ]
+            },
+            {
+                id: 'retina-care',
+                title: 'Retina Care',
+                heroTitle: 'Expert Retina Services',
+                heroSubtitle: 'Diabetic Retinopathy & Macular Care',
+                heroTagline: 'Advanced care for complex conditions.',
+                overviewTitle: 'Specialized Retinal Therapy',
+                overviewText: 'Our retina specialists manage complex conditions like Diabetic Retinopathy, Macular Degeneration, and Retinal Detachments using state-of-the-art injections, lasers, and vitrectomy surgery.',
+                scopeTitle: 'Retinal Solutions',
+                scopePoints: ['Diabetic Screening', 'Anti-VEGF Injections', 'Vitrectomy', 'Laser Photocoagulation'],
+                faqs: [
+                    { question: "What are symptoms of retinal detachment?", answer: "Sudden flashes of light, a shower of floaters, or a curtain-like shadow over your vision are medical emergencies." }
+                ]
+            },
+            {
+                id: 'pediatric-ophthalmology',
+                title: 'Pediatric Ophthalmology',
+                heroTitle: 'Little Eyes, Big Dreams',
+                heroSubtitle: 'Child-Friendly Eye Care',
+                heroTagline: 'Gentle care for your little ones.',
+                overviewTitle: 'Vision Development Experts',
+                overviewText: 'We treat squint (strabismus), lazy eye (amblyopia), and refractive errors in children. Our approach is gentle, using fun and engaging methods to ensure accurate diagnosis.',
+                scopeTitle: 'Pediatric Services',
+                scopePoints: ['Vision Screening', 'Squint Surgery', 'Amblyopia Therapy', 'Myopia Control'],
+                faqs: [
+                    { question: "When should my child have their first exam?", answer: "We recommend screening at birth, then at age 1, age 3, and before starting school." }
+                ]
+            },
+            {
+                id: 'dry-eye-clinic',
+                title: 'Dry Eye Clinic',
+                heroTitle: 'Relief is Here',
+                heroSubtitle: 'Advanced Dry Eye Solutions',
+                heroTagline: 'Comfortable eyes, all day long.',
+                overviewTitle: 'Treating the Root Cause',
+                overviewText: 'Dry eye is more than just irritation. It can damage your cornea. We diagnose the specific type of dry eye (aqueous or evaporative) and offer IPL therapy, warm pulsation, and plugs for lasting relief.',
+                scopeTitle: 'Dry Eye Therapies',
+                scopePoints: ['Lipiview Analysis', 'IPL Therapy', 'Punctal Plugs', 'BlephEx Treatment'],
+                faqs: [
+                    { question: "Why are my eyes dry properly?", answer: "It could be screen time, environment, or gland dysfunction. Our diagnostic suite identifies the exact cause." }
+                ]
+            },
+            {
+                id: 'cornea-transplant',
+                title: 'Cornea Transplant',
+                heroTitle: 'Restoring Clarity',
+                heroSubtitle: 'Modern Keratoplasty Services',
+                heroTagline: 'New vision, new life.',
+                overviewTitle: 'Layer-Specific Transplants',
+                overviewText: 'We perform advanced partial-thickness transplants (DSEK/DMEK) which offer faster recovery and lower rejection rates than traditional full-thickness transplants.',
+                scopeTitle: 'Corneal Excellence',
+                scopePoints: ['DSEK/DMEK', 'Full Thickness (PK)', 'Collagen Crosslinking', 'Keratoconus Care'],
+                faqs: [
+                    { question: "How long is the wait for a cornea?", answer: "We have partnerships with major eye banks, significantly reducing wait times for scheduled surgeries." }
+                ]
+            },
+            {
+                id: 'optical-boutique',
+                title: 'Optical Boutique',
+                heroTitle: 'Style Meets Vision',
+                heroSubtitle: 'Premium Eyewear Collection',
+                heroTagline: 'Look good. See better.',
+                overviewTitle: 'Curated Fashion',
+                overviewText: 'Discover our collection of international designer frames and premium lens technologies including Crizal, Varilux, and Blue-light filters tailored to your digital lifestyle.',
+                scopeTitle: 'Optical Services',
+                scopePoints: ['Designer Frames', 'Progressive Lenses', 'Contact Lenses', 'Repair & Adjustment'],
+                faqs: [
+                    { question: "Do you have prescription sunglasses?", answer: "Yes, we can customize any frame with your prescription and polarization." }
+                ]
+            }
         ];
 
         for (const service of ALL_SERVICES) {
@@ -245,7 +356,8 @@ const seedData = async () => {
                 { pageId: subPage._id, type: 'content', order: 1, title: 'Overview', isVisible: true, data: { tagline: service.overviewTitle, content: service.overviewText } },
                 { pageId: subPage._id, type: 'cards', order: 2, title: 'Scope of Services', isVisible: true, data: { tagline: 'What We Offer', headline: service.scopeTitle, cards: service.scopePoints.map((p, i) => ({ title: p, description: `Expert ${p.toLowerCase()} solutions.` })) } },
                 { pageId: subPage._id, type: 'doctors', order: 3, title: 'Specialists', isVisible: true, data: { showCount: 3, layout: 'grid', showBookButton: true } },
-                { pageId: subPage._id, type: 'cta', order: 4, title: 'Book Now', isVisible: true, data: { title: 'Ready to restore your vision?', subtitle: 'Schedule your comprehensive evaluation today.', buttonText: 'Book Appointment', buttonLink: '/appointment' } }
+                { pageId: subPage._id, type: 'faq', order: 4, title: 'Common Questions', isVisible: true, data: { headline: 'Frequently Asked Questions', faqs: service.faqs || [] } },
+                { pageId: subPage._id, type: 'cta', order: 5, title: 'Book Now', isVisible: true, data: { title: 'Ready to restore your vision?', subtitle: 'Schedule your comprehensive evaluation today.', buttonText: 'Book Appointment', buttonLink: '/appointment' } }
             ]);
         }
         console.log(`📄 Service subpages: ${ALL_SERVICES.length} pages generated (example loop)`);
