@@ -3,34 +3,68 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const adminAuth = require('../middleware/adminAuth');
+const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
-// Configure Cloudinary
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
+// Check if Cloudinary is Configured
+const isCloudinaryConfigured = process.env.CLOUDINARY_CLOUD_NAME && 
+                               process.env.CLOUDINARY_API_KEY && 
+                               process.env.CLOUDINARY_API_SECRET;
 
-// Configure Multer with Cloudinary Storage
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'visionary-eye-care',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'mp4', 'webm'],
-        transformation: [{ width: 1920, height: 1080, crop: 'limit' }]
+let upload;
+
+if (isCloudinaryConfigured) {
+    // Configure Cloudinary
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET
+    });
+
+    const storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: 'visionary-eye-care',
+            allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'mp4', 'webm'],
+            transformation: [{ width: 1920, height: 1080, crop: 'limit' }]
+        }
+    });
+
+    upload = multer({ 
+        storage,
+        limits: { fileSize: 10 * 1024 * 1024 } 
+    });
+} else {
+    // Fallback to Local Storage
+    console.log('⚠️ Cloudinary not configured. Using local storage.');
+    
+    // Ensure uploads directory exists
+    const uploadDir = path.join(__dirname, '../uploads');
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
     }
-});
 
-const upload = multer({ 
-    storage,
-    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
-});
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, uploadDir);
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    });
+
+    upload = multer({ 
+        storage,
+        limits: { fileSize: 10 * 1024 * 1024 }
+    });
+}
 
 /**
  * POST /api/upload
- * Upload a single image/video to Cloudinary
+ * Upload a single image/video
  */
 router.post('/', adminAuth, upload.single('file'), async (req, res) => {
     try {
@@ -41,21 +75,32 @@ router.post('/', adminAuth, upload.single('file'), async (req, res) => {
             });
         }
 
+        // Determine URL based on storage method
+        let fileUrl;
+        if (isCloudinaryConfigured) {
+            fileUrl = req.file.path; // Cloudinary returns URL in path
+        } else {
+            // Local storage URL construction
+            const protocol = req.protocol;
+            const host = req.get('host');
+            fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+        }
+
         res.json({
             success: true,
             message: 'File uploaded successfully.',
             data: {
-                url: req.file.path,
+                url: fileUrl,
                 publicId: req.file.filename,
                 originalName: req.file.originalname,
-                format: req.file.format || req.file.path.split('.').pop()
+                format: req.file.mimetype ? req.file.mimetype.split('/')[1] : null
             }
         });
     } catch (error) {
         console.error('Upload error:', error);
         res.status(500).json({
             success: false,
-            message: 'Failed to upload file.'
+            message: 'Failed to upload file. ' + error.message
         });
     }
 });
