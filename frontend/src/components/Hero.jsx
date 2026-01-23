@@ -58,10 +58,19 @@ export default function Hero({ onBook, data }) {
                             <Calendar size={18} />
                             {ctaText}
                         </button>
-                        <button className="px-8 py-4 border border-gray-200 text-brand-dark rounded-full font-bold text-sm tracking-wide hover:bg-gray-50 transition-colors flex items-center justify-center gap-3">
-                            <Play size={18} className="fill-brand-dark" />
-                            Watch Story
-                        </button>
+                        {(data?.secondaryCtaText || !data?.title) && (
+                            <button
+                                onClick={() => {
+                                    if (data?.secondaryCtaLink) {
+                                        window.open(data.secondaryCtaLink, '_blank');
+                                    }
+                                }}
+                                className="px-8 py-4 border border-gray-200 text-brand-dark rounded-full font-bold text-sm tracking-wide hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
+                            >
+                                <Play size={18} className="fill-brand-dark" />
+                                {data?.secondaryCtaText || 'Watch Story'}
+                            </button>
+                        )}
                     </div>
 
                     {/* Trust Indicators */}
@@ -71,8 +80,8 @@ export default function Hero({ onBook, data }) {
                                 <ShieldCheck size={20} />
                             </div>
                             <div>
-                                <p className="font-bold text-brand-dark text-sm">JCI Accredited</p>
-                                <p className="text-xs text-gray-500">Global Standard</p>
+                                <p className="font-bold text-brand-dark text-sm">{data?.trustBadge1Title || 'JCI Accredited'}</p>
+                                <p className="text-xs text-gray-500">{data?.trustBadge1Subtitle || 'Global Standard'}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 group cursor-pointer">
@@ -80,8 +89,8 @@ export default function Hero({ onBook, data }) {
                                 <Star size={20} />
                             </div>
                             <div>
-                                <p className="font-bold text-brand-dark text-sm">4.9/5 Rating</p>
-                                <p className="text-xs text-gray-500">Patient Satisfaction</p>
+                                <p className="font-bold text-brand-dark text-sm">{data?.trustBadge2Title || '4.9/5 Rating'}</p>
+                                <p className="text-xs text-gray-500">{data?.trustBadge2Subtitle || 'Patient Satisfaction'}</p>
                             </div>
                         </div>
                     </div>

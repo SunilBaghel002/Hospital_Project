@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, ChevronDown, Calendar, GraduationCap, Clock, Languages, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
 
 export default function Doctors({ onBook, data }) {
     const [doctors, setDoctors] = useState([]);
@@ -134,7 +134,7 @@ export default function Doctors({ onBook, data }) {
                             <div className="flex items-center gap-2 text-sm text-gray-500 px-2">
                                 <Languages size={16} className="text-brand-blue" />
                                 <span>Speaks:</span>
-                                <span className="font-medium text-brand-dark">{doc.languages.join(", ")}</span>
+                                <span className="font-medium text-brand-dark">{(doc.languages || ['English']).join(", ")}</span>
                             </div>
 
                             <div className="mt-auto pt-4">

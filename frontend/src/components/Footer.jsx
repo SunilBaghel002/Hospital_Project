@@ -76,8 +76,14 @@ export default function Footer() {
                 <div>
                     <h4 className="font-bold text-brand-dark mb-6">Quick Links</h4>
                     <ul className="space-y-4">
-                        {['Home', 'About Us', 'Services', 'Doctors', 'Book Appointment'].map(link => (
-                            <li key={link}><a href="#" className="text-gray-500 hover:text-brand-blue transition-colors">{link}</a></li>
+                        {(settings?.footer?.quickLinks?.length > 0 ? settings.footer.quickLinks : [
+                            { name: 'Home', href: '/' },
+                            { name: 'About Us', href: '/about' },
+                            { name: 'Services', href: '/services' },
+                            { name: 'Doctors', href: '/doctors' },
+                            { name: 'Book Appointment', href: '/appointment' }
+                        ]).map((link, i) => (
+                            <li key={i}><a href={link.href} className="text-gray-500 hover:text-brand-blue transition-colors">{link.name}</a></li>
                         ))}
                     </ul>
                 </div>
@@ -85,8 +91,14 @@ export default function Footer() {
                 <div>
                     <h4 className="font-bold text-brand-dark mb-6">Services</h4>
                     <ul className="space-y-4">
-                        {['Cataract Surgery', 'LASIK', 'Glaucoma Treatment', 'Retina Care', 'Pediatric Ophthalmology'].map(link => (
-                            <li key={link}><a href="#" className="text-gray-500 hover:text-brand-blue transition-colors">{link}</a></li>
+                        {(settings?.footer?.servicesLinks?.length > 0 ? settings.footer.servicesLinks : [
+                            { name: 'Cataract Surgery', href: '/services/cataract' },
+                            { name: 'LASIK', href: '/services/lasik' },
+                            { name: 'Glaucoma Treatment', href: '/services/glaucoma' },
+                            { name: 'Retina Care', href: '/services/retina' },
+                            { name: 'Pediatric Ophthalmology', href: '/services/pediatric' }
+                        ]).map((link, i) => (
+                            <li key={i}><a href={link.href} className="text-gray-500 hover:text-brand-blue transition-colors">{link.name}</a></li>
                         ))}
                     </ul>
                 </div>

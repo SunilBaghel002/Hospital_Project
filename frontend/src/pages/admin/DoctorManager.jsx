@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Save, X, Upload, User, Search } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
 
 export default function DoctorManager() {
     const [doctors, setDoctors] = useState([]);
@@ -109,11 +109,14 @@ export default function DoctorManager() {
                 headers: { Authorization: `Bearer ${token}` },
                 body: formDataUpload
             });
-            if (res.ok) {
-                const data = await res.json();
-                setFormData(prev => ({ ...prev, image: data.url }));
+            const responseData = await res.json();
+            if (res.ok && responseData.success && responseData.data?.url) {
+                setFormData(prev => ({ ...prev, image: responseData.data.url }));
+            } else {
+                alert(responseData.message || 'Image upload failed');
             }
         } catch (err) {
+            console.error('Upload error:', err);
             alert('Image upload failed');
         }
     };
@@ -316,6 +319,22 @@ export default function DoctorManager() {
                                     className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none resize-none"
                                     placeholder="Brief biography..."
                                 />
+                            </div>
+
+                            {/* Languages */}
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">Languages Spoken</label>
+                                <input
+                                    type="text"
+                                    value={(formData.languages || []).join(', ')}
+                                    onChange={(e) => {
+                                        const langs = e.target.value.split(',').map(l => l.trim()).filter(l => l);
+                                        setFormData(prev => ({ ...prev, languages: langs }));
+                                    }}
+                                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                    placeholder="English, Hindi, Spanish (comma separated)"
+                                />
+                                <p className="text-xs text-slate-400 mt-1">Enter languages separated by commas</p>
                             </div>
 
                             {/* Available Days */}

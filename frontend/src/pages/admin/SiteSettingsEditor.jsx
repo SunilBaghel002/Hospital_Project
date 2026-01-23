@@ -10,8 +10,15 @@ import {
     Share2,
     AlertCircle,
     Check,
-    Palette
+    Palette,
+    Navigation,
+    LayoutGrid,
+    Trash2,
+    Plus,
+    GripVertical,
+    Image
 } from 'lucide-react';
+import ImageUploader from '../../components/admin/ImageUploader';
 import { settingsAPI } from '../../services/adminApi';
 
 export default function SiteSettingsEditor() {
@@ -74,10 +81,46 @@ export default function SiteSettingsEditor() {
 
     const tabs = [
         { id: 'general', label: 'General', icon: Building2 },
+        { id: 'navbar', label: 'Navbar', icon: Navigation },
+        { id: 'footer', label: 'Footer', icon: LayoutGrid },
         { id: 'contact', label: 'Contact', icon: Phone },
         { id: 'social', label: 'Social', icon: Share2 },
         { id: 'seo', label: 'SEO', icon: Palette },
     ];
+
+    // Helper to add a new navbar item
+    const addNavbarItem = () => {
+        const items = settings.navbar?.items || [];
+        updateSetting('navbar.items', [...items, { name: '', href: '', order: items.length }]);
+    };
+
+    const removeNavbarItem = (index) => {
+        const items = settings.navbar?.items || [];
+        updateSetting('navbar.items', items.filter((_, i) => i !== index));
+    };
+
+    const updateNavbarItem = (index, field, value) => {
+        const items = [...(settings.navbar?.items || [])];
+        items[index] = { ...items[index], [field]: value };
+        updateSetting('navbar.items', items);
+    };
+
+    // Helper for footer quick links
+    const addFooterLink = (section) => {
+        const links = settings.footer?.[section] || [];
+        updateSetting(`footer.${section}`, [...links, { name: '', href: '' }]);
+    };
+
+    const removeFooterLink = (section, index) => {
+        const links = settings.footer?.[section] || [];
+        updateSetting(`footer.${section}`, links.filter((_, i) => i !== index));
+    };
+
+    const updateFooterLink = (section, index, field, value) => {
+        const links = [...(settings.footer?.[section] || [])];
+        links[index] = { ...links[index], [field]: value };
+        updateSetting(`footer.${section}`, links);
+    };
 
     if (isLoading) {
         return (
@@ -130,8 +173,8 @@ export default function SiteSettingsEditor() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-4 py-3 font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
-                                ? 'text-blue-600 border-b-2 border-blue-500'
-                                : 'text-slate-500 hover:text-slate-700'
+                            ? 'text-blue-600 border-b-2 border-blue-500'
+                            : 'text-slate-500 hover:text-slate-700'
                             }`}
                     >
                         <tab.icon size={18} />
@@ -183,6 +226,233 @@ export default function SiteSettingsEditor() {
                                 className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
                                 placeholder="© 2024 Your Company"
                             />
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'navbar' && (
+                    <div className="space-y-6">
+                        {/* Logo Section */}
+                        <div className="bg-slate-50 p-4 rounded-xl">
+                            <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                                <Image size={18} /> Logo & Branding
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Site Name (Logo Text)</label>
+                                    <input
+                                        type="text"
+                                        value={settings.navbar?.siteName || settings.siteName || ''}
+                                        onChange={(e) => updateSetting('navbar.siteName', e.target.value)}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                        placeholder="Visionary"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Logo Initial</label>
+                                    <input
+                                        type="text"
+                                        value={settings.navbar?.logoInitial || 'V'}
+                                        onChange={(e) => updateSetting('navbar.logoInitial', e.target.value)}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                        placeholder="V"
+                                        maxLength={2}
+                                    />
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <ImageUploader
+                                    label="Logo Image (optional - overrides initial)"
+                                    value={settings.navbar?.logoImage}
+                                    onChange={(url) => updateSetting('navbar.logoImage', url)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* CTA Button */}
+                        <div className="bg-slate-50 p-4 rounded-xl">
+                            <h3 className="font-semibold text-slate-800 mb-4">CTA Button</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Button Text</label>
+                                    <input
+                                        type="text"
+                                        value={settings.navbar?.ctaText || 'Book an Appointment'}
+                                        onChange={(e) => updateSetting('navbar.ctaText', e.target.value)}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                        placeholder="Book an Appointment"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Button Link</label>
+                                    <input
+                                        type="text"
+                                        value={settings.navbar?.ctaLink || '/appointment'}
+                                        onChange={(e) => updateSetting('navbar.ctaLink', e.target.value)}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                        placeholder="/appointment"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Menu Items */}
+                        <div>
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-semibold text-slate-800">Menu Items</h3>
+                                <button
+                                    onClick={addNavbarItem}
+                                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600"
+                                >
+                                    <Plus size={16} /> Add Item
+                                </button>
+                            </div>
+                            <div className="space-y-3">
+                                {(settings.navbar?.items || []).map((item, index) => (
+                                    <div key={index} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl">
+                                        <GripVertical size={18} className="text-slate-400 cursor-grab" />
+                                        <input
+                                            type="text"
+                                            value={item.name || ''}
+                                            onChange={(e) => updateNavbarItem(index, 'name', e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                                            placeholder="Link Name"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={item.href || ''}
+                                            onChange={(e) => updateNavbarItem(index, 'href', e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                                            placeholder="/link-path"
+                                        />
+                                        <button
+                                            onClick={() => removeNavbarItem(index)}
+                                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                ))}
+                                {(settings.navbar?.items || []).length === 0 && (
+                                    <p className="text-slate-400 text-center py-8">No menu items. Click "Add Item" to create one.</p>
+                                )}
+                            </div>
+                            <p className="text-xs text-slate-400 mt-2">Note: Menu items are also managed via the Pages section. Items here will override.</p>
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'footer' && (
+                    <div className="space-y-6">
+                        {/* Footer Description & Copyright */}
+                        <div className="bg-slate-50 p-4 rounded-xl">
+                            <h3 className="font-semibold text-slate-800 mb-4">Footer Content</h3>
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Footer Description</label>
+                                    <textarea
+                                        value={settings.footer?.description || ''}
+                                        onChange={(e) => updateSetting('footer.description', e.target.value)}
+                                        rows={3}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none resize-none"
+                                        placeholder="Brief description for footer"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Copyright Text</label>
+                                    <input
+                                        type="text"
+                                        value={settings.footer?.copyright || ''}
+                                        onChange={(e) => updateSetting('footer.copyright', e.target.value)}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                        placeholder="© 2024 Your Company"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Quick Links */}
+                        <div>
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-semibold text-slate-800">Quick Links</h3>
+                                <button
+                                    onClick={() => addFooterLink('quickLinks')}
+                                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600"
+                                >
+                                    <Plus size={16} /> Add Link
+                                </button>
+                            </div>
+                            <div className="space-y-2">
+                                {(settings.footer?.quickLinks || []).map((link, index) => (
+                                    <div key={index} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl">
+                                        <input
+                                            type="text"
+                                            value={link.name || ''}
+                                            onChange={(e) => updateFooterLink('quickLinks', index, 'name', e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                                            placeholder="Link Name"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={link.href || ''}
+                                            onChange={(e) => updateFooterLink('quickLinks', index, 'href', e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                                            placeholder="/link-path"
+                                        />
+                                        <button
+                                            onClick={() => removeFooterLink('quickLinks', index)}
+                                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                ))}
+                                {(settings.footer?.quickLinks || []).length === 0 && (
+                                    <p className="text-slate-400 text-center py-4 bg-slate-50 rounded-xl">No quick links. Click "Add Link" to create one.</p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Services Links */}
+                        <div>
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-semibold text-slate-800">Services Links</h3>
+                                <button
+                                    onClick={() => addFooterLink('servicesLinks')}
+                                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600"
+                                >
+                                    <Plus size={16} /> Add Service
+                                </button>
+                            </div>
+                            <div className="space-y-2">
+                                {(settings.footer?.servicesLinks || []).map((link, index) => (
+                                    <div key={index} className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl">
+                                        <input
+                                            type="text"
+                                            value={link.name || ''}
+                                            onChange={(e) => updateFooterLink('servicesLinks', index, 'name', e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                                            placeholder="Service Name"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={link.href || ''}
+                                            onChange={(e) => updateFooterLink('servicesLinks', index, 'href', e.target.value)}
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                                            placeholder="/service-path"
+                                        />
+                                        <button
+                                            onClick={() => removeFooterLink('servicesLinks', index)}
+                                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                ))}
+                                {(settings.footer?.servicesLinks || []).length === 0 && (
+                                    <p className="text-slate-400 text-center py-4 bg-slate-50 rounded-xl">No services links. Click "Add Service" to create one.</p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 )}

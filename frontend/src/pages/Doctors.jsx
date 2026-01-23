@@ -3,7 +3,7 @@ import Hero from '../components/Hero';
 import Doctors from '../components/Doctors';
 import Testimonials from '../components/Testimonials';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
 
 export default function DoctorsPage({ onBook }) {
     const [pageData, setPageData] = useState(null);

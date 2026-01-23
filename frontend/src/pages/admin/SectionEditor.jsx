@@ -5,6 +5,31 @@ import ArrayEditor from '../../components/admin/ArrayEditor';
 // ==================== HERO SECTION EDITOR ====================
 export function HeroEditor({ data = {}, onChange }) {
     const update = (key, value) => onChange({ ...data, [key]: value });
+    const removeField = (key) => {
+        const newData = { ...data };
+        delete newData[key];
+        onChange(newData);
+    };
+
+    // All possible hero fields with metadata
+    const allFields = [
+        { key: 'title', label: 'Main Title', type: 'text', priority: 1 },
+        { key: 'subtitle', label: 'Subtitle', type: 'textarea', priority: 2 },
+        { key: 'tagline', label: 'Tagline', type: 'text', priority: 3 },
+        { key: 'ctaText', label: 'CTA Button Text', type: 'text', priority: 4 },
+        { key: 'backgroundImage', label: 'Background Image', type: 'image', priority: 5 },
+        { key: 'secondaryCtaText', label: 'Secondary Button Text', type: 'text', priority: 6 },
+        { key: 'secondaryCtaLink', label: 'Secondary Button Link', type: 'text', priority: 7 },
+        { key: 'trustBadge1Title', label: 'Trust Badge 1 Title', type: 'text', priority: 8 },
+        { key: 'trustBadge1Subtitle', label: 'Trust Badge 1 Subtitle', type: 'text', priority: 9 },
+        { key: 'trustBadge2Title', label: 'Trust Badge 2 Title', type: 'text', priority: 10 },
+        { key: 'trustBadge2Subtitle', label: 'Trust Badge 2 Subtitle', type: 'text', priority: 11 },
+        { key: 'showSearch', label: 'Show Search Box', type: 'checkbox', priority: 12 },
+    ];
+
+    // Only show fields that have data
+    const activeFields = allFields.filter(f => data[f.key] !== undefined && data[f.key] !== '');
+    const inactiveFields = allFields.filter(f => data[f.key] === undefined || data[f.key] === '');
 
     return (
         <div className="space-y-4">
@@ -15,60 +40,89 @@ export function HeroEditor({ data = {}, onChange }) {
                 )}
                 <div className="relative">
                     {data.tagline && <p className="text-blue-300 text-xs font-semibold mb-1">✦ {data.tagline}</p>}
-                    <h2 className="text-xl font-bold mb-1">{data.title || 'Hero Title'}</h2>
-                    <p className="text-slate-300 text-sm">{data.subtitle || 'Add a subtitle'}</p>
-                    {data.ctaText && <span className="inline-block mt-3 px-3 py-1 bg-blue-500 rounded text-xs">{data.ctaText}</span>}
+                    <h2 className="text-xl font-bold mb-1">{data.title || 'No Title'}</h2>
+                    {data.subtitle && <p className="text-slate-300 text-sm">{data.subtitle}</p>}
+                    <div className="flex gap-2 mt-3">
+                        {data.ctaText && <span className="px-3 py-1 bg-blue-500 rounded text-xs">{data.ctaText}</span>}
+                        {data.secondaryCtaText && <span className="px-3 py-1 border border-slate-400 rounded text-xs">{data.secondaryCtaText}</span>}
+                    </div>
                 </div>
             </div>
 
-            {/* Editor Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Tagline</label>
-                    <input
-                        type="text"
-                        value={data.tagline || ''}
-                        onChange={(e) => update('tagline', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
-                        placeholder="e.g., STATE-OF-THE-ART"
-                    />
+            {/* Active Fields - Only show what has data */}
+            {activeFields.length === 0 ? (
+                <div className="text-center py-8 text-slate-400">
+                    <p>No fields configured yet.</p>
+                    <p className="text-sm">Add fields below to customize this hero section.</p>
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">CTA Button Text</label>
-                    <input
-                        type="text"
-                        value={data.ctaText || ''}
-                        onChange={(e) => update('ctaText', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
-                        placeholder="e.g., Book Appointment"
-                    />
+            ) : (
+                activeFields.sort((a, b) => a.priority - b.priority).map(field => (
+                    <div key={field.key} className="relative group bg-slate-50 p-3 rounded-xl">
+                        <div className="flex items-center justify-between mb-2">
+                            <label className="block text-sm font-medium text-slate-700">{field.label}</label>
+                            <button
+                                type="button"
+                                onClick={() => removeField(field.key)}
+                                className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50"
+                            >
+                                ✕ Remove
+                            </button>
+                        </div>
+                        {field.type === 'text' && (
+                            <input
+                                type="text"
+                                value={data[field.key] || ''}
+                                onChange={(e) => update(field.key, e.target.value)}
+                                className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none bg-white"
+                            />
+                        )}
+                        {field.type === 'textarea' && (
+                            <textarea
+                                value={data[field.key] || ''}
+                                onChange={(e) => update(field.key, e.target.value)}
+                                rows={2}
+                                className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none resize-none bg-white"
+                            />
+                        )}
+                        {field.type === 'image' && (
+                            <ImageUploader
+                                value={data[field.key]}
+                                onChange={(url) => update(field.key, url)}
+                            />
+                        )}
+                        {field.type === 'checkbox' && (
+                            <label className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={data[field.key] || false}
+                                    onChange={(e) => update(field.key, e.target.checked)}
+                                    className="w-5 h-5 rounded"
+                                />
+                                <span className="text-sm text-slate-600">Enabled</span>
+                            </label>
+                        )}
+                    </div>
+                ))
+            )}
+
+            {/* Add New Fields */}
+            {inactiveFields.length > 0 && (
+                <div className="border-t pt-4">
+                    <p className="text-sm font-medium text-slate-600 mb-3">➕ Add Fields</p>
+                    <div className="flex flex-wrap gap-2">
+                        {inactiveFields.map(field => (
+                            <button
+                                key={field.key}
+                                type="button"
+                                onClick={() => update(field.key, field.type === 'checkbox' ? true : ' ')}
+                                className="px-3 py-1.5 bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 text-slate-600 text-xs rounded-lg transition-colors"
+                            >
+                                + {field.label}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Main Title</label>
-                <input
-                    type="text"
-                    value={data.title || ''}
-                    onChange={(e) => update('title', e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none text-lg font-semibold"
-                    placeholder="See the World with Clarity"
-                />
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Subtitle</label>
-                <textarea
-                    value={data.subtitle || ''}
-                    onChange={(e) => update('subtitle', e.target.value)}
-                    rows={2}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none resize-none"
-                    placeholder="Advanced Eye Care Solutions for a Brighter Tomorrow"
-                />
-            </div>
-            <ImageUploader
-                label="Background Image"
-                value={data.backgroundImage}
-                onChange={(url) => update('backgroundImage', url)}
-            />
+            )}
         </div>
     );
 }
@@ -692,6 +746,13 @@ export default function SectionEditor({ type, data, onChange }) {
 function AdvertisementEditor({ data = {}, onChange }) {
     const update = (key, value) => onChange({ ...data, [key]: value });
 
+    // Preset advertisement images from assets folder
+    const presetImages = [
+        { name: 'Offer 1', src: '/src/assets/Offer-1.jpeg' },
+        { name: 'Offer 2', src: '/src/assets/Offer-2.jpeg' },
+        { name: 'Offer 3', src: '/src/assets/Offer-3.jpeg' },
+    ];
+
     return (
         <div className="space-y-4">
             <div className="bg-purple-50 rounded-xl p-4">
@@ -726,6 +787,18 @@ function AdvertisementEditor({ data = {}, onChange }) {
             </div>
 
             <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Advertisement Link (optional)</label>
+                <input
+                    type="text"
+                    value={data.link || ''}
+                    onChange={(e) => update('link', e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none"
+                    placeholder="https://example.com or /contact"
+                />
+                <p className="text-xs text-slate-400 mt-1">Users will be redirected here when they click the ad</p>
+            </div>
+
+            <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Show Frequency</label>
                 <select
                     value={data.showFrequency || '1 hour'}
@@ -739,11 +812,68 @@ function AdvertisementEditor({ data = {}, onChange }) {
                 </select>
             </div>
 
+            {/* Preset Images Section */}
+            <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Choose from Preset Images</label>
+                <div className="grid grid-cols-3 gap-3">
+                    {presetImages.map((preset, index) => (
+                        <button
+                            key={index}
+                            type="button"
+                            onClick={() => update('image', preset.src)}
+                            className={`relative rounded-xl overflow-hidden border-2 transition-all hover:scale-105 ${data.image === preset.src
+                                ? 'border-blue-500 ring-2 ring-blue-200'
+                                : 'border-slate-200 hover:border-blue-300'
+                                }`}
+                        >
+                            <img
+                                src={preset.src}
+                                alt={preset.name}
+                                className="w-full h-24 object-cover"
+                            />
+                            {data.image === preset.src && (
+                                <div className="absolute top-1 right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-xs">✓</span>
+                                </div>
+                            )}
+                            <p className="text-xs text-center py-1 bg-slate-50 font-medium">{preset.name}</p>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3">
+                <div className="flex-1 h-px bg-slate-200"></div>
+                <span className="text-xs text-slate-400 font-medium">OR</span>
+                <div className="flex-1 h-px bg-slate-200"></div>
+            </div>
+
+            {/* Custom Upload */}
             <ImageUploader
-                label="Advertisement Image"
-                value={data.image}
+                label="Upload Custom Advertisement Image"
+                value={data.image && !presetImages.some(p => p.src === data.image) ? data.image : ''}
                 onChange={(url) => update('image', url)}
             />
+
+            {/* Current Selection Preview */}
+            {data.image && (
+                <div className="bg-slate-50 rounded-xl p-3">
+                    <p className="text-xs text-slate-500 mb-2">Current Selection:</p>
+                    <img
+                        src={data.image}
+                        alt="Current ad"
+                        className="w-full max-h-40 object-contain rounded-lg"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => update('image', '')}
+                        className="mt-2 text-xs text-red-500 hover:text-red-600 font-medium"
+                    >
+                        ✕ Remove Image
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

@@ -368,7 +368,38 @@ const seedData = async () => {
             tagline: 'World-Class Eye Care',
             contact: { address: 'Sector 62, Noida, Uttar Pradesh 201301', phone: '+91 120 456 7890', email: 'info@visionaryeye.in', emergencyNumber: '1800-EYE-CARE', workingHours: { weekdays: '8:00 AM - 8:00 PM', saturday: '9:00 AM - 5:00 PM', sunday: 'Emergency Only' } },
             social: { facebook: 'https://facebook.com/visionaryeyecare', twitter: 'https://twitter.com/visionaryeye', instagram: 'https://instagram.com/visionaryeyecare', linkedin: 'https://linkedin.com/company/visionaryeyecare', youtube: 'https://youtube.com/visionaryeyecare' },
-            footer: { description: 'Providing clarity and vision to the world through advanced ophthalmology and compassionate care.', copyright: '© 2024 Visionary Eye Care. All rights reserved.' }
+            navbar: {
+                siteName: 'Visionary',
+                logoInitial: 'V',
+                ctaText: 'Book an Appointment',
+                ctaLink: '/appointment',
+                items: [
+                    { name: 'Home', href: '/' },
+                    { name: 'About Us', href: '/about' },
+                    { name: 'Doctors', href: '/doctors' },
+                    { name: 'Specialties', href: '/specialties' },
+                    { name: 'Blogs', href: '/blogs' },
+                    { name: 'Contact', href: '/contact' }
+                ]
+            },
+            footer: { 
+                description: 'Providing clarity and vision to the world through advanced ophthalmology and compassionate care.', 
+                copyright: '© 2024 Visionary Eye Care. All rights reserved.',
+                quickLinks: [
+                    { name: 'Home', href: '/' },
+                    { name: 'About Us', href: '/about' },
+                    { name: 'Our Doctors', href: '/doctors' },
+                    { name: 'Specialties', href: '/specialties' },
+                    { name: 'Book Appointment', href: '/appointment' }
+                ],
+                servicesLinks: [
+                    { name: 'Cataract Surgery', href: '/services/cataract-surgery' },
+                    { name: 'LASIK Correction', href: '/services/lasik-correction' },
+                    { name: 'Glaucoma Treatment', href: '/services/glaucoma-treatment' },
+                    { name: 'Retina Care', href: '/services/retina-care' },
+                    { name: 'Pediatric Eye Care', href: '/services/pediatric-ophthalmology' }
+                ]
+            }
         }, { upsert: true });
         console.log('⚙️  Site settings updated');
 
