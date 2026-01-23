@@ -1,7 +1,20 @@
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Star, ShieldCheck, ArrowRight, Play } from 'lucide-react';
 
-export default function Hero({ onBook }) {
+export default function Hero({ onBook, data }) {
+    const title = data?.title || "Healing with Compassion."; // We might need to handle the HTML span for "Compassion" if it comes as plain text
+    // If title comes from CMS, it might be plain text. The split "Healing with / Compassion" with styling is hard to replicate generically unless we use a rich text editor or specific logic.
+    // For now, if data.title is present, use it. If not, use the hardcoded one (which has the span).
+    // Actually, to support the visual design, I'll check if it matches the specific default string or just render the text.
+    // Better: Render the text. If it's the specific default, maybe apply styling?
+    // Let's just render `data.title` if present. If the user wants specific styling, they might need Custom HTML or we accept rich text later.
+    // For now, simple text. "Healing with Compassion"
+
+    const tagline = data?.tagline || "World-Class Healthcare";
+    const subtitle = data?.subtitle || "Experience a new standard of medical excellence. Where advanced technology meets human touch to create a sanctuary for your health.";
+    const bgImage = data?.backgroundImage || "https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2128&auto=format&fit=crop";
+    const ctaText = data?.ctaText || "Book Appointment";
+
     return (
         <section className="relative min-h-screen flex flex-col lg:flex-row bg-white overflow-hidden">
             {/* Left Content Side - 45% */}
@@ -15,19 +28,25 @@ export default function Hero({ onBook }) {
                     <div className="flex items-center gap-3 mb-6">
                         <span className="w-12 h-[1px] bg-brand-dark"></span>
                         <span className="text-brand-dark font-bold tracking-[0.2em] text-xs uppercase">
-                            World-Class Healthcare
+                            {tagline}
                         </span>
                     </div>
 
                     {/* Main Headline */}
                     <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-brand-dark leading-[1.1] mb-8 tracking-tight">
-                        Healing with <br />
-                        <span className="font-serif italic font-light text-brand-blue">Compassion.</span>
+                        {data?.title ? (
+                            data.title
+                        ) : (
+                            <>
+                                Healing with <br />
+                                <span className="font-serif italic font-light text-brand-blue">Compassion.</span>
+                            </>
+                        )}
                     </h1>
 
                     {/* Description */}
                     <p className="text-lg text-gray-500 mb-10 max-w-md leading-relaxed">
-                        Experience a new standard of medical excellence. Where advanced technology meets human touch to create a sanctuary for your health.
+                        {subtitle}
                     </p>
 
                     {/* CTAs */}
@@ -37,7 +56,7 @@ export default function Hero({ onBook }) {
                             className="px-8 py-4 bg-brand-dark text-white rounded-full font-bold text-sm tracking-wide hover:bg-brand-blue transition-colors shadow-lg flex items-center justify-center gap-3 group"
                         >
                             <Calendar size={18} />
-                            Book Appointment
+                            {ctaText}
                         </button>
                         <button className="px-8 py-4 border border-gray-200 text-brand-dark rounded-full font-bold text-sm tracking-wide hover:bg-gray-50 transition-colors flex items-center justify-center gap-3">
                             <Play size={18} className="fill-brand-dark" />
@@ -78,8 +97,8 @@ export default function Hero({ onBook }) {
                     className="absolute inset-0"
                 >
                     <img
-                        src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2128&auto=format&fit=crop"
-                        alt="Modern Indian Hospital Interior"
+                        src={bgImage}
+                        alt={title || "Hospital Interior"}
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent mix-blend-overlay"></div>

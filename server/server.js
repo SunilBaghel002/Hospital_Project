@@ -4,6 +4,14 @@ const dotenv = require('dotenv');
 const path = require('path');
 const connectDB = require('./config/db');
 
+// Load env vars
+dotenv.config();
+
+console.log('Environment Debug:');
+console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME);
+console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY);
+console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Exists' : 'Missing');
+
 // Routes
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
@@ -11,9 +19,10 @@ const pagesRoutes = require('./routes/pagesRoutes');
 const sectionsRoutes = require('./routes/sectionsRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const doctorRoutes = require('./routes/doctorRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 
-// Load env vars
-dotenv.config();
+
 
 // Initialize Express
 const app = express();
@@ -44,6 +53,8 @@ app.use('/api/pages', pagesRoutes);
 app.use('/api/sections', sectionsRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/doctors', doctorRoutes);
+app.use('/api/blogs', blogRoutes);
 
 // Public routes for frontend (no auth required)
 const publicRoutes = require('./routes/publicRoutes');

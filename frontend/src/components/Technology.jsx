@@ -1,18 +1,22 @@
-export default function Technology() {
-    const techs = [
+export default function Technology({ data }) {
+    const techs = data?.technologies || [
         { name: "Femtosecond Laser", desc: "Precision corneal incisions for blade-free cataract surgery.", img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop" },
         { name: "OCT Imaging", desc: "High-resolution cross-sectional retinal imaging.", img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop" },
         { name: "Digital Phoropter", desc: "Advanced automated refraction for pinpoint accuracy.", img: "https://plus.unsplash.com/premium_photo-1661766569022-1b7f918ac3f3?q=80&w=2000&auto=format&fit=crop" },
     ];
 
+    const tagline = data?.tagline || "Innovation";
+    const headline = data?.headline || "World-Class Technology";
+    const description = data?.description || "We invest in the latest ophthalmic advancements to ensure safety, precision, and faster recovery for our patients. Our labs are equipped with the future of eye care.";
+
     return (
         <section className="py-20 px-6 max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
                 <div className="flex-1">
-                    <span className="text-brand-blue font-bold tracking-wider text-sm uppercase mb-2 block">Innovation</span>
-                    <h2 className="text-3xl md:text-5xl font-bold text-brand-dark mb-6">World-Class Technology</h2>
+                    <span className="text-brand-blue font-bold tracking-wider text-sm uppercase mb-2 block">{tagline}</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-brand-dark mb-6">{headline}</h2>
                     <p className="text-gray-500 text-lg leading-relaxed">
-                        We invest in the latest ophthalmic advancements to ensure safety, precision, and faster recovery for our patients. Our labs are equipped with the future of eye care.
+                        {description}
                     </p>
                 </div>
 

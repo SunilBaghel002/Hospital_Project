@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3002';
+// API_BASE already includes /api from VITE_API_URL (e.g., http://localhost:3002/api)
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3002/api';
 
 // Get stored token
 const getToken = () => localStorage.getItem('adminToken');
@@ -43,7 +44,7 @@ const apiRequest = async (endpoint, options = {}) => {
 // Admin Authentication API
 export const adminAuthAPI = {
     login: async (username, password) => {
-        const response = await apiRequest('/api/admin/login', {
+        const response = await apiRequest('/admin/login', {
             method: 'POST',
             body: JSON.stringify({ username, password })
         });
@@ -56,12 +57,12 @@ export const adminAuthAPI = {
     },
     
     verify: async () => {
-        return apiRequest('/api/admin/verify');
+        return apiRequest('/admin/verify');
     },
     
     logout: async () => {
         try {
-            await apiRequest('/api/admin/logout', { method: 'POST' });
+            await apiRequest('/admin/logout', { method: 'POST' });
         } finally {
             removeToken();
         }
@@ -76,26 +77,26 @@ export const adminAuthAPI = {
 export const pagesAPI = {
     getAll: (type = null) => {
         const query = type ? `?type=${type}` : '';
-        return apiRequest(`/api/pages${query}`);
+        return apiRequest(`/pages${query}`);
     },
     
-    getOne: (id) => apiRequest(`/api/pages/${id}`),
+    getOne: (id) => apiRequest(`/pages/${id}`),
     
-    create: (pageData) => apiRequest('/api/pages', {
+    create: (pageData) => apiRequest('/pages', {
         method: 'POST',
         body: JSON.stringify(pageData)
     }),
     
-    update: (id, pageData) => apiRequest(`/api/pages/${id}`, {
+    update: (id, pageData) => apiRequest(`/pages/${id}`, {
         method: 'PUT',
         body: JSON.stringify(pageData)
     }),
     
-    delete: (id) => apiRequest(`/api/pages/${id}`, {
+    delete: (id) => apiRequest(`/pages/${id}`, {
         method: 'DELETE'
     }),
     
-    reorderNavbar: (orderedIds) => apiRequest('/api/pages/reorder/navbar', {
+    reorderNavbar: (orderedIds) => apiRequest('/pages/reorder/navbar', {
         method: 'PUT',
         body: JSON.stringify({ orderedIds })
     })
@@ -103,52 +104,52 @@ export const pagesAPI = {
 
 // Sections API
 export const sectionsAPI = {
-    getByPage: (pageId) => apiRequest(`/api/sections/page/${pageId}`),
+    getByPage: (pageId) => apiRequest(`/sections/page/${pageId}`),
     
-    getOne: (id) => apiRequest(`/api/sections/${id}`),
+    getOne: (id) => apiRequest(`/sections/${id}`),
     
-    create: (sectionData) => apiRequest('/api/sections', {
+    create: (sectionData) => apiRequest('/sections', {
         method: 'POST',
         body: JSON.stringify(sectionData)
     }),
     
-    update: (id, sectionData) => apiRequest(`/api/sections/${id}`, {
+    update: (id, sectionData) => apiRequest(`/sections/${id}`, {
         method: 'PUT',
         body: JSON.stringify(sectionData)
     }),
     
-    delete: (id) => apiRequest(`/api/sections/${id}`, {
+    delete: (id) => apiRequest(`/sections/${id}`, {
         method: 'DELETE'
     }),
     
-    reorder: (pageId, orderedIds) => apiRequest(`/api/sections/reorder/${pageId}`, {
+    reorder: (pageId, orderedIds) => apiRequest(`/sections/reorder/${pageId}`, {
         method: 'PUT',
         body: JSON.stringify({ orderedIds })
     }),
     
-    toggleVisibility: (id) => apiRequest(`/api/sections/visibility/${id}`, {
+    toggleVisibility: (id) => apiRequest(`/sections/visibility/${id}`, {
         method: 'PUT'
     })
 };
 
 // Settings API
 export const settingsAPI = {
-    get: () => apiRequest('/api/settings'),
+    get: () => apiRequest('/settings'),
     
-    update: (settings) => apiRequest('/api/settings', {
+    update: (settings) => apiRequest('/settings', {
         method: 'PUT',
         body: JSON.stringify(settings)
     })
 };
 
-// Upload API
+// Upload API (Cloudinary)
 export const uploadAPI = {
     upload: async (file) => {
         const token = getToken();
         const formData = new FormData();
-        formData.append('image', file);
+        formData.append('file', file);  // Changed from 'image' to 'file' for Cloudinary
         
-        const response = await fetch(`${API_BASE}/api/upload`, {
+        const response = await fetch(`${API_BASE}/upload`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -170,10 +171,10 @@ export const uploadAPI = {
         const formData = new FormData();
         
         files.forEach(file => {
-            formData.append('images', file);
+            formData.append('files', file);  // Changed from 'images' to 'files'
         });
         
-        const response = await fetch(`${API_BASE}/api/upload/multiple`, {
+        const response = await fetch(`${API_BASE}/upload/multiple`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -190,19 +191,23 @@ export const uploadAPI = {
         return data;
     },
     
-    list: () => apiRequest('/api/upload/list'),
+    list: () => apiRequest('/upload/list'),
     
-    delete: (filename) => apiRequest(`/api/upload/${filename}`, {
+    delete: (filename) => apiRequest(`/upload/${filename}`, {
         method: 'DELETE'
     }),
     
-    getUrl: (filename) => `${API_BASE}/uploads/${filename}`
+    // For uploads, we need the base without /api
+    getUrl: (filename) => {
+        const baseUrl = API_BASE.replace('/api', '');
+        return `${baseUrl}/uploads/${filename}`;
+    }
 };
 
 // Public API (for frontend dynamic content)
 export const publicAPI = {
-    getNavbar: () => apiRequest('/api/public/navbar'),
-    getPage: (slug) => apiRequest(`/api/public/page/${slug}`),
-    getSubpages: (parentSlug) => apiRequest(`/api/public/subpages/${parentSlug}`),
-    getSettings: () => apiRequest('/api/settings')
+    getNavbar: () => apiRequest('/public/navbar'),
+    getPage: (slug) => apiRequest(`/public/page/${slug}`),
+    getSubpages: (parentSlug) => apiRequest(`/public/subpages/${parentSlug}`),
+    getSettings: () => apiRequest('/settings')
 };

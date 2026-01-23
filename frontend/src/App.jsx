@@ -29,6 +29,9 @@ import PagesManager from './pages/admin/PagesManager';
 import SubPagesManager from './pages/admin/SubPagesManager';
 import SiteSettingsEditor from './pages/admin/SiteSettingsEditor';
 import MediaLibrary from './pages/admin/MediaLibrary';
+import PageEditor from './pages/admin/PageEditor';
+import DoctorManager from './pages/admin/DoctorManager';
+import BlogManager from './pages/admin/BlogManager';
 
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,23 +58,22 @@ function AppContent() {
   // Check if current route is admin route
   const isAdminRoute = location.pathname.startsWith('/admin');
 
-  // Don't render main site layout for admin routes
-  if (isAdminRoute) {
-    return null;
-  }
-
   return (
     <div className="bg-brand-cream/30 min-h-screen font-sans selection:bg-brand-peach/50 selection:text-brand-dark overflow-x-hidden flex flex-col">
       <AppointmentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} initialDoctor={selectedDoctor} />
 
-      <TopBar />
-      <Navbar />
+      {!isAdminRoute && (
+        <>
+          <TopBar />
+          <Navbar />
+        </>
+      )}
 
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home onBook={openBookModal} />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/doctors" element={<DoctorsPage onBook={openBookModal} />} />
-        <Route path="/specialties" element={<Specialities />} />
         <Route path="/specialties" element={<Specialities />} />
 
         {/* Custom Layout Routes for Vision Care */}
@@ -86,27 +88,33 @@ function AppContent() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetail />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="pages" element={<PagesManager />} />
+          <Route path="pages/new" element={<PageEditor />} />
+          <Route path="pages/edit/:id" element={<PageEditor />} />
+          <Route path="subpages" element={<SubPagesManager />} />
+          <Route path="doctors" element={<DoctorManager />} />
+          <Route path="blogs" element={<BlogManager />} />
+          <Route path="settings" element={<SiteSettingsEditor />} />
+          <Route path="media" element={<MediaLibrary />} />
+        </Route>
+
+        {/* Catch-all Redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      <Footer />
-      <Chatbot />
+      {!isAdminRoute && (
+        <>
+          <Footer />
+          <Chatbot />
+        </>
+      )}
     </div>
-  );
-}
-
-function AdminRoutes() {
-  return (
-    <Routes>
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="pages" element={<PagesManager />} />
-        <Route path="subpages" element={<SubPagesManager />} />
-        <Route path="settings" element={<SiteSettingsEditor />} />
-        <Route path="media" element={<MediaLibrary />} />
-      </Route>
-    </Routes>
   );
 }
 
@@ -114,7 +122,6 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
-      <AdminRoutes />
     </BrowserRouter>
   );
 }

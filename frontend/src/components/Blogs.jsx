@@ -1,21 +1,61 @@
+import { useState, useEffect } from 'react';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { blogs as allBlogs } from '../data/blogs';
 
-export default function Blogs() {
-    // Get the latest 3 blogs
-    const recentBlogs = allBlogs.slice(0, 3);
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002/api';
+
+export default function Blogs({ data }) {
+    const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Config from CMS
+    const showCount = data?.showCount || 3;
+    const headline = data?.headline || 'Latest News & Insights';
+    const tagline = data?.tagline || 'Our Blog';
+    const showViewAll = data?.showViewAll !== false;
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                const res = await fetch(`${API_URL}/blogs`); // Fetch published blogs
+                if (res.ok) {
+                    const data = await res.json();
+                    // Map API data to component format
+                    const mappedBlogs = data.map(blog => ({
+                        id: blog.slug || blog._id,
+                        title: blog.title,
+                        category: blog.category,
+                        image: blog.image || 'https://via.placeholder.com/400x300?text=Blog+Image',
+                        date: new Date(blog.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+                        author: blog.author?.name || 'Admin',
+                        subtitle: blog.subtitle
+                    }));
+                    setBlogs(mappedBlogs);
+                }
+            } catch (err) {
+                console.error('Failed to fetch blogs:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchBlogs();
+    }, []);
+
+    // Get the latest blogs based on config
+    const recentBlogs = blogs.slice(0, showCount);
 
     return (
         <section className="py-20 px-6 max-w-7xl mx-auto bg-brand-cream/30 rounded-[3rem] text-center md:text-left">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12">
                 <div>
-                    <span className="text-brand-blue font-bold tracking-wider text-sm uppercase mb-2 block">Our Blog</span>
-                    <h2 className="text-3xl md:text-5xl font-bold text-brand-dark">Latest News & Insights</h2>
+                    <span className="text-brand-blue font-bold tracking-wider text-sm uppercase mb-2 block">{tagline}</span>
+                    <h2 className="text-3xl md:text-5xl font-bold text-brand-dark">{headline}</h2>
                 </div>
-                <Link to="/blogs" className="hidden md:flex items-center gap-2 text-brand-blue font-bold hover:gap-4 transition-all">
-                    View All Articles <ArrowRight size={20} />
-                </Link>
+                {showViewAll && (
+                    <Link to="/blogs" className="hidden md:flex items-center gap-2 text-brand-blue font-bold hover:gap-4 transition-all">
+                        View All Articles <ArrowRight size={20} />
+                    </Link>
+                )}
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">

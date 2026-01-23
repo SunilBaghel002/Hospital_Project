@@ -1,54 +1,38 @@
 const express = require('express');
+const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const adminAuth = require('../middleware/adminAuth');
 
 const router = express.Router();
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-        // Generate unique filename with timestamp
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        cb(null, `${uniqueSuffix}${ext}`);
+// Configure Multer with Cloudinary Storage
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'visionary-eye-care',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'mp4', 'webm'],
+        transformation: [{ width: 1920, height: 1080, crop: 'limit' }]
     }
 });
 
-// File filter for images only
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
-    
-    if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(new Error('Only image files are allowed (jpeg, jpg, png, gif, webp, svg).'), false);
-    }
-};
-
-const upload = multer({
+const upload = multer({ 
     storage,
-    fileFilter,
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    }
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
 /**
  * POST /api/upload
- * Upload a single image
+ * Upload a single image/video to Cloudinary
  */
-router.post('/', adminAuth, upload.single('image'), (req, res) => {
+router.post('/', adminAuth, upload.single('file'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({
@@ -56,19 +40,15 @@ router.post('/', adminAuth, upload.single('image'), (req, res) => {
                 message: 'No file uploaded.'
             });
         }
-        
-        // Construct the URL for the uploaded file
-        const fileUrl = `/uploads/${req.file.filename}`;
-        
+
         res.json({
             success: true,
             message: 'File uploaded successfully.',
             data: {
-                filename: req.file.filename,
+                url: req.file.path,
+                publicId: req.file.filename,
                 originalName: req.file.originalname,
-                size: req.file.size,
-                mimetype: req.file.mimetype,
-                url: fileUrl
+                format: req.file.format || req.file.path.split('.').pop()
             }
         });
     } catch (error) {
@@ -82,9 +62,9 @@ router.post('/', adminAuth, upload.single('image'), (req, res) => {
 
 /**
  * POST /api/upload/multiple
- * Upload multiple images
+ * Upload multiple files to Cloudinary
  */
-router.post('/multiple', adminAuth, upload.array('images', 10), (req, res) => {
+router.post('/multiple', adminAuth, upload.array('files', 10), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({
@@ -92,15 +72,13 @@ router.post('/multiple', adminAuth, upload.array('images', 10), (req, res) => {
                 message: 'No files uploaded.'
             });
         }
-        
+
         const files = req.files.map(file => ({
-            filename: file.filename,
-            originalName: file.originalname,
-            size: file.size,
-            mimetype: file.mimetype,
-            url: `/uploads/${file.filename}`
+            url: file.path,
+            publicId: file.filename,
+            originalName: file.originalname
         }));
-        
+
         res.json({
             success: true,
             message: `${files.length} file(s) uploaded successfully.`,
@@ -117,30 +95,29 @@ router.post('/multiple', adminAuth, upload.array('images', 10), (req, res) => {
 
 /**
  * GET /api/upload/list
- * List all uploaded files
+ * List recent uploads from Cloudinary
  */
-router.get('/list', adminAuth, (req, res) => {
+router.get('/list', adminAuth, async (req, res) => {
     try {
-        const files = fs.readdirSync(uploadsDir);
-        
-        const fileList = files.map(filename => {
-            const filepath = path.join(uploadsDir, filename);
-            const stats = fs.statSync(filepath);
-            
-            return {
-                filename,
-                url: `/uploads/${filename}`,
-                size: stats.size,
-                uploadedAt: stats.mtime
-            };
+        const result = await cloudinary.api.resources({
+            type: 'upload',
+            prefix: 'visionary-eye-care',
+            max_results: 50
         });
-        
-        // Sort by upload date (newest first)
-        fileList.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
-        
+
+        const files = result.resources.map(resource => ({
+            url: resource.secure_url,
+            publicId: resource.public_id,
+            format: resource.format,
+            size: resource.bytes,
+            createdAt: resource.created_at,
+            width: resource.width,
+            height: resource.height
+        }));
+
         res.json({
             success: true,
-            data: fileList
+            data: files
         });
     } catch (error) {
         console.error('List files error:', error);
@@ -152,22 +129,15 @@ router.get('/list', adminAuth, (req, res) => {
 });
 
 /**
- * DELETE /api/upload/:filename
- * Delete an uploaded file
+ * DELETE /api/upload/:publicId
+ * Delete a file from Cloudinary
  */
-router.delete('/:filename', adminAuth, (req, res) => {
+router.delete('/:publicId', adminAuth, async (req, res) => {
     try {
-        const filepath = path.join(uploadsDir, req.params.filename);
+        const publicId = decodeURIComponent(req.params.publicId);
         
-        if (!fs.existsSync(filepath)) {
-            return res.status(404).json({
-                success: false,
-                message: 'File not found.'
-            });
-        }
-        
-        fs.unlinkSync(filepath);
-        
+        await cloudinary.uploader.destroy(publicId);
+
         res.json({
             success: true,
             message: 'File deleted successfully.'
@@ -179,31 +149,6 @@ router.delete('/:filename', adminAuth, (req, res) => {
             message: 'Failed to delete file.'
         });
     }
-});
-
-// Error handler for multer
-router.use((error, req, res, next) => {
-    if (error instanceof multer.MulterError) {
-        if (error.code === 'LIMIT_FILE_SIZE') {
-            return res.status(400).json({
-                success: false,
-                message: 'File too large. Maximum size is 5MB.'
-            });
-        }
-        return res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-    
-    if (error) {
-        return res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-    
-    next();
 });
 
 module.exports = router;

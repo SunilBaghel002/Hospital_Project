@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Play, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Testimonials() {
+export default function Testimonials({ data }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const testimonials = [
+    const testimonials = data?.testimonials || [
         {
             id: 1,
             name: "Priya Mehta",
@@ -32,6 +32,9 @@ export default function Testimonials() {
         }
     ];
 
+    const tagline = data?.tagline || "Patient Stories";
+    const headline = data?.headline || "Life-Changing Results";
+
     const handleNext = () => {
         setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     };
@@ -43,8 +46,8 @@ export default function Testimonials() {
     return (
         <section className="py-12 px-6 max-w-7xl mx-auto">
             <div className="text-center mb-8">
-                <span className="text-brand-blue font-bold tracking-wider text-xs uppercase mb-1 block">Patient Stories</span>
-                <h2 className="text-3xl font-bold text-brand-dark">Life-Changing Results</h2>
+                <span className="text-brand-blue font-bold tracking-wider text-xs uppercase mb-1 block">{tagline}</span>
+                <h2 className="text-3xl font-bold text-brand-dark">{headline}</h2>
             </div>
 
             <div className="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden relative">
@@ -66,12 +69,12 @@ export default function Testimonials() {
                                 <Quote className="text-brand-blue mb-6 opacity-20 transform scale-125 origin-top-left" size={48} />
 
                                 <p className="text-xl font-light text-brand-dark italic leading-relaxed mb-6 line-clamp-4">
-                                    "{testimonials[currentIndex].quote}"
+                                    "{testimonials[currentIndex].quote || testimonials[currentIndex].text}"
                                 </p>
 
                                 <div>
                                     <h4 className="text-lg font-bold text-brand-dark">{testimonials[currentIndex].name}</h4>
-                                    <p className="text-brand-blue font-medium text-xs uppercase tracking-wide">{testimonials[currentIndex].role}</p>
+                                    <p className="text-brand-blue font-medium text-xs uppercase tracking-wide">{testimonials[currentIndex].role || 'Patient'}</p>
                                 </div>
                             </motion.div>
                         </AnimatePresence>
@@ -99,7 +102,7 @@ export default function Testimonials() {
                                 className="absolute inset-0 w-full h-full"
                             >
                                 <img
-                                    src={testimonials[currentIndex].poster}
+                                    src={testimonials[currentIndex].poster || testimonials[currentIndex].img || "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070"}
                                     alt={testimonials[currentIndex].name}
                                     className="w-full h-full object-cover opacity-80"
                                 />

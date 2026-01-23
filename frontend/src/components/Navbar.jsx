@@ -1,21 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
+import { publicAPI } from '../services/adminApi';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const location = useLocation();
-
-    const links = [
+    const [links, setLinks] = useState([
         { name: 'Home', href: '/' },
         { name: 'About US', href: '/about' },
         { name: 'Doctors', href: '/doctors' },
         { name: 'Specialities', href: '/specialties' },
         { name: 'Blogs', href: '/blogs' },
         { name: 'Contact', href: '/contact' },
-    ];
+    ]);
+    const location = useLocation();
+
+    useEffect(() => {
+        const fetchNavbar = async () => {
+            try {
+                const res = await publicAPI.getNavbar();
+                if (res.success && res.data && res.data.length > 0) {
+                    // Start Mapping: Ensure we have valid names and hrefs
+                    const navLinks = res.data.map(page => ({
+                        name: page.title,
+                        href: page.isCustomLink ? page.link : `/${page.slug === 'home' ? '' : page.slug}`
+                    }));
+
+                    // If backend returns only partial list or empty (unlikely with check above), merge or replace? 
+                    // Strategy: Completely replace if we get data, assuming admin controls full menu.
+                    // But we might want some hardcoded "System" pages if they aren't in CMS (like Appointment??)
+                    // For now, let's append 'Appointment' button separately as it is in the UI already.
+                    setLinks(navLinks);
+                }
+            } catch (err) {
+                console.error("Failed to fetch navbar:", err);
+            }
+        };
+        fetchNavbar();
+    }, []);
 
     return (
         <nav className="fixed top-10 left-0 right-0 z-50 px-6 flex justify-center pointer-events-none">

@@ -1,23 +1,26 @@
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function About() {
-    const features = [
+export default function About({ data }) {
+    const features = data?.features || [
         { title: "Advanced Diagnostics", link: "/services/advanced-diagnostics", img: "https://images.unsplash.com/photo-1576091160550-2187d80a85bc?q=80&w=2000&auto=format&fit=crop", desc: "Using AI-powered OCT and topographic mapping for early detection." },
         { title: "Robotic Surgery", link: "/services/robotic-surgery", img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop", desc: "Precision-guided femtosecond lasers for perfect cataract outcomes." },
         { title: "Pediatric Care", link: "/services/pediatric-care", img: "https://images.unsplash.com/photo-1532153955177-f59af40d6472?q=80&w=2000&auto=format&fit=crop", desc: "Specialized gentle care for our youngest patients with myopia control." },
         { title: "Emergency Trauma", link: "/services/emergency-trauma", img: "https://images.unsplash.com/photo-1516574187841-6930022476c9?q=80&w=2000&auto=format&fit=crop", desc: "24/7 rapid response unit for complex ocular injuries." },
     ];
 
+    const headline = data?.headline || "Excellence in Vision Care";
+    const description = data?.description || "We don't just treat eyes; we enhance your view of the world. Combining decades of medical expertise with cutting-edge robotic technology to deliver outcomes that exceed expectations.";
+
     return (
         <section id="about" className="py-24 px-6 max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-16 mb-20 items-end">
                 <div>
-                    <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight">Excellence in <br /> <span className="text-brand-blue">Vision Care</span></h2>
+                    <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight">{headline}</h2>
                     <div className="h-2 w-24 bg-brand-blue rounded-full"></div>
                 </div>
                 <p className="text-gray-500 text-lg leading-relaxed">
-                    We don't just treat eyes; we enhance your view of the world. Combining decades of medical expertise with cutting-edge robotic technology to deliver outcomes that exceed expectations.
+                    {description}
                 </p>
             </div>
 

@@ -26,7 +26,14 @@ const sectionSchema = new mongoose.Schema({
             'timeline',       // Timeline/history
             'contact',        // Contact form
             'map',            // Google map embed
-            'custom'          // Custom HTML/component
+            'custom',         // Custom HTML/component
+            // New section types for website pages
+            'advertisement',  // Popup advertisement
+            'network',        // Location/network centers
+            'partition',      // Section divider
+            'about',          // About with feature cards
+            'technology',     // Technology showcase
+            'blogs'           // Blog posts listing
         ],
         required: true
     },

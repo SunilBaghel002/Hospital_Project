@@ -1,10 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, ChevronDown, Calendar, GraduationCap, Clock, Languages, ChevronLeft, ChevronRight } from 'lucide-react';
-import { doctors } from '../data/doctors';
 
-export default function Doctors({ onBook }) {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002/api';
+
+export default function Doctors({ onBook, data }) {
+    const [doctors, setDoctors] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [visibleCount, setVisibleCount] = useState(6);
+    const [loading, setLoading] = useState(true);
+
+    // Config from CMS data
+    const showCount = data?.showCount || 10;
+    const showAll = data?.showAll || false;
+    const layout = data?.layout || 'carousel';
+    const showSearch = data?.showSearch !== false; // Default true
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                const res = await fetch(`${API_URL}/doctors`);
+                if (res.ok) {
+                    const data = await res.json();
+                    // Map API data to component format
+                    const mappedDoctors = data.map(doc => ({
+                        ...doc,
+                        img: doc.image || 'https://via.placeholder.com/400x500?text=No+Image', // Fallback image
+                        languages: doc.languages || ['English']
+                    }));
+                    setDoctors(mappedDoctors);
+                }
+            } catch (err) {
+                console.error('Failed to fetch doctors:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchDoctors();
+    }, []);
 
     const filteredDoctors = doctors.filter(doc =>
         doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -63,7 +94,7 @@ export default function Doctors({ onBook }) {
                 className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar p-4"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-                {filteredDoctors.slice(0, 10).map((doc, idx) => ( // Removed limit of visualCount since it's scrollable now, but keeping safe limit
+                {filteredDoctors.slice(0, showAll ? undefined : showCount).map((doc, idx) => (
                     <div key={idx} className="min-w-[320px] md:min-w-[400px] snap-center group relative bg-white rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
 
                         {/* Large Image Area */}

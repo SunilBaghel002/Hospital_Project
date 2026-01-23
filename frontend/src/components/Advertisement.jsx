@@ -1,26 +1,29 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import adv1 from '../assets/Offer-1.jpeg';
-import adv2 from '../assets/Offer-2.jpeg';
-import adv3 from '../assets/Offer-3.jpeg';
 
-export default function Advertisement() {
+export default function Advertisement({ data }) {
     const [isVisible, setIsVisible] = useState(false);
-    const [adImage, setAdImage] = useState(null);
+
+    // Extract data from props or defaults
+    // Note: If data is provided, we use it. If not, we might hide or use fallback?
+    // User requested "no hardcoded content", so ideally we should rely on data.
+    // However, for stability, if data is missing, we simply won't show the ad or we return null.
+    const adImage = data?.image;
+    const adLink = data?.link;
+    const showAd = data?.isVisible !== false; // Active by default unless explicitly disabled in data
 
     useEffect(() => {
+        if (!adImage || !showAd) return;
+
         const lastShown = localStorage.getItem('lastAdShown');
         const now = Date.now();
-        const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+        const oneHour = 60 * 60 * 1000; // 1 hour
 
-        // Check if it's the first time or if 1 hour has passed
+        // Logic: Show if logic met
         if (!lastShown || now - parseInt(lastShown) > oneHour) {
-            const images = [adv1, adv2, adv3];
-            const randomImage = images[Math.floor(Math.random() * images.length)];
-            setAdImage(randomImage);
             setIsVisible(true);
         }
-    }, []);
+    }, [adImage, showAd]);
 
     // Lock body scroll when ad is visible
     useEffect(() => {
@@ -52,14 +55,20 @@ export default function Advertisement() {
                     <X size={24} />
                 </button>
 
-                {/* Image */}
-                <div className="w-full">
-                    <img src={adImage} alt="Special Offer" className="w-full h-auto object-cover" />
-                </div>
+                {/* Link wrapper if link exists */}
+                {adLink ? (
+                    <a href={adLink} target="_blank" rel="noopener noreferrer" className="block w-full">
+                        <img src={adImage} alt="Special Offer" className="w-full h-auto object-cover" />
+                    </a>
+                ) : (
+                    <div className="w-full">
+                        <img src={adImage} alt="Special Offer" className="w-full h-auto object-cover" />
+                    </div>
+                )}
 
                 {/* Optional: Call to Action below image if needed, or just the image */}
                 <div className="bg-brand-blue p-4 text-center">
-                    <p className="text-white text-sm font-medium">Limited Time Offer. Visit us today!</p>
+                    <p className="text-white text-sm font-medium">{data?.text || "Limited Time Offer. Visit us today!"}</p>
                 </div>
             </div>
         </div>

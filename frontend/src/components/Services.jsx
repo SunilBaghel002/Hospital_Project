@@ -2,8 +2,11 @@ import { ChevronRight, ChevronLeft, ArrowUpRight } from 'lucide-react';
 import { servicesData } from '../data/services';
 import { Link } from 'react-router-dom';
 
-export default function Services() {
-    const services = servicesData; // Use data from file
+export default function Services({ data }) {
+    const services = data?.services || data?.cards || servicesData; // Handle both keys
+    const tagline = data?.tagline || 'Premium Care';
+    const title = data?.title || 'Our Specialities';
+    const subtitle = data?.subtitle || 'Comprehensive eye care solutions tailored to your unique vision needs, powered by advanced technology.';
 
     const scrollContainer = (direction) => {
         const container = document.getElementById('services-container');
@@ -17,9 +20,9 @@ export default function Services() {
         <section id="services" className="py-20 px-6 max-w-[95%] mx-auto">
             <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
                 <div className="max-w-xl">
-                    <span className="text-brand-blue font-bold tracking-wider text-sm uppercase mb-2 block">Premium Care</span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-4">Our Specialities</h2>
-                    <p className="text-gray-500 text-lg">Comprehensive eye care solutions tailored to your unique vision needs, powered by advanced technology.</p>
+                    <span className="text-brand-blue font-bold tracking-wider text-sm uppercase mb-2 block">{tagline}</span>
+                    <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-4">{title}</h2>
+                    <p className="text-gray-500 text-lg">{subtitle}</p>
                 </div>
                 <div className="flex gap-2">
                     <button onClick={() => scrollContainer('left')} className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 hover:bg-brand-blue hover:text-white transition-colors active:scale-95">
@@ -57,7 +60,7 @@ export default function Services() {
 
                             <div className="p-6 pt-6 flex-1 flex flex-col">
                                 <h3 className="text-xl font-bold text-brand-dark mb-2 leading-tight">{service.title}</h3>
-                                <p className="text-gray-500 text-sm leading-relaxed mb-4 opacity-80 group-hover:opacity-100 transition-opacity whitespace-normal line-clamp-3">{service.shortDesc}</p>
+                                <p className="text-gray-500 text-sm leading-relaxed mb-4 opacity-80 group-hover:opacity-100 transition-opacity whitespace-normal line-clamp-3">{service.shortDesc || service.description}</p>
                             </div>
                         </Link>
                     </div>
