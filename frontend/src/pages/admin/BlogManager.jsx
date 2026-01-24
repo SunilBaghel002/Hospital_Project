@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Save, X, Upload, FileText, Search, Eye, EyeOff } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function BlogManager() {
     const [blogs, setBlogs] = useState([]);

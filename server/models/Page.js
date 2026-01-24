@@ -78,7 +78,7 @@ const pageSchema = new mongoose.Schema({
 });
 
 // Index for faster lookups
-pageSchema.index({ slug: 1 });
+// pageSchema.index({ slug: 1 }); // Removed to fix duplicate index warning
 pageSchema.index({ type: 1, navbarOrder: 1 });
 pageSchema.index({ parentPage: 1 });
 

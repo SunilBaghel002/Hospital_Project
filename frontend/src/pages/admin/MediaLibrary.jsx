@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDebounce } from '../../hooks/useDebounce';
 import {
     Upload,
     Trash2,
@@ -92,8 +93,10 @@ export default function MediaLibrary() {
         return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
     };
 
+    const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
     const filteredFiles = files.filter(file =>
-        file.filename.toLowerCase().includes(searchQuery.toLowerCase())
+        file?.filename?.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
     );
 
     if (isLoading) {

@@ -18,6 +18,20 @@ const siteSettingsSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+
+    // Navbar settings
+    navbar: {
+        items: [{
+            name: { type: String, required: true },
+            href: { type: String, required: true },
+            order: { type: Number, default: 0 }
+        }],
+        siteName: { type: String, default: 'Visionary' },
+        logoInitial: { type: String, default: 'V' },
+        logoImage: { type: String, default: null },
+        ctaText: { type: String, default: 'Book an Appointment' },
+        ctaLink: { type: String, default: '/appointment' }
+    },
     
     // Contact information
     contact: {

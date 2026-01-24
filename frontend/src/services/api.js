@@ -1,5 +1,6 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import { errorBus } from '../utils/errorBus';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const fetchAPI = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
@@ -16,12 +17,18 @@ const fetchAPI = async (endpoint, options = {}) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Something went wrong");
+      const errorMessage = data.message || "Something went wrong";
+      throw new Error(errorMessage);
     }
 
     return data;
   } catch (error) {
     console.error("API Error:", error);
+    // Emit error to global handler
+    errorBus.emit('SHOW_ERROR', {
+        title: 'Request Failed',
+        message: error.message
+    });
     throw error;
   }
 };

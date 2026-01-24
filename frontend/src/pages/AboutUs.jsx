@@ -7,7 +7,7 @@ import Stats from '../components/Stats';
 import Cards from '../components/Cards';
 import { Quote, ArrowRight } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AboutUs({ onBook }) {
     const [pageData, setPageData] = useState(null);

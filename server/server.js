@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const helmet = require('helmet');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 
 // Load env vars
@@ -30,9 +33,43 @@ const app = express();
 // Connect to Database
 connectDB();
 
+// Security Middleware
+app.use(helmet()); // Secure HTTP headers
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Allow images to be loaded from same origin if needed, or adjust as per Cloudinary
+
+// Performance Middleware
+app.use(compression()); // Gzip compression
+
+// Rate Limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    message: {
+        success: false,
+        message: 'Too many requests from this IP, please try again after 15 minutes'
+    }
+});
+// Apply rate limiting to all requests
+app.use('/api', limiter);
+
 // Middleware
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173'];
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            // Check if env var is not set, maybe allow localhost for dev?
+            // For production-ready, strictly adhere to allowedOrigins.
+            if(process.env.NODE_ENV === 'development') {
+                 return callback(null, true); 
+            }
+            return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'));
+        }
+        return callback(null, true);
+    },
     credentials: true
 }));
 app.use(express.json());
@@ -99,7 +136,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`
@@ -107,7 +143,7 @@ app.listen(PORT, () => {
 ║                                                    ║
 ║   🏥 Visionary Eye Care - CMS Server              ║
 ║                                                    ║
-║   Server: http://localhost:${PORT}                   ║
+║   Port: ${PORT}                                   ║
 ║   Environment: ${process.env.NODE_ENV || 'development'}                      ║
 ║                                                    ║
 ║   Admin Panel: /admin                              ║

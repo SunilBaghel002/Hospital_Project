@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // Components
@@ -57,6 +57,20 @@ function AppContent() {
       if (triggerBtn) triggerBtn.removeEventListener('click', handleOpenModal);
     };
   }, [location]); // Re-run on page change to finding new button
+
+  // Admin Shortcut: Ctrl + Shift + F
+  const navigate = useNavigate();
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'F' || e.key === 'f')) {
+        e.preventDefault();
+        navigate('/admin');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
 
   // Check if current route is admin route
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -128,11 +142,15 @@ function AppContent() {
   );
 }
 
+import { ErrorProvider } from './context/ErrorContext';
+
 function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <ErrorProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ErrorProvider>
   );
 }
 

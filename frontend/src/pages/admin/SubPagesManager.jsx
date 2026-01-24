@@ -13,7 +13,8 @@ import {
     Check,
     X,
     AlertCircle,
-    FolderOpen
+    FolderOpen,
+    FileText,
 } from 'lucide-react';
 import { pagesAPI, sectionsAPI } from '../../services/adminApi';
 

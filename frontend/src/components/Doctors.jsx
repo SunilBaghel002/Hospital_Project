@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, ChevronDown, Calendar, GraduationCap, Clock, Languages, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Doctors({ onBook, data }) {
     const [doctors, setDoctors] = useState([]);

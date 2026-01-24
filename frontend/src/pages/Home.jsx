@@ -14,7 +14,7 @@ import Advertisement from '../components/Advertisement';
 
 import { useState, useEffect } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home({ onBook }) {
     const [pageData, setPageData] = useState(null);
