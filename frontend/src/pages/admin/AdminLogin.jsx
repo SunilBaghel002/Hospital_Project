@@ -19,7 +19,13 @@ export default function AdminLogin() {
             const response = await adminAuthAPI.login(formData.username, formData.password);
 
             if (response.success) {
-                navigate('/admin/dashboard');
+                // Check role and redirect
+                const role = response.data?.role;
+                if (role === 'doctor') {
+                    navigate('/doctor/dashboard');
+                } else {
+                    navigate('/admin/dashboard');
+                }
             }
         } catch (err) {
             setError(err.message || 'Login failed. Please check your credentials.');
@@ -39,9 +45,9 @@ export default function AdminLogin() {
                 {/* Logo/Brand */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg shadow-blue-500/30 mb-4">
-                        <span className="text-2xl font-bold text-white">V</span>
+                        <span className="text-2xl font-bold text-white">R</span>
                     </div>
-                    <h1 className="text-2xl font-bold text-white mb-2">Visionary CMS</h1>
+                    <h1 className="text-3xl font-bold text-white mb-2">Romashka Health Care</h1>
                     <p className="text-slate-400 text-sm">Content Management System</p>
                 </div>
 
@@ -118,7 +124,7 @@ export default function AdminLogin() {
 
                 {/* Footer */}
                 <p className="text-center text-slate-500 text-sm mt-8">
-                    Visionary Eye Care © 2024
+                    Romashka Health Care © 2024
                 </p>
             </div>
         </div >

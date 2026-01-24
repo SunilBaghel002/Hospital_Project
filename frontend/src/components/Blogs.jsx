@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,12 @@ export default function Blogs({ data }) {
     const tagline = data?.tagline || 'Our Blog';
     const showViewAll = data?.showViewAll !== false;
 
+    const dataFetched = useRef(false);
+
     useEffect(() => {
+        if (dataFetched.current) return;
+        dataFetched.current = true;
+
         const fetchBlogs = async () => {
             try {
                 const res = await fetch(`${API_URL}/blogs`); // Fetch published blogs

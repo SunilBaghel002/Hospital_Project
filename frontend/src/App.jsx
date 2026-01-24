@@ -35,6 +35,12 @@ import MediaLibrary from './pages/admin/MediaLibrary';
 import PageEditor from './pages/admin/PageEditor';
 import DoctorManager from './pages/admin/DoctorManager';
 import BlogManager from './pages/admin/BlogManager';
+import AppointmentManager from './pages/admin/AppointmentManager';
+import DoctorDashboard from './pages/doctor/DoctorDashboard';
+import DoctorLayout from './pages/doctor/DoctorLayout';
+import ConsultationPad from './pages/doctor/ConsultationPad';
+import PrescriptionHistory from './pages/doctor/PrescriptionHistory';
+import SecurePrescription from './pages/public/SecurePrescription';
 
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,14 +78,14 @@ function AppContent() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [navigate]);
 
-  // Check if current route is admin route
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  // Check if current route is admin or doctor route (hide global nav)
+  const isExcludedRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/doctor') || location.pathname.startsWith('/prescription/view/');
 
   return (
     <div className="bg-brand-cream/30 min-h-screen font-sans selection:bg-brand-peach/50 selection:text-brand-dark overflow-x-hidden flex flex-col">
       <AppointmentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} initialDoctor={selectedDoctor} />
 
-      {!isAdminRoute && (
+      {!isExcludedRoute && (
         <>
           <TopBar />
           <Navbar />
@@ -123,7 +129,20 @@ function AppContent() {
           <Route path="blogs" element={<BlogManager />} />
           <Route path="settings" element={<SiteSettingsEditor />} />
           <Route path="media" element={<MediaLibrary />} />
+          <Route path="appointments" element={<AppointmentManager />} />
         </Route>
+
+        {/* Doctor Routes */}
+        {/* Doctor Routes */}
+        <Route path="/doctor" element={<DoctorLayout />}>
+          <Route index element={<Navigate to="/doctor/dashboard" replace />} />
+          <Route path="dashboard" element={<DoctorDashboard />} />
+          <Route path="consultation" element={<ConsultationPad />} />
+          <Route path="history" element={<PrescriptionHistory />} />
+        </Route>
+
+        {/* Public Secure Routes */}
+        <Route path="/prescription/view/:token" element={<SecurePrescription />} />
 
         {/* Dynamic CMS Pages - catches custom pages created from admin */}
         <Route path="/:slug" element={<DynamicPage onBook={openBookModal} />} />
@@ -132,7 +151,7 @@ function AppContent() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {!isAdminRoute && (
+      {!isExcludedRoute && (
         <>
           <Footer />
           <Chatbot />

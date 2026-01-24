@@ -13,7 +13,8 @@ import {
     Home,
     UserRound,
     BookOpen,
-    Globe
+    Globe,
+    Calendar
 } from 'lucide-react';
 import { adminAuthAPI } from '../../services/adminApi';
 
@@ -21,6 +22,7 @@ const navItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/admin/pages', label: 'Pages', icon: FileText },
     { path: '/admin/subpages', label: 'Sub-Pages', icon: Layers },
+    { path: '/admin/appointments', label: 'Appointments', icon: Calendar },
     { path: '/admin/doctors', label: 'Doctors', icon: UserRound },
     { path: '/admin/blogs', label: 'News & Blogs', icon: BookOpen },
     { path: '/admin/media', label: 'Media Library', icon: Image },
@@ -79,7 +81,7 @@ export default function AdminLayout() {
                                 V
                             </div>
                             <div>
-                                <h1 className="text-white font-bold tracking-tight">Visionary</h1>
+                                <h1 className="text-white font-bold tracking-tight">Romashka Health Care</h1>
                                 <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Admin Portal</p>
                             </div>
                         </div>
@@ -158,7 +160,7 @@ export default function AdminLayout() {
                 <div className="h-20 flex items-center justify-between px-6 border-b border-zinc-800">
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 bg-brand-blue rounded-xl flex items-center justify-center text-white font-bold text-lg">V</div>
-                        <span className="text-white font-semibold">Visionary</span>
+                        <span className="text-white font-semibold">Romashka Health Care</span>
                     </div>
                     <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400">
                         <X size={20} />

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { X, CheckCircle, ChevronRight, ChevronLeft, CreditCard, Calendar, User, Stethoscope, Loader2, AlertCircle, Lock } from 'lucide-react';
-import { doctors } from '../data/doctors';
-import { appointmentAPI } from '../services/api';
+import { appointmentAPI, doctorAPI } from '../services/api';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function AppointmentModal({ isOpen, onClose, initialDoctor = null }) {
     const [step, setStep] = useState(1);
+    const [doctors, setDoctors] = useState([]); // State for doctors
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -22,6 +22,19 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
     const [availableSlots, setAvailableSlots] = useState([]);
     const [bookedSlots, setBookedSlots] = useState([]);
     const [loadingSlots, setLoadingSlots] = useState(false);
+
+    // Fetch doctors on mount
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                const data = await doctorAPI.getAll();
+                setDoctors(data);
+            } catch (err) {
+                console.error('Failed to fetch doctors:', err);
+            }
+        };
+        fetchDoctors();
+    }, []);
 
     // All time slots with their hour values for comparison
     const allTimeSlots = [
@@ -54,7 +67,13 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
             if (formData.date && formData.doctor) {
                 setLoadingSlots(true);
                 try {
-                    const dateString = formData.date.toISOString().split('T')[0];
+                    // Fix timezone issue for fetching slots too
+                    const d = formData.date;
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const dateString = `${year}-${month}-${day}`;
+
                     const response = await appointmentAPI.getAvailableSlots(dateString, formData.doctor);
 
                     // Get all slot labels
@@ -102,8 +121,8 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                 setError('Please enter your full name');
                 return false;
             }
-            if (!formData.phone.trim()) {
-                setError('Please enter your phone number');
+            if (!formData.phone.trim() || !/^\d{10,15}$/.test(formData.phone.replace(/\D/g, ''))) {
+                setError('Please enter a valid phone number (10-15 digits)');
                 return false;
             }
             if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
@@ -143,12 +162,19 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         setIsLoading(true);
 
         try {
+            // Fix timezone issue: Ensure we send the LOCAL date string "YYYY-MM-DD"
+            const date = formData.date;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${day}`;
+
             const response = await appointmentAPI.create({
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
                 doctor: formData.doctor,
-                date: formData.date.toISOString().split('T')[0],
+                date: dateString,
                 time: formData.time,
                 amount: 150.00
             });
@@ -322,7 +348,10 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                 className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
                                                 placeholder="Enter your phone number"
                                                 value={formData.phone}
-                                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                                onChange={e => {
+                                                    const val = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                                                    setFormData({ ...formData, phone: val });
+                                                }}
                                             />
                                         </div>
 
@@ -406,10 +435,10 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                                     disabled={isBooked}
                                                                     onClick={() => !isBooked && setFormData({ ...formData, time: slot.label })}
                                                                     className={`py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${isBooked
-                                                                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-dashed border-gray-200'
-                                                                            : isSelected
-                                                                                ? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-                                                                                : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-brand-blue/30 border-2 border-transparent'
+                                                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-2 border-dashed border-gray-200'
+                                                                        : isSelected
+                                                                            ? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+                                                                            : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-brand-blue/30 border-2 border-transparent'
                                                                         }`}
                                                                 >
                                                                     {isBooked && <Lock size={14} />}

@@ -50,8 +50,8 @@ export default function Navbar() {
     }, []);
 
     // Get navbar settings with defaults
-    const siteName = settings.navbar?.siteName || settings.siteName || 'Visionary';
-    const logoInitial = settings.navbar?.logoInitial || 'V';
+    const siteName = settings.navbar?.siteName || settings.siteName || 'Romashka Health Care';
+    const logoInitial = settings.navbar?.logoInitial || 'R';
     const logoImage = settings.navbar?.logoImage;
     const ctaText = settings.navbar?.ctaText || 'Book an Appointment';
     const ctaLink = settings.navbar?.ctaLink || '/appointment';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, Upload, User, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Upload, User, Search, Key } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,7 +12,7 @@ export default function DoctorManager() {
     const [saving, setSaving] = useState(false);
 
     const emptyDoctor = {
-        name: '', role: '', qualification: '', experience: '',
+        name: '', email: '', role: '', qualification: '', experience: '',
         bio: '', image: '', specialty: '', languages: [],
         availableDays: [], consultationFee: '', isActive: true
     };
@@ -80,6 +80,26 @@ export default function DoctorManager() {
             if (res.ok) fetchDoctors();
         } catch (err) {
             alert('Failed to delete doctor');
+        }
+    };
+
+    const handleReissuePassword = async (id, email) => {
+        if (!confirm(`Are you sure you want to generate a new password for ${email}? It will be sent via email.`)) return;
+
+        try {
+            const token = localStorage.getItem('adminToken');
+            const res = await fetch(`${API_URL}/doctors/reissue-password/${id}`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Success: ' + data.message);
+            } else {
+                alert('Failed: ' + data.message);
+            }
+        } catch (err) {
+            alert('Error calling server');
         }
     };
 
@@ -194,6 +214,13 @@ export default function DoctorManager() {
                                         <Edit size={16} /> Edit
                                     </button>
                                     <button
+                                        onClick={() => handleReissuePassword(doctor._id, doctor.email)}
+                                        className="flex items-center justify-center gap-2 px-3 py-2 bg-slate-100 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                        title="Reset Password"
+                                    >
+                                        <Key size={16} />
+                                    </button>
+                                    <button
                                         onClick={() => handleDelete(doctor._id)}
                                         className="flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                     >
@@ -255,6 +282,17 @@ export default function DoctorManager() {
                                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                                         className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
                                         placeholder="Dr. John Smith"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Email *</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
+                                        placeholder="doctor@hospital.com"
                                     />
                                 </div>
                                 <div>

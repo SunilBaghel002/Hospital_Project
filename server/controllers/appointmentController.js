@@ -1,5 +1,6 @@
 const Appointment = require('../models/Appointment');
-const { sendDoctorNotification, sendPatientConfirmation } = require('../config/emailService');
+const Doctor = require('../models/Doctor');
+const { sendDoctorNotification, sendBookingReceived } = require('../config/emailService');
 
 // @desc    Create new appointment
 // @route   POST /api/appointments
@@ -44,6 +45,12 @@ exports.createAppointment = async (req, res) => {
         // Get email data
         const emailData = appointment.toEmailData();
 
+        // Fetch doctor details to get email
+        const doctorData = await Doctor.findOne({ name: doctor });
+        if (doctorData && doctorData.email) {
+            emailData.doctorEmail = doctorData.email;
+        }
+
         // Send emails asynchronously (don't block response)
         const sendEmails = async () => {
             try {
@@ -51,8 +58,8 @@ exports.createAppointment = async (req, res) => {
                 await sendDoctorNotification(emailData);
                 appointment.emailSentToDoctor = true;
 
-                // Send to patient
-                await sendPatientConfirmation(emailData);
+                // Send to patient (booking received - pending status)
+                await sendBookingReceived(emailData);
                 appointment.emailSentToPatient = true;
 
                 await appointment.save();
@@ -181,7 +188,7 @@ exports.getAvailableSlots = async (req, res) => {
         }
 
         const bookedAppointments = await Appointment.find(query).select('time doctor');
-        
+
         const bookedSlots = bookedAppointments.map(apt => ({
             time: apt.time,
             doctor: apt.doctor

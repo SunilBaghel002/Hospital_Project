@@ -26,8 +26,8 @@ const fetchAPI = async (endpoint, options = {}) => {
     console.error("API Error:", error);
     // Emit error to global handler
     errorBus.emit('SHOW_ERROR', {
-        title: 'Request Failed',
-        message: error.message
+      title: 'Request Failed',
+      message: error.message
     });
     throw error;
   }
@@ -67,6 +67,12 @@ export const appointmentAPI = {
       body: JSON.stringify({ status }),
     });
   },
+};
+
+export const doctorAPI = {
+  getAll: async () => {
+    return fetchAPI('/doctors');
+  }
 };
 
 export default appointmentAPI;

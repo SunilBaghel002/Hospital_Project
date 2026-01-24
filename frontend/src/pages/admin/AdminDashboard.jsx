@@ -77,7 +77,7 @@ export default function AdminDashboard() {
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                 <div className="relative">
-                    <h1 className="text-2xl font-bold mb-2">Welcome to Visionary CMS</h1>
+                    <h1 className="text-2xl font-bold mb-2">Welcome to Romashka CMS</h1>
                     <p className="text-blue-100 max-w-lg">
                         Manage your website content, pages, and settings from this dashboard.
                         All changes are reflected on the live website instantly.

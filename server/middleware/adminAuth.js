@@ -8,7 +8,7 @@ const adminAuth = (req, res, next) => {
     try {
         // Get token from header
         const authHeader = req.headers.authorization;
-        
+
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({
                 success: false,
@@ -20,12 +20,12 @@ const adminAuth = (req, res, next) => {
 
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
-        // Check if it's an admin token
-        if (!decoded.isAdmin) {
+
+        // Check if it's an admin or doctor
+        if (!decoded.isAdmin && decoded.role !== 'doctor') {
             return res.status(403).json({
                 success: false,
-                message: 'Access denied. Admin privileges required.'
+                message: 'Access denied. Privileges required.'
             });
         }
 
@@ -39,7 +39,7 @@ const adminAuth = (req, res, next) => {
                 message: 'Token expired. Please login again.'
             });
         }
-        
+
         return res.status(401).json({
             success: false,
             message: 'Invalid token.'

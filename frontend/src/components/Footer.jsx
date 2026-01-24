@@ -33,12 +33,12 @@ export default function Footer() {
 
     // Defaults if settings not loaded yet or empty
     const footerDesc = settings?.footer?.description || "Providing clarity and vision to the world through advanced ophthalmology and compassionate care.";
-    const copyright = settings?.footer?.copyright || "© 2024 Visionary Eye Care. All rights reserved.";
+    const copyright = settings?.footer?.copyright || "© 2024 Romashka Health Care. All rights reserved.";
 
     const contact = settings?.contact || {};
     const address = contact.address || "Sector 62, Noida, Uttar Pradesh 201301";
     const phone = contact.phone || "+91 120 456 7890";
-    const email = contact.email || "info@visionaryeye.in";
+    const email = contact.email || "info@romashkahealthcare.in";
 
     const socialLinks = settings?.social || {};
     const mapUrl = settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56066.65089631422!2d77.33685559999999!3d28.6124282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5a43173357b%3A0x37ffce30c87cc03f!2sSector%2062%2C%20Noida%2C%20Uttar%20Pradesh%20201301!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
@@ -48,8 +48,8 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
                 <div>
                     <div className="flex items-center gap-2 mb-6">
-                        <div className="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold">V</div>
-                        <span className="text-xl font-bold text-brand-dark">{settings?.siteName || "Visionary"}</span>
+                        <div className="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold">R</div>
+                        <span className="text-xl font-bold text-brand-dark">{settings?.siteName || "Romashka Health Care"}</span>
                     </div>
                     <p className="text-gray-500 leading-relaxed mb-6">
                         {footerDesc}

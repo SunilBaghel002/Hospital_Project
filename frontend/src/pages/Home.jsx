@@ -21,6 +21,7 @@ export default function Home({ onBook }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log('Home Component MOUNTED');
         const fetchPageData = async () => {
             try {
                 const res = await fetch(`${API_URL}/public/page/home`);
@@ -37,6 +38,8 @@ export default function Home({ onBook }) {
             }
         };
         fetchPageData();
+
+        return () => console.log('Home Component UNMOUNTED');
     }, []);
 
     if (loading) {

@@ -1,4 +1,3 @@
-// API_BASE already includes /api from VITE_API_URL (e.g., http://localhost:3002/api)
 const API_BASE = import.meta.env.VITE_API_URL;
 
 // Get stored token

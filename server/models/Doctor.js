@@ -6,6 +6,21 @@ const doctorSchema = new mongoose.Schema({
         required: [true, 'Doctor name is required'],
         trim: true
     },
+    email: {
+        type: String,
+        required: [true, 'Doctor email is required'],
+        trim: true,
+        lowercase: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        select: false
+    },
+    salt: {
+        type: String,
+        select: false
+    },
     role: {
         type: String,
         required: [true, 'Specialization/Role is required'],

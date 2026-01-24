@@ -40,39 +40,49 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Allow 
 // Performance Middleware
 app.use(compression()); // Gzip compression
 
-// Rate Limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-    message: {
-        success: false,
-        message: 'Too many requests from this IP, please try again after 15 minutes'
-    }
-});
-// Apply rate limiting to all requests
-app.use('/api', limiter);
-
 // Middleware
-const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173'];
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+].filter(Boolean); // Remove undefined if env var is missing
+
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            // Check if env var is not set, maybe allow localhost for dev?
-            // For production-ready, strictly adhere to allowedOrigins.
-            if(process.env.NODE_ENV === 'development') {
-                 return callback(null, true); 
-            }
+
+        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+            return callback(null, true);
+        } else {
             return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'));
         }
-        return callback(null, true);
     },
     credentials: true
 }));
 app.use(express.json());
+
+// Rate Limiting - configurable based on environment
+const limiter = rateLimit({
+    windowMs: process.env.NODE_ENV === 'production' ? 15 * 60 * 1000 : 1 * 60 * 1000, // 15 min prod, 1 min dev
+    max: process.env.NODE_ENV === 'production' ? 500 : 1000, // Higher limits
+    standardHeaders: true,
+    legacyHeaders: false,
+    skip: (req) => {
+        // Skip rate limiting for localhost in development
+        if (process.env.NODE_ENV !== 'production') {
+            const ip = req.ip || req.connection.remoteAddress;
+            if (ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1') {
+                return true;
+            }
+        }
+        return false;
+    },
+    message: {
+        success: false,
+        message: 'Too many requests from this IP, please try again later'
+    }
+});
+// Apply rate limiting to all API requests
+app.use('/api', limiter);
 
 // Serve static uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -91,6 +101,7 @@ app.use('/api/sections', sectionsRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/prescriptions', require('./routes/prescriptionRoutes'));
 app.use('/api/blogs', blogRoutes);
 
 // Public routes for frontend (no auth required)
@@ -99,8 +110,8 @@ app.use('/api/public', publicRoutes);
 
 // Health Check
 app.get('/api/health', (req, res) => {
-    res.json({ 
-        success: true, 
+    res.json({
+        success: true,
         message: 'Server is running!',
         timestamp: new Date().toISOString()
     });
@@ -109,7 +120,7 @@ app.get('/api/health', (req, res) => {
 // Root Route
 app.get('/', (req, res) => {
     res.json({
-        message: 'Visionary Eye Care - CMS API',
+        message: 'Romashka Health Care - CMS API',
         version: '2.0.0',
         endpoints: {
             appointments: '/api/appointments',
@@ -130,9 +141,9 @@ app.use((req, res) => {
 // Error Handler
 app.use((err, req, res, next) => {
     console.error('Error:', err);
-    res.status(500).json({ 
-        success: false, 
-        message: err.message || 'Internal Server Error' 
+    res.status(500).json({
+        success: false,
+        message: err.message || 'Internal Server Error'
     });
 });
 
@@ -141,7 +152,7 @@ app.listen(PORT, () => {
     console.log(`
 ╔════════════════════════════════════════════════════╗
 ║                                                    ║
-║   🏥 Visionary Eye Care - CMS Server              ║
+║   🏥 Romashka Health Care - CMS Server              ║
 ║                                                    ║
 ║   Port: ${PORT}                                   ║
 ║   Environment: ${process.env.NODE_ENV || 'development'}                      ║
