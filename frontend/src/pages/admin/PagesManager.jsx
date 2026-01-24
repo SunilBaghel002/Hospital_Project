@@ -82,18 +82,9 @@ export default function PagesManager() {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-800">Main Pages</h1>
-                    <p className="text-slate-500">Manage pages that appear in your navbar</p>
-                </div>
-                <Link
-                    to="/admin/subpages/new?type=main"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
-                >
-                    <Plus size={18} />
-                    Create New Page
-                </Link>
+            <div>
+                <h1 className="text-2xl font-bold text-slate-800">Main Pages</h1>
+                <p className="text-slate-500">Edit pages that appear in your navbar</p>
             </div>
 
             {/* Error */}
@@ -154,7 +145,7 @@ export default function PagesManager() {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-1">
                                         <button
-                                            onClick={() => navigate(`/admin/subpages/edit/${page._id}?type=main`)}
+                                            onClick={() => navigate(`/admin/pages/edit/${page._id}`)}
                                             className="p-2 rounded-lg hover:bg-blue-50 text-slate-400 hover:text-blue-500 transition-colors"
                                             title="Edit Page"
                                         >
@@ -216,18 +207,9 @@ export default function PagesManager() {
                 <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
                     <FileText className="mx-auto text-slate-300 mb-4" size={48} />
                     <h3 className="text-lg font-semibold text-slate-800 mb-2">No pages found</h3>
-                    <p className="text-slate-500 mb-4">
-                        {searchQuery ? 'Try adjusting your search.' : 'Create your first page to get started.'}
+                    <p className="text-slate-500">
+                        {searchQuery ? 'Try adjusting your search.' : 'No main pages configured yet.'}
                     </p>
-                    {!searchQuery && (
-                        <Link
-                            to="/admin/subpages/new?type=main"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
-                        >
-                            <Plus size={18} />
-                            Create Page
-                        </Link>
-                    )}
                 </div>
             )}
         </div>

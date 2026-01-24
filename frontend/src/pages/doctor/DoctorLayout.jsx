@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, FileText, Settings, ExternalLink, LogOut, Activity, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Settings, ExternalLink, LogOut, Activity, ClipboardList, History } from 'lucide-react';
 import { adminAuthAPI } from '../../services/adminApi';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ export default function DoctorLayout() {
         { path: '/doctor/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/doctor/requests', icon: ClipboardList, label: 'Requests' },
         { path: '/doctor/appointments', icon: Activity, label: 'Appointments' },
-        { path: '/doctor/history', icon: FileText, label: 'Prescriptions' },
+        { path: '/doctor/history', icon: History, label: 'History' },
         { path: '/doctor/settings', icon: Settings, label: 'Settings' },
     ];
 

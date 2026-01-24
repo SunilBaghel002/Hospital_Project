@@ -124,7 +124,6 @@ function AppContent() {
           <Route path="pages" element={<PagesManager />} />
           <Route path="pages/new" element={<PageEditor />} />
           <Route path="pages/edit/:id" element={<PageEditor />} />
-          <Route path="pages/edit/:id" element={<PageEditor />} />
           <Route path="subpages" element={<SubPagesManager />} />
           <Route path="subpages/new" element={<SubPageEditor />} />
           <Route path="subpages/edit/:id" element={<SubPageEditor />} />
