@@ -40,6 +40,9 @@ import DoctorDashboard from './pages/doctor/DoctorDashboard';
 import DoctorLayout from './pages/doctor/DoctorLayout';
 import ConsultationPad from './pages/doctor/ConsultationPad';
 import PrescriptionHistory from './pages/doctor/PrescriptionHistory';
+import PendingRequests from './pages/doctor/PendingRequests';
+import Appointments from './pages/doctor/Appointments';
+import DoctorSettings from './pages/doctor/DoctorSettings';
 import SecurePrescription from './pages/public/SecurePrescription';
 
 function AppContent() {
@@ -137,8 +140,11 @@ function AppContent() {
         <Route path="/doctor" element={<DoctorLayout />}>
           <Route index element={<Navigate to="/doctor/dashboard" replace />} />
           <Route path="dashboard" element={<DoctorDashboard />} />
+          <Route path="requests" element={<PendingRequests />} />
+          <Route path="appointments" element={<Appointments />} />
           <Route path="consultation" element={<ConsultationPad />} />
           <Route path="history" element={<PrescriptionHistory />} />
+          <Route path="settings" element={<DoctorSettings />} />
         </Route>
 
         {/* Public Secure Routes */}

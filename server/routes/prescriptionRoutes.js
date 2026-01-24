@@ -45,7 +45,20 @@ router.post('/create', adminAuth, async (req, res) => {
 
         // Mark Appointment as Completed
         const Appointment = require('../models/Appointment');
-        await Appointment.findByIdAndUpdate(appointmentId, { status: 'completed' });
+        if (appointmentId) {
+            const updatedAppointment = await Appointment.findByIdAndUpdate(
+                appointmentId,
+                { status: 'completed' },
+                { new: true }
+            );
+            if (updatedAppointment) {
+                console.log('✅ Appointment marked as completed:', appointmentId);
+            } else {
+                console.warn('⚠️ Appointment not found for ID:', appointmentId);
+            }
+        } else {
+            console.warn('⚠️ No appointmentId provided, cannot mark as completed');
+        }
 
         // Send Email
         const link = `${process.env.FRONTEND_URL}/prescription/view/${token}`;
