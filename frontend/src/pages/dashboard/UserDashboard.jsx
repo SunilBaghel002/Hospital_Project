@@ -63,6 +63,15 @@ const UserDashboard = () => {
                     </div>
 
                     <nav className="space-y-2">
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all font-medium"
+                        >
+                            <Home size={20} />
+                            Back to Website
+                        </button>
+                        <div className="h-px bg-brand-peach/20 my-2 mx-4" />
+
                         <NavItem id="dashboard" icon={LayoutDashboard} label="Overview" />
                         <NavItem id="future" icon={Calendar} label="Appointments" />
                         <NavItem id="history" icon={History} label="History" />
