@@ -5,7 +5,6 @@ import {
     Layers,
     Settings,
     Image,
-    TrendingUp,
     Eye,
     Edit,
     Plus,

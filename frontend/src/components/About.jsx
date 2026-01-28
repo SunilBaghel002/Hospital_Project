@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 export default function About({ data }) {
     const features = data?.features || [
-        { title: "Advanced Diagnostics", link: "/services/advanced-diagnostics", img: "https://images.unsplash.com/photo-1576091160550-2187d80a85bc?q=80&w=2000&auto=format&fit=crop", desc: "Using AI-powered OCT and topographic mapping for early detection." },
-        { title: "Robotic Surgery", link: "/services/robotic-surgery", img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop", desc: "Precision-guided femtosecond lasers for perfect cataract outcomes." },
-        { title: "Pediatric Care", link: "/services/pediatric-care", img: "https://images.unsplash.com/photo-1532153955177-f59af40d6472?q=80&w=2000&auto=format&fit=crop", desc: "Specialized gentle care for our youngest patients with myopia control." },
-        { title: "Emergency Trauma", link: "/services/emergency-trauma", img: "https://images.unsplash.com/photo-1516574187841-6930022476c9?q=80&w=2000&auto=format&fit=crop", desc: "24/7 rapid response unit for complex ocular injuries." },
+        { title: "Advanced Diagnostics", link: "/services/advanced-diagnostics", img: "/assets/about/diagnostics.png", desc: "Using AI-powered OCT and topographic mapping for early detection." },
+        { title: "Robotic Surgery", link: "/services/robotic-surgery", img: "/assets/about/surgery.png", desc: "Precision-guided femtosecond lasers for perfect cataract outcomes." },
+        { title: "Pediatric Care", link: "/services/pediatric-care", img: "/assets/about/pediatric.png", desc: "Specialized gentle care for our youngest patients with myopia control." },
+        { title: "Emergency Trauma", link: "/services/emergency-trauma", img: "/assets/about/emergency.png", desc: "24/7 rapid response unit for complex ocular injuries." },
     ];
 
     const headline = data?.headline || "Excellence in Vision Care";

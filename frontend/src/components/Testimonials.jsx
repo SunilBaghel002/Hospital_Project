@@ -133,6 +133,7 @@ export default function Testimonials({ data }) {
                                         <img
                                             src={currentTestimonial.poster || currentTestimonial.img || "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070"}
                                             alt={currentTestimonial.name}
+                                            loading="lazy"
                                             className="w-full h-full object-cover opacity-80"
                                         />
 

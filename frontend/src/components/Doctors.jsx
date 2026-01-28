@@ -17,7 +17,12 @@ export default function Doctors({ onBook, data }) {
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                const res = await fetch(`${API_URL}/doctors`);
+                let url = `${API_URL}/doctors`;
+                if (!showAll && showCount) {
+                    url += `?limit=${showCount}`;
+                }
+
+                const res = await fetch(url);
                 if (res.ok) {
                     const data = await res.json();
                     // Map API data to component format
@@ -99,7 +104,7 @@ export default function Doctors({ onBook, data }) {
 
                         {/* Large Image Area */}
                         <div className="h-[20rem] w-full relative bg-gray-100">
-                            <img src={doc.img} alt={doc.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                            <img src={doc.img} alt={doc.name} loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
                             <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <div className="absolute bottom-6 left-6 text-white">
                                 <h3 className="text-2xl font-bold mb-1">{doc.name}</h3>

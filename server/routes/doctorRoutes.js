@@ -13,7 +13,13 @@ const { generateRandomPassword, generateSalt, hashPassword } = require('../utils
 // GET all doctors (public)
 router.get('/', async (req, res) => {
     try {
-        const doctors = await Doctor.find({ isActive: true }).sort({ order: 1, createdAt: -1 });
+        let query = Doctor.find({ isActive: true }).sort({ order: 1, createdAt: -1 });
+
+        if (req.query.limit) {
+            query = query.limit(parseInt(req.query.limit));
+        }
+
+        const doctors = await query;
         res.json(doctors);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });

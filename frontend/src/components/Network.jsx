@@ -1,9 +1,9 @@
 export default function Network({ data }) {
     const centers = data?.centers || [
-        { city: "New York", img: "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?q=80&w=2000&auto=format&fit=crop" },
-        { city: "Los Angeles", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop" },
-        { city: "Chicago", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=2000&auto=format&fit=crop" },
-        { city: "Houston", img: "https://images.unsplash.com/photo-1582560465060-99804668d621?q=80&w=2000&auto=format&fit=crop" },
+        { city: "Mumbai", img: "/assets/cities/mumbai.jpg" },
+        { city: "Delhi", img: "/assets/cities/delhi.jpg" },
+        { city: "Bangalore", img: "/assets/cities/bangalore.jpg" },
+        { city: "Hyderabad", img: "/assets/cities/hyderabad.jpg" },
     ];
 
     const headline = data?.headline || "Our Extensive Network";

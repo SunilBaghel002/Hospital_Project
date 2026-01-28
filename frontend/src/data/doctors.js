@@ -7,7 +7,7 @@ export const doctors = [
         experience: "15 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Female",
-        img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
+        img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face"
     },
     {
         id: "doc-2",
@@ -27,7 +27,7 @@ export const doctors = [
         experience: "10 Years Exp",
         languages: ["Hindi", "English"],
         gender: "Female",
-        img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face"
+        img: "https://images.unsplash.com/photo-1623854767648-e7bb8009f0db?w=400&h=400&fit=crop&crop=face"
     },
     {
         id: "doc-4",

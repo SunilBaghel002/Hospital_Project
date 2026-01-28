@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 
 // Components
 import TopBar from './components/TopBar';
@@ -7,43 +7,44 @@ import Navbar from './components/Navbar';
 import Chatbot from './components/Chatbot';
 import Footer from './components/Footer';
 import AppointmentModal from './components/AppointmentModal';
+import Loading from './components/Loading';
 
-// Pages
-import Home from './pages/Home';
-import AboutUs from './pages/AboutUs';
-import DoctorsPage from './pages/Doctors';
-import Specialities from './pages/Specialities';
-import ServiceDetail from './pages/ServiceDetail';
-import Appointment from './pages/Appointment';
-import VisionCare from './pages/VisionCare';
-import VisionCareServiceDetail from './pages/VisionCareServiceDetail';
-import ContactUs from './pages/ContactUs';
-import Blogs from './pages/Blogs';
-import BlogDetail from './pages/BlogDetail';
-import DynamicPage from './pages/DynamicPage';
+// Pages - Lazy Loaded
+const Home = lazy(() => import('./pages/Home'));
+const AboutUs = lazy(() => import('./pages/AboutUs'));
+const DoctorsPage = lazy(() => import('./pages/Doctors'));
+const Specialities = lazy(() => import('./pages/Specialities'));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+const Appointment = lazy(() => import('./pages/Appointment'));
+const VisionCare = lazy(() => import('./pages/VisionCare'));
+const VisionCareServiceDetail = lazy(() => import('./pages/VisionCareServiceDetail'));
+const ContactUs = lazy(() => import('./pages/ContactUs'));
+const Blogs = lazy(() => import('./pages/Blogs'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
+const DynamicPage = lazy(() => import('./pages/DynamicPage'));
 
-// Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import PagesManager from './pages/admin/PagesManager';
-import SubPagesManager from './pages/admin/SubPagesManager';
-import SubPageEditor from './pages/admin/SubPageEditor';
-import TestServicePage from './pages/TestServicePage';
-import SiteSettingsEditor from './pages/admin/SiteSettingsEditor';
-import MediaLibrary from './pages/admin/MediaLibrary';
-import PageEditor from './pages/admin/PageEditor';
-import DoctorManager from './pages/admin/DoctorManager';
-import BlogManager from './pages/admin/BlogManager';
-import AppointmentManager from './pages/admin/AppointmentManager';
-import DoctorDashboard from './pages/doctor/DoctorDashboard';
-import DoctorLayout from './pages/doctor/DoctorLayout';
-import ConsultationPad from './pages/doctor/ConsultationPad';
-import PrescriptionHistory from './pages/doctor/PrescriptionHistory';
-import PendingRequests from './pages/doctor/PendingRequests';
-import Appointments from './pages/doctor/Appointments';
-import DoctorSettings from './pages/doctor/DoctorSettings';
-import SecurePrescription from './pages/public/SecurePrescription';
+// Admin Pages - Lazy Loaded
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const PagesManager = lazy(() => import('./pages/admin/PagesManager'));
+const SubPagesManager = lazy(() => import('./pages/admin/SubPagesManager'));
+const SubPageEditor = lazy(() => import('./pages/admin/SubPageEditor'));
+const TestServicePage = lazy(() => import('./pages/TestServicePage'));
+const SiteSettingsEditor = lazy(() => import('./pages/admin/SiteSettingsEditor'));
+const MediaLibrary = lazy(() => import('./pages/admin/MediaLibrary'));
+const PageEditor = lazy(() => import('./pages/admin/PageEditor'));
+const DoctorManager = lazy(() => import('./pages/admin/DoctorManager'));
+const BlogManager = lazy(() => import('./pages/admin/BlogManager'));
+const AppointmentManager = lazy(() => import('./pages/admin/AppointmentManager'));
+const DoctorDashboard = lazy(() => import('./pages/doctor/DoctorDashboard'));
+const DoctorLayout = lazy(() => import('./pages/doctor/DoctorLayout'));
+const ConsultationPad = lazy(() => import('./pages/doctor/ConsultationPad'));
+const PrescriptionHistory = lazy(() => import('./pages/doctor/PrescriptionHistory'));
+const PendingRequests = lazy(() => import('./pages/doctor/PendingRequests'));
+const Appointments = lazy(() => import('./pages/doctor/Appointments'));
+const DoctorSettings = lazy(() => import('./pages/doctor/DoctorSettings'));
+const SecurePrescription = lazy(() => import('./pages/public/SecurePrescription'));
 
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -95,66 +96,68 @@ function AppContent() {
         </>
       )}
 
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home onBook={openBookModal} />} />
-        <Route path="/test" element={<TestServicePage />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/doctors" element={<DoctorsPage onBook={openBookModal} />} />
-        <Route path="/specialties" element={<Specialities />} />
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home onBook={openBookModal} />} />
+          <Route path="/test" element={<TestServicePage />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/doctors" element={<DoctorsPage onBook={openBookModal} />} />
+          <Route path="/specialties" element={<Specialities />} />
 
-        {/* Custom Layout Routes for Vision Care */}
-        <Route path="/services/advanced-diagnostics" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="advanced-diagnostics" />} />
-        <Route path="/services/robotic-surgery" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="robotic-surgery" />} />
-        <Route path="/services/pediatric-care" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="pediatric-care" />} />
-        <Route path="/services/emergency-trauma" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="emergency-trauma" />} />
+          {/* Custom Layout Routes for Vision Care */}
+          <Route path="/services/advanced-diagnostics" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="advanced-diagnostics" />} />
+          <Route path="/services/robotic-surgery" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="robotic-surgery" />} />
+          <Route path="/services/pediatric-care" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="pediatric-care" />} />
+          <Route path="/services/emergency-trauma" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="emergency-trauma" />} />
 
-        <Route path="/services/:slug" element={<ServiceDetail onBook={openBookModal} />} />
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/vision-care" element={<VisionCare onBook={openBookModal} />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/:id" element={<BlogDetail />} />
+          <Route path="/services/:slug" element={<ServiceDetail onBook={openBookModal} />} />
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/vision-care" element={<VisionCare onBook={openBookModal} />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogDetail />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="pages" element={<PagesManager />} />
-          <Route path="pages/new" element={<PageEditor />} />
-          <Route path="pages/edit/:id" element={<PageEditor />} />
-          <Route path="subpages" element={<SubPagesManager />} />
-          <Route path="subpages/new" element={<SubPageEditor />} />
-          <Route path="subpages/edit/:id" element={<SubPageEditor />} />
-          <Route path="doctors" element={<DoctorManager />} />
-          <Route path="blogs" element={<BlogManager />} />
-          <Route path="settings" element={<SiteSettingsEditor />} />
-          <Route path="media" element={<MediaLibrary />} />
-          <Route path="appointments" element={<AppointmentManager />} />
-        </Route>
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="pages" element={<PagesManager />} />
+            <Route path="pages/new" element={<PageEditor />} />
+            <Route path="pages/edit/:id" element={<PageEditor />} />
+            <Route path="subpages" element={<SubPagesManager />} />
+            <Route path="subpages/new" element={<SubPageEditor />} />
+            <Route path="subpages/edit/:id" element={<SubPageEditor />} />
+            <Route path="doctors" element={<DoctorManager />} />
+            <Route path="blogs" element={<BlogManager />} />
+            <Route path="settings" element={<SiteSettingsEditor />} />
+            <Route path="media" element={<MediaLibrary />} />
+            <Route path="appointments" element={<AppointmentManager />} />
+          </Route>
 
-        {/* Doctor Routes */}
-        {/* Doctor Routes */}
-        <Route path="/doctor" element={<DoctorLayout />}>
-          <Route index element={<Navigate to="/doctor/dashboard" replace />} />
-          <Route path="dashboard" element={<DoctorDashboard />} />
-          <Route path="requests" element={<PendingRequests />} />
-          <Route path="appointments" element={<Appointments />} />
-          <Route path="consultation" element={<ConsultationPad />} />
-          <Route path="history" element={<PrescriptionHistory />} />
-          <Route path="settings" element={<DoctorSettings />} />
-        </Route>
+          {/* Doctor Routes */}
+          {/* Doctor Routes */}
+          <Route path="/doctor" element={<DoctorLayout />}>
+            <Route index element={<Navigate to="/doctor/dashboard" replace />} />
+            <Route path="dashboard" element={<DoctorDashboard />} />
+            <Route path="requests" element={<PendingRequests />} />
+            <Route path="appointments" element={<Appointments />} />
+            <Route path="consultation" element={<ConsultationPad />} />
+            <Route path="history" element={<PrescriptionHistory />} />
+            <Route path="settings" element={<DoctorSettings />} />
+          </Route>
 
-        {/* Public Secure Routes */}
-        <Route path="/prescription/view/:token" element={<SecurePrescription />} />
+          {/* Public Secure Routes */}
+          <Route path="/prescription/view/:token" element={<SecurePrescription />} />
 
-        {/* Dynamic CMS Pages - catches custom pages created from admin */}
-        <Route path="/:slug" element={<DynamicPage onBook={openBookModal} />} />
+          {/* Dynamic CMS Pages - catches custom pages created from admin */}
+          <Route path="/:slug" element={<DynamicPage onBook={openBookModal} />} />
 
-        {/* Catch-all Redirect */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* Catch-all Redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
 
       {!isExcludedRoute && (
         <>

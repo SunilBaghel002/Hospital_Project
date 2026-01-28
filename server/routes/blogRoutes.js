@@ -6,9 +6,15 @@ const adminAuth = require('../middleware/adminAuth');
 // GET all published blogs (public)
 router.get('/', async (req, res) => {
     try {
-        const blogs = await Blog.find({ isPublished: true })
+        let query = Blog.find({ isPublished: true })
             .sort({ publishedAt: -1 })
             .select('-content'); // Exclude full content for list
+
+        if (req.query.limit) {
+            query = query.limit(parseInt(req.query.limit));
+        }
+
+        const blogs = await query;
         res.json(blogs);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -75,7 +81,7 @@ router.put('/:id', adminAuth, async (req, res) => {
                 req.body.publishedAt = new Date();
             }
         }
-        
+
         const blog = await Blog.findByIdAndUpdate(
             req.params.id,
             req.body,

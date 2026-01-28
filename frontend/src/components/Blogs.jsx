@@ -22,7 +22,11 @@ export default function Blogs({ data }) {
 
         const fetchBlogs = async () => {
             try {
-                const res = await fetch(`${API_URL}/blogs`); // Fetch published blogs
+                let url = `${API_URL}/blogs`;
+                if (showCount) {
+                    url += `?limit=${showCount}`;
+                }
+                const res = await fetch(url); // Fetch published blogs
                 if (res.ok) {
                     const data = await res.json();
                     // Map API data to component format
@@ -67,7 +71,7 @@ export default function Blogs({ data }) {
                 {recentBlogs.map((blog) => (
                     <div key={blog.id} className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all group flex flex-col h-full border border-gray-100">
                         <Link to={`/blogs/${blog.id}`} className="block h-56 overflow-hidden relative">
-                            <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <img src={blog.image} alt={blog.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-brand-blue shadow-sm">
                                 {blog.category}
                             </div>

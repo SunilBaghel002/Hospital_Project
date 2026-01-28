@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { type: 'bot', text: 'Hello! Welcome to Visionary Eye Care. How can I assist you today?' }
+        { type: 'bot', text: 'Hello! Welcome to Romashka Health Care. How can I assist you today?' }
     ]);
     const [showOptions, setShowOptions] = useState(true);
 
@@ -64,9 +64,9 @@ export default function Chatbot() {
                                     <MessageCircle size={18} />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-sm">Visionary Assistant</h4>
+                                    <h4 className="font-bold text-sm">Happy Assistant</h4>
                                     <p className="text-emerald-100 text-xs flex items-center gap-1">
-                                        <span className="w-1.5 h-1.5 bg-green-400 rounded-full"></span> Online
+                                        <span className="w-1.5 h-1.5 bg-green-400 rounded-full"></span> Helping..
                                     </p>
                                 </div>
                             </div>

@@ -12,7 +12,7 @@ export default function Hero({ onBook, data }) {
 
     const tagline = data?.tagline || "World-Class Healthcare";
     const subtitle = data?.subtitle || "Experience a new standard of medical excellence. Where advanced technology meets human touch to create a sanctuary for your health.";
-    const bgImage = data?.backgroundImage || "https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2128&auto=format&fit=crop";
+    const bgImage = data?.backgroundImage || "/assets/images/hero-bg.jpg";
     const ctaText = data?.ctaText || "Book Appointment";
 
     return (

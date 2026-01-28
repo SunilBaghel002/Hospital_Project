@@ -21,7 +21,7 @@ export default function Partners({ data }) {
         <section className="py-8 bg-white/40 border-y border-brand-blue/5 overflow-hidden">
             <div className="max-w-full">
                 <p className="text-center text-gray-400 text-xs font-semibold uppercase tracking-[0.2em] mb-8">
-                    {data?.headline || "Trusted by Global Healthcare Leaders"}
+                    {data?.headline || "Trusted by Leading Indian Healthcare Partners"}
                 </p>
 
                 <div className="relative flex overflow-x-hidden group">

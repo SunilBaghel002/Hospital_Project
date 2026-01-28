@@ -12,28 +12,30 @@ dotenv.config();
 // ======================== REAL DATA FROM WEBSITE ========================
 
 // Partners Logos (Now using URLs for Admin Compatibility)
+// Partners Logos (Indian Pharmaceutical & Healthcare Leaders)
 const PARTNER_LOGOS = [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png', 
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/1200px-Tata_Consultancy_Services_Logo.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/2560px-Meta_Platforms_Inc._logo.svg.png'
+    '/assets/partners/sun-pharma.png',
+    '/assets/partners/cipla.png',
+    '/assets/partners/dr-reddys.png',
+    '/assets/partners/apollo.png',
+    '/assets/partners/fortis.png'
 ];
 
-// Network Centers
+// Network Centers (Indian Metros)
 const NETWORK_CENTERS = [
-    { city: 'New York', img: 'https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?q=80&w=2000' },
-    { city: 'Los Angeles', img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000' },
-    { city: 'Chicago', img: 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=2000' },
-    { city: 'Houston', img: 'https://images.unsplash.com/photo-1582560465060-99804668d621?q=80&w=2000' }
+    { city: 'Mumbai', img: '/assets/cities/mumbai.jpg' },
+    { city: 'Delhi', img: '/assets/cities/delhi.jpg' },
+    { city: 'Bangalore', img: '/assets/cities/bangalore.jpg' },
+    { city: 'Hyderabad', img: '/assets/cities/hyderabad.jpg' }
 ];
 
 // About Features
+// About Features
 const ABOUT_FEATURES = [
-    { title: 'Advanced Diagnostics', link: '/services/advanced-diagnostics', img: 'https://images.unsplash.com/photo-1576091160550-2187d80a85bc?q=80&w=2000', desc: 'Using AI-powered OCT and topographic mapping for early detection.' },
-    { title: 'Robotic Surgery', link: '/services/robotic-surgery', img: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070', desc: 'Precision-guided femtosecond lasers for perfect cataract outcomes.' },
-    { title: 'Pediatric Care', link: '/services/pediatric-care', img: 'https://images.unsplash.com/photo-1532153955177-f59af40d6472?q=80&w=2000', desc: 'Specialized gentle care for our youngest patients with myopia control.' },
-    { title: 'Emergency Trauma', link: '/services/emergency-trauma', img: 'https://images.unsplash.com/photo-1516574187841-6930022476c9?q=80&w=2000', desc: '24/7 rapid response unit for complex ocular injuries.' }
+    { title: 'Advanced Diagnostics', link: '/services/advanced-diagnostics', img: '/assets/about/diagnostics.png', desc: 'Using AI-powered OCT and topographic mapping for early detection.' },
+    { title: 'Robotic Surgery', link: '/services/robotic-surgery', img: '/assets/about/surgery.png', desc: 'Precision-guided femtosecond lasers for perfect cataract outcomes.' },
+    { title: 'Pediatric Care', link: '/services/pediatric-care', img: '/assets/about/pediatric.png', desc: 'Specialized gentle care for our youngest patients with myopia control.' },
+    { title: 'Emergency Trauma', link: '/services/emergency-trauma', img: '/assets/about/emergency.png', desc: '24/7 rapid response unit for complex ocular injuries.' }
 ];
 
 // Technology
@@ -45,9 +47,9 @@ const TECHNOLOGY = [
 
 // Testimonials
 const TESTIMONIALS = [
-    { name: 'Priya Mehta', role: 'Glaucoma Patient', text: "The team at Visionary Eye Care didn't just treat my eyes; they treated my fears. The laser treatment was painless.", rating: 5, img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600' },
-    { name: 'Arjun Patel', role: 'LASIK Patient', text: "Waking up and seeing the alarm clock clearly without reaching for glasses is a miracle I experience every day.", rating: 5, img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600' },
-    { name: 'Lakshmi Reddy', role: 'Cataract Surgery', text: "The colors! I had forgotten how vibrant the world actually is. I'm painting again for the first time in a decade.", rating: 5, img: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070' }
+    { name: 'Priya Mehta', role: 'Glaucoma Patient', text: "The team at Visionary Eye Care didn't just treat my eyes; they treated my fears. The laser treatment was painless.", rating: 5, img: 'https://images.unsplash.com/photo-1629425733761-caae3b5f2e50?q=80&w=600' },
+    { name: 'Arjun Patel', role: 'LASIK Patient', text: "Waking up and seeing the alarm clock clearly without reaching for glasses is a miracle I experience every day.", rating: 5, img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600' },
+    { name: 'Lakshmi Reddy', role: 'Cataract Surgery', text: "The colors! I had forgotten how vibrant the world actually is. I'm painting again for the first time in a decade.", rating: 5, img: 'https://images.unsplash.com/photo-1595347097963-b89345d463be?q=80&w=600' }
 ];
 
 // FAQ
@@ -73,20 +75,20 @@ const SERVICES = [
 
 // ======================== DOCTORS DATA ========================
 const DOCTORS = [
-    { name: "Dr. Priya Sharma", role: "Cataract Specialist", qualification: "MBBS, MD (Ophthal)", experience: "15 Years Exp", languages: ["Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face", order: 1 },
-    { name: "Dr. Rajesh Kumar", role: "Retina Surgeon", qualification: "MBBS, MS, FVRS", experience: "12 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face", order: 2 },
-    { name: "Dr. Anjali Verma", role: "Pediatric Ophthalmologist", qualification: "MD, FPOS", experience: "10 Years Exp", languages: ["Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face", order: 3 },
-    { name: "Dr. Vikram Singh", role: "Glaucoma Specialist", qualification: "MBBS, DO", experience: "20 Years Exp", languages: ["Hindi", "Punjabi"], gender: "Male", image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face", order: 4 },
-    { name: "Dr. Arjun Reddy", role: "Cornea Specialist", qualification: "MD, FACS", experience: "18 Years Exp", languages: ["Telugu", "Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=400&fit=crop&crop=face", order: 5 },
-    { name: "Dr. Anita Patel", role: "Refractive Surgeon", qualification: "MBBS, MS", experience: "8 Years Exp", languages: ["Gujarati", "Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop&crop=face", order: 6 },
-    { name: "Dr. Karan Malhotra", role: "Neuro-Ophthalmologist", qualification: "MD, PhD", experience: "14 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face", order: 7 },
-    { name: "Dr. Meera Iyer", role: "Oculoplastic Surgeon", qualification: "MD, FPRS", experience: "16 Years Exp", languages: ["Tamil", "Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=400&fit=crop&crop=face", order: 8 },
-    { name: "Dr. Suresh Nair", role: "Retina Surgeon", qualification: "MD, FACS", experience: "22 Years Exp", languages: ["Malayalam", "Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=400&h=400&fit=crop&crop=face", order: 9 },
-    { name: "Dr. Kavita Desai", role: "Optometrist", qualification: "OD", experience: "5 Years Exp", languages: ["Marathi", "Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=400&h=400&fit=crop&crop=face", order: 10 },
-    { name: "Dr. Aditya Kapoor", role: "Cataract Specialist", qualification: "MD", experience: "19 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1625130045485-f9ef83cd2d42?w=400&h=400&fit=crop&crop=face", order: 11 },
-    { name: "Dr. Sneha Gupta", role: "Glaucoma Specialist", qualification: "MBBS, MS", experience: "9 Years Exp", languages: ["Hindi", "Bengali"], gender: "Female", image: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&h=400&fit=crop&crop=face", order: 12 },
-    { name: "Dr. Rohit Joshi", role: "General Ophthalmology", qualification: "MBBS", experience: "4 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1650831206001-06c1e2b2e9a4?w=400&h=400&fit=crop&crop=face", order: 13 },
-    { name: "Dr. Divya Pillai", role: "Low Vision Specialist", qualification: "OD, FAAO", experience: "11 Years Exp", languages: ["Malayalam", "Tamil", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1584467735815-f778f274cdb6?w=400&h=400&fit=crop&crop=face", order: 14 }
+    { name: "Dr. Priya Sharma", role: "Cataract Specialist", qualification: "MBBS, MD (Ophthal)", experience: "15 Years Exp", languages: ["Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop&crop=face", order: 1, email: "priya.sharma@visionary.in" },
+    { name: "Dr. Rajesh Kumar", role: "Retina Surgeon", qualification: "MBBS, MS, FVRS", experience: "12 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face", order: 2, email: "rajesh.kumar@visionary.in" },
+    { name: "Dr. Anjali Verma", role: "Pediatric Ophthalmologist", qualification: "MD, FPOS", experience: "10 Years Exp", languages: ["Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1623854767648-e7bb8009f0db?w=400&h=400&fit=crop&crop=face", order: 3, email: "anjali.verma@visionary.in" },
+    { name: "Dr. Vikram Singh", role: "Glaucoma Specialist", qualification: "MBBS, DO", experience: "20 Years Exp", languages: ["Hindi", "Punjabi"], gender: "Male", image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face", order: 4, email: "vikram.singh@visionary.in" },
+    { name: "Dr. Arjun Reddy", role: "Cornea Specialist", qualification: "MD, FACS", experience: "18 Years Exp", languages: ["Telugu", "Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=400&fit=crop&crop=face", order: 5, email: "arjun.reddy@visionary.in" },
+    { name: "Dr. Anita Patel", role: "Refractive Surgeon", qualification: "MBBS, MS", experience: "8 Years Exp", languages: ["Gujarati", "Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop&crop=face", order: 6, email: "anita.patel@visionary.in" },
+    { name: "Dr. Karan Malhotra", role: "Neuro-Ophthalmologist", qualification: "MD, PhD", experience: "14 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face", order: 7, email: "karan.malhotra@visionary.in" },
+    { name: "Dr. Meera Iyer", role: "Oculoplastic Surgeon", qualification: "MD, FPRS", experience: "16 Years Exp", languages: ["Tamil", "Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1643297654416-05795d62e39c?w=400&h=400&fit=crop&crop=face", order: 8, email: "meera.iyer@visionary.in" },
+    { name: "Dr. Suresh Nair", role: "Retina Surgeon", qualification: "MD, FACS", experience: "22 Years Exp", languages: ["Malayalam", "Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=400&h=400&fit=crop&crop=face", order: 9, email: "suresh.nair@visionary.in" },
+    { name: "Dr. Kavita Desai", role: "Optometrist", qualification: "OD", experience: "5 Years Exp", languages: ["Marathi", "Hindi", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=400&h=400&fit=crop&crop=face", order: 10, email: "kavita.desai@visionary.in" },
+    { name: "Dr. Aditya Kapoor", role: "Cataract Specialist", qualification: "MD", experience: "19 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1625130045485-f9ef83cd2d42?w=400&h=400&fit=crop&crop=face", order: 11, email: "aditya.kapoor@visionary.in" },
+    { name: "Dr. Sneha Gupta", role: "Glaucoma Specialist", qualification: "MBBS, MS", experience: "9 Years Exp", languages: ["Hindi", "Bengali"], gender: "Female", image: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&h=400&fit=crop&crop=face", order: 12, email: "sneha.gupta@visionary.in" },
+    { name: "Dr. Rohit Joshi", role: "General Ophthalmology", qualification: "MBBS", experience: "4 Years Exp", languages: ["Hindi", "English"], gender: "Male", image: "https://images.unsplash.com/photo-1650831206001-06c1e2b2e9a4?w=400&h=400&fit=crop&crop=face", order: 13, email: "rohit.joshi@visionary.in" },
+    { name: "Dr. Divya Pillai", role: "Low Vision Specialist", qualification: "OD, FAAO", experience: "11 Years Exp", languages: ["Malayalam", "Tamil", "English"], gender: "Female", image: "https://images.unsplash.com/photo-1584467735815-f778f274cdb6?w=400&h=400&fit=crop&crop=face", order: 14, email: "divya.pillai@visionary.in" }
 ];
 
 // ======================== BLOGS DATA ========================
@@ -153,9 +155,9 @@ const seedData = async () => {
 
         await Section.create([
             { pageId: homePage._id, type: 'advertisement', order: 0, title: 'Advertisement Popup', isVisible: true, data: { enabled: true, ctaText: 'Limited Time Offer. Visit us today!', showFrequency: '1 hour', image: 'https://images.unsplash.com/photo-1606166187734-a4b78643dd60?q=80&w=600' } },
-            { pageId: homePage._id, type: 'hero', order: 1, title: 'Hero Section', isVisible: true, data: { tagline: 'World-Class Healthcare', title: 'Healing with Compassion.', subtitle: 'Experience a new standard of medical excellence. Where advanced technology meets human touch.', ctaText: 'Book Appointment', backgroundImage: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2128' } },
-            { pageId: homePage._id, type: 'partners', order: 2, title: 'Partners Marquee', isVisible: true, data: { headline: 'Trusted by Global Healthcare Leaders', logos: PARTNER_LOGOS } },
-            { pageId: homePage._id, type: 'network', order: 3, title: 'Our Extensive Network', subtitle: 'World-class eye care across major metropolitan areas.', isVisible: true, data: { centers: NETWORK_CENTERS, cta: { title: "Can't find a center near you?", subtitle: 'Check our 50+ satellite clinics.', buttonText: 'View All Locations' } } },
+            { pageId: homePage._id, type: 'hero', order: 1, title: 'Hero Section', isVisible: true, data: { tagline: 'World-Class Healthcare', title: 'Healing with Compassion.', subtitle: 'Experience a new standard of medical excellence. Where advanced technology meets human touch.', ctaText: 'Book Appointment', backgroundImage: '/assets/images/hero-bg.jpg' } }, // Indian Doctor/Hospital vibe
+            { pageId: homePage._id, type: 'partners', order: 2, title: 'Partners Marquee', isVisible: true, data: { headline: 'Trusted by Leading Indian Healthcare Partners', logos: PARTNER_LOGOS } },
+            { pageId: homePage._id, type: 'network', order: 3, title: 'Our Extensive Network', subtitle: 'World-class eye care across major Indian cities.', isVisible: true, data: { centers: NETWORK_CENTERS, cta: { title: "Can't find a center near you?", subtitle: 'Check our 50+ satellite clinics across India.', buttonText: 'View All Locations' } } },
             { pageId: homePage._id, type: 'partition', order: 4, title: 'Section Divider', isVisible: true, data: { style: 'gradient-line' } },
             { pageId: homePage._id, type: 'about', order: 5, title: 'Excellence in Vision Care', isVisible: true, data: { headline: 'Excellence in Vision Care', description: "We don't just treat eyes; we enhance your view of the world.", features: ABOUT_FEATURES } },
             { pageId: homePage._id, type: 'technology', order: 6, title: 'World-Class Technology', isVisible: true, data: { tagline: 'Innovation', headline: 'World-Class Technology', description: 'Latest ophthalmic advancements for safety, precision, and faster recovery.', technologies: TECHNOLOGY } },
@@ -382,8 +384,8 @@ const seedData = async () => {
                     { name: 'Contact', href: '/contact' }
                 ]
             },
-            footer: { 
-                description: 'Providing clarity and vision to the world through advanced ophthalmology and compassionate care.', 
+            footer: {
+                description: 'Providing clarity and vision to the world through advanced ophthalmology and compassionate care.',
                 copyright: '© 2024 Visionary Eye Care. All rights reserved.',
                 quickLinks: [
                     { name: 'Home', href: '/' },
