@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { publicAPI } from '../services/adminApi';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function Navbar() {
     ]);
     const [settings, setSettings] = useState({});
     const location = useLocation();
+    const { token } = useAuth();
 
     useEffect(() => {
         const fetchNavbar = async () => {
@@ -65,8 +67,10 @@ export default function Navbar() {
     const siteName = settings.navbar?.siteName || settings.siteName || 'Romashka Health Care';
     const logoInitial = settings.navbar?.logoInitial || 'R';
     const logoImage = settings.navbar?.logoImage;
-    const ctaText = settings.navbar?.ctaText || 'Book an Appointment';
-    const ctaLink = settings.navbar?.ctaLink || '/appointment';
+
+    // Auth Button Logic
+    const ctaText = token ? 'Dashboard' : 'Login';
+    const ctaLink = token ? '/dashboard' : '/login';
 
     return (
         <>

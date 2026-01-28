@@ -3,6 +3,7 @@ const router = express.Router();
 const Prescription = require('../models/Prescription');
 const crypto = require('crypto');
 const adminAuth = require('../middleware/adminAuth');
+const { protect } = require('../middleware/authMiddleware');
 const emailService = require('../config/emailService');
 
 /**
@@ -11,6 +12,19 @@ const emailService = require('../config/emailService');
 const generateToken = () => {
     return crypto.randomBytes(32).toString('hex');
 };
+
+// GET My Prescriptions (User only)
+router.get('/my', protect, async (req, res) => {
+    try {
+        const userEmail = req.user.email;
+        const prescriptions = await Prescription.find({ 'patient.email': userEmail })
+            .sort({ date: -1 });
+
+        res.json({ success: true, count: prescriptions.length, data: prescriptions });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
 
 // CREATE Prescription (Doctor only)
 router.post('/create', adminAuth, async (req, res) => {

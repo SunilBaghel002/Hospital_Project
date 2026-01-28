@@ -24,6 +24,7 @@ const settingsRoutes = require('./routes/settingsRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const blogRoutes = require('./routes/blogRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 
 
@@ -103,6 +104,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/prescriptions', require('./routes/prescriptionRoutes'));
 app.use('/api/blogs', blogRoutes);
+app.use('/api/auth', authRoutes);
 
 // Public routes for frontend (no auth required)
 const publicRoutes = require('./routes/publicRoutes');
@@ -152,10 +154,10 @@ app.listen(PORT, () => {
     console.log(`
 ╔════════════════════════════════════════════════════╗
 ║                                                    ║
-║   🏥 Romashka Health Care - CMS Server              ║
+║   🏥 Romashka Health Care - CMS Server             ║
 ║                                                    ║
-║   Port: ${PORT}                                   ║
-║   Environment: ${process.env.NODE_ENV || 'development'}                      ║
+║   Port: ${PORT}                                       ║
+║   Environment: ${process.env.NODE_ENV || 'development'}                         ║
 ║                                                    ║
 ║   Admin Panel: /admin                              ║
 ║                                                    ║

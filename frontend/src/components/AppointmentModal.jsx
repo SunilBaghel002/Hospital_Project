@@ -3,8 +3,12 @@ import { X, CheckCircle, ChevronRight, ChevronLeft, CreditCard, Calendar, User, 
 import { appointmentAPI, doctorAPI } from '../services/api';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useNavigate } from 'react-router-dom';
 
 export default function AppointmentModal({ isOpen, onClose, initialDoctor = null }) {
+    const { user, token } = useAuth(); // Get auth state
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [doctors, setDoctors] = useState([]); // State for doctors
     const [formData, setFormData] = useState({
@@ -15,6 +19,29 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         date: null,
         time: ''
     });
+
+    // Auto-fill user data if logged in
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                name: user.name || '',
+                email: user.email || '',
+                phone: user.phone || ''
+            }));
+        }
+    }, [user]);
+
+    // Redirect to login if not authenticated when opening modal
+    useEffect(() => {
+        if (isOpen && !token) {
+            // We can either redirect or just show a message.
+            // Requirement: "User have to log in before booking any appointment"
+            // Let's force them to login or register first.
+            // But simply redirecting might be annoying if they just wanted to check availability.
+            // However, for strict compliance, let's show a "Please Login" state instead of Step 1.
+        }
+    }, [isOpen, token]);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -324,48 +351,76 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                             <form onSubmit={handleSubmit} className="space-y-6 pt-4">
                                 {step === 1 && (
                                     <div className="space-y-5 animate-in slide-in-from-right-8 fade-in duration-300">
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-semibold text-gray-700 ml-1">Full Name</label>
-                                            <div className="relative">
-                                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                                <input
-                                                    required
-                                                    autoFocus
-                                                    type="text"
-                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                    placeholder="Enter your full name"
-                                                    value={formData.name}
-                                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                                />
+                                        {!token ? (
+                                            <div className="text-center py-8 space-y-4">
+                                                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto text-blue-600 mb-4">
+                                                    <Lock size={32} />
+                                                </div>
+                                                <h3 className="text-xl font-bold text-gray-900">Login Required</h3>
+                                                <p className="text-gray-600">You must be logged in to book an appointment.</p>
+                                                <div className="flex flex-col gap-3 mt-6">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => { onClose(); navigate('/login'); }}
+                                                        className="w-full py-3 bg-brand-dark text-white rounded-xl font-bold hover:bg-black transition-all shadow-lg"
+                                                    >
+                                                        Login Now
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => { onClose(); navigate('/register'); }}
+                                                        className="w-full py-3 bg-white border border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all"
+                                                    >
+                                                        Create Account
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        ) : (
+                                            <>
+                                                <div className="space-y-1">
+                                                    <label className="text-sm font-semibold text-gray-700 ml-1">Full Name</label>
+                                                    <div className="relative">
+                                                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                                        <input
+                                                            required
+                                                            autoFocus
+                                                            type="text"
+                                                            className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
+                                                            placeholder="Enter your full name"
+                                                            value={formData.name}
+                                                            onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                                        />
+                                                    </div>
+                                                </div>
 
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-semibold text-gray-700 ml-1">Phone Number</label>
-                                            <input
-                                                required
-                                                type="tel"
-                                                className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                placeholder="Enter your phone number"
-                                                value={formData.phone}
-                                                onChange={e => {
-                                                    const val = e.target.value.replace(/\D/g, ''); // Remove non-digits
-                                                    setFormData({ ...formData, phone: val });
-                                                }}
-                                            />
-                                        </div>
+                                                <div className="space-y-1">
+                                                    <label className="text-sm font-semibold text-gray-700 ml-1">Phone Number</label>
+                                                    <input
+                                                        required
+                                                        type="tel"
+                                                        className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
+                                                        placeholder="Enter your phone number"
+                                                        value={formData.phone}
+                                                        onChange={e => {
+                                                            const val = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                                                            setFormData({ ...formData, phone: val });
+                                                        }}
+                                                    />
+                                                </div>
 
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
-                                            <input
-                                                required
-                                                type="email"
-                                                className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                placeholder="Enter your email address"
-                                                value={formData.email}
-                                                onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                            />
-                                        </div>
+                                                <div className="space-y-1">
+                                                    <label className="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
+                                                    <input
+                                                        required
+                                                        type="email"
+                                                        className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
+                                                        placeholder="Enter your email address"
+                                                        value={formData.email}
+                                                        onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 )}
 

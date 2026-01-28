@@ -9,6 +9,9 @@ import Footer from './components/Footer';
 import AppointmentModal from './components/AppointmentModal';
 import Loading from './components/Loading';
 
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { ErrorProvider } from './context/ErrorContext';
+
 // Pages - Lazy Loaded
 const Home = lazy(() => import('./pages/Home'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
@@ -46,6 +49,17 @@ const Appointments = lazy(() => import('./pages/doctor/Appointments'));
 const DoctorSettings = lazy(() => import('./pages/doctor/DoctorSettings'));
 const SecurePrescription = lazy(() => import('./pages/public/SecurePrescription'));
 
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const UserDashboard = lazy(() => import('./pages/dashboard/UserDashboard'));
+
+// Protected Route Component
+const PrivateRoute = ({ children }) => {
+  const { token, loading } = useAuth();
+  if (loading) return <Loading />;
+  return token ? children : <Navigate to="/login" />;
+};
+
 function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -58,15 +72,55 @@ function AppContent() {
 
   // Listen for custom event to open modal from other pages
   useEffect(() => {
-    const handleOpenModal = () => openBookModal();
+    const handleOpenModal = (event) => {
+      const doctorName = event.detail?.doctorName || null;
+      openBookModal(doctorName);
+    };
+
+    window.addEventListener('open-appointment-modal', handleOpenModal);
+
+    // Keep the old ID logic as a fallback for potential legacy buttons if any, 
+    // or just remove it if we are sure. The user didn't complain about other buttons. 
+    // But let's keep the ID listener attached to window or document if we want to support the old way via ID?
+    // actually best to just support the new clean way.
+    // But wait, the previous code attached listener TO THE ELEMENT.
+    // Let's also support the old ID by attaching a click listener to document which checks target ID? 
+    // No, simpler to just rely on the new event for the Dashboard.
+
+    // However, there might be other parts of the app using the ID "trigger-appointment-modal".
+    // Let's see... App.jsx said:
+    /*
+        const triggerBtn = document.getElementById('trigger-appointment-modal');
+        if (triggerBtn) {
+          triggerBtn.addEventListener('click', handleOpenModal);
+        }
+    */
+    // This implies that on page load/location change it looks for the button.
+    // If I change DashboardHome to emit the event, I don't need the ID logic for DashboardHome.
+
+    // I Will keep the ID logic just in case other pages rely on it (like "Book Now" in Home hero? 
+    // Home.jsx usually passes `onBook` prop. 
+    // The ID approach was likely a hack for non-prop-drilled components.
+
+    // I'll add the window event listener here.
+
+    return () => {
+      window.removeEventListener('open-appointment-modal', handleOpenModal);
+    };
+  }, []); // Run once on mount is enough for window listener
+
+  // Maintain the old ID logic for backward compatibility in a separate effect or same one?
+  // The old logic re-ran on `[location]`.
+  useEffect(() => {
+    const handleBtnClick = () => openBookModal();
     const triggerBtn = document.getElementById('trigger-appointment-modal');
     if (triggerBtn) {
-      triggerBtn.addEventListener('click', handleOpenModal);
+      triggerBtn.addEventListener('click', handleBtnClick);
     }
     return () => {
-      if (triggerBtn) triggerBtn.removeEventListener('click', handleOpenModal);
+      if (triggerBtn) triggerBtn.removeEventListener('click', handleBtnClick);
     };
-  }, [location]); // Re-run on page change to finding new button
+  }, [location]);
 
   // Admin Shortcut: Ctrl + Shift + F
   const navigate = useNavigate();
@@ -83,7 +137,8 @@ function AppContent() {
   }, [navigate]);
 
   // Check if current route is admin or doctor route (hide global nav)
-  const isExcludedRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/doctor') || location.pathname.startsWith('/prescription/view/');
+  // Fix: Ensure /doctors (public page) shows navbar, while /doctor (dashboard) hides it.
+  const isExcludedRoute = location.pathname.startsWith('/admin') || (location.pathname.startsWith('/doctor') && !location.pathname.startsWith('/doctors')) || location.pathname.startsWith('/prescription/view/') || location.pathname.startsWith('/dashboard') || location.pathname === '/login' || location.pathname === '/register';
 
   return (
     <div className="bg-brand-cream/30 min-h-screen font-sans selection:bg-brand-peach/50 selection:text-brand-dark overflow-x-hidden flex flex-col">
@@ -100,6 +155,16 @@ function AppContent() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home onBook={openBookModal} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected User Routes */}
+          <Route path="/dashboard" element={
+            <PrivateRoute>
+              <UserDashboard />
+            </PrivateRoute>
+          } />
+
           <Route path="/test" element={<TestServicePage />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/doctors" element={<DoctorsPage onBook={openBookModal} />} />
@@ -117,6 +182,7 @@ function AppContent() {
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogDetail />} />
+          <Route path="/blogs/tag/:tag" element={<Blogs />} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -136,7 +202,6 @@ function AppContent() {
             <Route path="appointments" element={<AppointmentManager />} />
           </Route>
 
-          {/* Doctor Routes */}
           {/* Doctor Routes */}
           <Route path="/doctor" element={<DoctorLayout />}>
             <Route index element={<Navigate to="/doctor/dashboard" replace />} />
@@ -169,14 +234,14 @@ function AppContent() {
   );
 }
 
-import { ErrorProvider } from './context/ErrorContext';
-
 function App() {
   return (
     <ErrorProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </AuthProvider>
     </ErrorProvider>
   );
 }

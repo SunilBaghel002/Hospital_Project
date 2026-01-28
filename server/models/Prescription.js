@@ -38,7 +38,7 @@ const prescriptionSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Index for fast lookup by token
-prescriptionSchema.index({ token: 1 });
+// Index for fast lookup by token not needed explicitly if unique: true
+// prescriptionSchema.index({ token: 1 });
 
 module.exports = mongoose.model('Prescription', prescriptionSchema);

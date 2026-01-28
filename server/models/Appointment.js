@@ -62,13 +62,29 @@ const appointmentSchema = new mongoose.Schema({
     notes: {
         type: String,
         trim: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: false // Optional for now to support guest checkouts if needed, but we will enforce in controller
+    },
+    rescheduleRequest: {
+        isRescheduling: { type: Boolean, default: false },
+        requestedDate: Date,
+        requestedTime: String,
+        status: {
+            type: String,
+            enum: ['pending', 'approved', 'rejected'],
+            default: 'pending'
+        },
+        requestedAt: Date
     }
 }, {
     timestamps: true
 });
 
 // Generate reference ID before saving
-appointmentSchema.pre('save', function(next) {
+appointmentSchema.pre('save', function (next) {
     if (!this.referenceId) {
         this.referenceId = `VEC-${Math.floor(1000 + Math.random() * 9000)}`;
     }
@@ -82,10 +98,10 @@ appointmentSchema.index({ status: 1 });
 appointmentSchema.index({ createdAt: -1 });
 
 // Static method to check slot availability
-appointmentSchema.statics.isSlotAvailable = async function(date, time, doctor) {
+appointmentSchema.statics.isSlotAvailable = async function (date, time, doctor) {
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
-    
+
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -95,12 +111,12 @@ appointmentSchema.statics.isSlotAvailable = async function(date, time, doctor) {
         doctor: doctor,
         status: { $nin: ['cancelled'] }
     });
-    
+
     return !existing;
 };
 
 // Instance method for email data
-appointmentSchema.methods.toEmailData = function() {
+appointmentSchema.methods.toEmailData = function () {
     return {
         referenceId: this.referenceId,
         name: this.name,

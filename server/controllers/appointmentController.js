@@ -39,7 +39,8 @@ exports.createAppointment = async (req, res) => {
             doctor,
             date: new Date(date),
             time,
-            amount
+            amount,
+            user: req.user ? req.user.id : null // Link to user if logged in
         });
 
         // Get email data
@@ -300,6 +301,146 @@ exports.updateStatus = async (req, res) => {
             success: false,
             message: 'Failed to update appointment'
         });
+    }
+};
+
+// @desc    Get logged in user's appointments
+// @route   GET /api/appointments/my
+// @access  Private
+exports.getMyAppointments = async (req, res) => {
+    try {
+        const appointments = await Appointment.find({ user: req.user.id })
+            .sort({ date: -1, time: 1 }); // Newest first
+
+        res.json({
+            success: true,
+            count: appointments.length,
+            data: appointments
+        });
+    } catch (error) {
+        console.error('Get my appointments error:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch your appointments' });
+    }
+};
+
+// @desc    Request reschedule (User side)
+// @route   POST /api/appointments/:id/reschedule
+// @access  Private
+exports.requestReschedule = async (req, res) => {
+    try {
+        const { date, time } = req.body;
+        const appointment = await Appointment.findById(req.params.id);
+
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: 'Appointment not found' });
+        }
+
+        // Verify ownership
+        if (appointment.user.toString() !== req.user.id) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
+
+        // Check if > 2 hours before current appointment time
+        const appointmentDateTime = new Date(appointment.date);
+        // Assuming time is "HH:MM AM/PM", simplistic parsing (better to use date+time combined in DB or a library like date-fns)
+        // For simplicity, we'll check against the notification date object which usually has 00:00 time, + separate time string
+        // Let's rely on date comparison mostly or assume date is just date.
+
+        // Strict 2 hour check:
+        // We need to parse "10:00 AM" to hours.
+        // Quick parse:
+        const parseTime = (timeStr) => {
+            const [time, modifier] = timeStr.split(' ');
+            let [hours, minutes] = time.split(':');
+            if (hours === '12') {
+                hours = '00';
+            }
+            if (modifier === 'PM') {
+                hours = parseInt(hours, 10) + 12;
+            }
+            return { hours: parseInt(hours), minutes: parseInt(minutes) };
+        };
+
+        const { hours, minutes } = parseTime(appointment.time);
+        const aptFullDate = new Date(appointment.date);
+        aptFullDate.setHours(hours, minutes, 0, 0);
+
+        const now = new Date();
+        const diffInHours = (aptFullDate - now) / 1000 / 60 / 60;
+
+        if (diffInHours < 2) {
+            return res.status(400).json({
+                success: false,
+                message: 'Rescheduling is only allowed at least 2 hours before the appointment.'
+            });
+        }
+
+        // Check availability of new slot
+        const isAvailable = await Appointment.isSlotAvailable(date, time, appointment.doctor);
+        if (!isAvailable) {
+            return res.status(409).json({
+                success: false,
+                message: 'The requested time slot is not available.'
+            });
+        }
+
+        appointment.rescheduleRequest = {
+            isRescheduling: true,
+            requestedDate: new Date(date),
+            requestedTime: time,
+            status: 'pending',
+            requestedAt: new Date()
+        };
+
+        await appointment.save();
+
+        res.json({
+            success: true,
+            message: 'Reschedule request sent to doctor.',
+            data: appointment
+        });
+
+    } catch (error) {
+        console.error('Request reschedule error:', error);
+        res.status(500).json({ success: false, message: 'Failed to request reschedule' });
+    }
+};
+
+// @desc    Approve/Reject Reschedule (Doctor/Admin side)
+// @route   PATCH /api/appointments/:id/reschedule-action
+// @access  Private (Admin/Doctor)
+exports.handleRescheduleAction = async (req, res) => {
+    try {
+        const { action } = req.body; // 'approve' or 'reject'
+        const appointment = await Appointment.findById(req.params.id);
+
+        if (!appointment) return res.status(404).json({ success: false, message: 'Not found' });
+        if (!appointment.rescheduleRequest.isRescheduling) {
+            return res.status(400).json({ success: false, message: 'No pending reschedule request' });
+        }
+
+        if (action === 'approve') {
+            appointment.date = appointment.rescheduleRequest.requestedDate;
+            appointment.time = appointment.rescheduleRequest.requestedTime;
+            appointment.rescheduleRequest.status = 'approved';
+            appointment.rescheduleRequest.isRescheduling = false; // Reset flag or keep history? keeping false means request resolved.
+
+            // Should also send email to user confirming new time
+        } else if (action === 'reject') {
+            appointment.rescheduleRequest.status = 'rejected';
+            appointment.rescheduleRequest.isRescheduling = false;
+        }
+
+        await appointment.save();
+
+        res.json({
+            success: true,
+            message: `Reschedule request ${action}d`,
+            data: appointment
+        });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Action failed' });
     }
 };
 

@@ -5,11 +5,16 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 const fetchAPI = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
 
+  const token = localStorage.getItem('token');
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers
+  };
+
   const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
     ...options,
+    headers,
   };
 
   try {

@@ -73,6 +73,48 @@ export default function PendingRequests() {
         }
     };
 
+    const handleRescheduleAction = async (id, action) => {
+        setActionLoading(id);
+        try {
+            const token = localStorage.getItem('adminToken');
+            const res = await fetch(`${API_URL}/doctors/appointments/${id}/reschedule-action`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ action })
+            });
+
+            if (res.ok) {
+                // If rejected, it might stay as confirmed (old time) or cancelled?
+                // Logic says: if approved -> updates date/time, clears request. status=confirmed.
+                // if rejected -> clears request. status=confirmed (old time).
+                // So in both cases, it is no longer "pending request".
+                // We should remove it from this list or refresh.
+                // Since this list filters by (pending OR isRescheduling), clearing isRescheduling removes it from view.
+
+                // Update local state to remove the processed item
+                setAppointments(prev => prev.map(app => {
+                    if (app._id === id) {
+                        return { ...app, rescheduleRequest: { isRescheduling: false } }; // simplistic update to hide it
+                    }
+                    return app;
+                }));
+                // Or better, refetch to be sure? 
+                // Let's just filter it out for now to be snappy
+                setAppointments(prev => prev.filter(app => app._id !== id || (app.status === 'pending' && action === 'reject')));
+                //Actually if it was a reschedule request on a confirmed appointment, and we reject, it stays confirmed.
+                // So it should leave the "Pending Requests" view.
+                fetchPendingAppointments(); // safest to refetch
+            }
+        } catch (err) {
+            console.error('Failed to handle reschedule:', err);
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
     const handleBulkAction = async (action) => {
         const pendingIds = filteredAppointments.map(a => a._id);
         for (const id of pendingIds) {
@@ -85,7 +127,7 @@ export default function PendingRequests() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const pendingAppointments = appointments.filter(app => app.status === 'pending');
+    const pendingAppointments = appointments.filter(app => app.status === 'pending' || app.rescheduleRequest?.isRescheduling);
 
     const filteredAppointments = pendingAppointments.filter(app => {
         // Search filter
@@ -217,70 +259,80 @@ export default function PendingRequests() {
                                         <tr>
                                             <th className="text-left py-4 px-6 text-xs font-bold text-brand-dark/60 uppercase tracking-wider">Patient</th>
                                             <th className="text-left py-4 px-6 text-xs font-bold text-brand-dark/60 uppercase tracking-wider">Date & Time</th>
-                                            <th className="text-left py-4 px-6 text-xs font-bold text-brand-dark/60 uppercase tracking-wider">Contact</th>
+                                            <th className="text-left py-4 px-6 text-xs font-bold text-brand-dark/60 uppercase tracking-wider">Type</th>
                                             <th className="text-right py-4 px-6 text-xs font-bold text-brand-dark/60 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-brand-peach/20">
-                                        {paginatedAppointments.map(app => (
-                                            <tr key={app._id} className="hover:bg-brand-cream/30 transition-colors">
-                                                <td className="py-4 px-6">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-10 h-10 bg-brand-peach/30 rounded-full flex items-center justify-center">
-                                                            <User size={18} className="text-brand-dark" />
+                                        {paginatedAppointments.map(app => {
+                                            const isReschedule = app.rescheduleRequest?.isRescheduling;
+                                            const displayDate = isReschedule ? app.rescheduleRequest.requestedDate : app.date;
+                                            const displayTime = isReschedule ? app.rescheduleRequest.requestedTime : app.time;
+
+                                            return (
+                                                <tr key={app._id} className="hover:bg-brand-cream/30 transition-colors">
+                                                    <td className="py-4 px-6">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-10 h-10 bg-brand-peach/30 rounded-full flex items-center justify-center">
+                                                                <User size={18} className="text-brand-dark" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-semibold text-brand-dark">{app.name}</p>
+                                                                <p className="text-xs text-gray-500">{app.email}</p>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <p className="font-semibold text-brand-dark">{app.name}</p>
-                                                            <p className="text-xs text-gray-500">{app.email}</p>
+                                                    </td>
+                                                    <td className="py-4 px-6">
+                                                        <div className="flex items-center gap-2">
+                                                            <Calendar size={14} className="text-brand-blue" />
+                                                            <span className="font-medium text-brand-dark">
+                                                                {new Date(displayDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                            </span>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td className="py-4 px-6">
-                                                    <div className="flex items-center gap-2">
-                                                        <Calendar size={14} className="text-brand-blue" />
-                                                        <span className="font-medium text-brand-dark">
-                                                            {new Date(app.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                                        <div className="flex items-center gap-2 mt-1">
+                                                            <Clock size={14} className="text-brand-dark/40" />
+                                                            <span className="text-sm text-gray-500">{displayTime}</span>
+                                                        </div>
+                                                        {isReschedule && (
+                                                            <div className="text-xs text-orange-600 mt-1">
+                                                                Was: {new Date(app.date).toLocaleDateString()} at {app.time}
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                    <td className="py-4 px-6">
+                                                        <span className={`px-2 py-1 rounded text-xs font-bold ${isReschedule ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
+                                                            {isReschedule ? 'Reschedule' : 'New Booking'}
                                                         </span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        <Clock size={14} className="text-brand-dark/40" />
-                                                        <span className="text-sm text-gray-500">{app.time}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="py-4 px-6">
-                                                    <div className="flex items-center gap-2">
-                                                        <Phone size={14} className="text-brand-dark/40" />
-                                                        <span className="text-sm text-brand-dark">{app.phone}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="py-4 px-6">
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        <button
-                                                            onClick={() => handleStatusUpdate(app._id, 'cancelled')}
-                                                            disabled={actionLoading === app._id}
-                                                            className="p-2 text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
-                                                            title="Reject"
-                                                        >
-                                                            <XCircle size={18} />
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleStatusUpdate(app._id, 'confirmed')}
-                                                            disabled={actionLoading === app._id}
-                                                            className="px-4 py-2 text-sm font-semibold text-white bg-brand-dark rounded-lg hover:opacity-90 transition-colors flex items-center gap-2"
-                                                        >
-                                                            {actionLoading === app._id ? (
-                                                                <Loader2 className="animate-spin" size={14} />
-                                                            ) : (
-                                                                <>
-                                                                    <CheckCircle size={14} />
-                                                                    Accept
-                                                                </>
-                                                            )}
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                    </td>
+                                                    <td className="py-4 px-6">
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <button
+                                                                onClick={() => isReschedule ? handleRescheduleAction(app._id, 'reject') : handleStatusUpdate(app._id, 'cancelled')}
+                                                                disabled={actionLoading === app._id}
+                                                                className="p-2 text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                                                                title="Reject"
+                                                            >
+                                                                <XCircle size={18} />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => isReschedule ? handleRescheduleAction(app._id, 'approve') : handleStatusUpdate(app._id, 'confirmed')}
+                                                                disabled={actionLoading === app._id}
+                                                                className="px-4 py-2 text-sm font-semibold text-white bg-brand-dark rounded-lg hover:opacity-90 transition-colors flex items-center gap-2"
+                                                            >
+                                                                {actionLoading === app._id ? (
+                                                                    <Loader2 className="animate-spin" size={14} />
+                                                                ) : (
+                                                                    <>
+                                                                        <CheckCircle size={14} />
+                                                                        Accept
+                                                                    </>
+                                                                )}
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
