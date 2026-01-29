@@ -63,6 +63,14 @@ const doctorSchema = new mongoose.Schema({
     order: {
         type: Number,
         default: 0
+    },
+    appointmentsPerHour: {
+        type: Number,
+        default: 5
+    },
+    isOnline: {
+        type: Boolean,
+        default: true
     }
 }, {
     timestamps: true

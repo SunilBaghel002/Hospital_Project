@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 export default function VisionCare({ onBook }) {
     const features = [
-        { title: "Advanced Diagnostics", link: "/services/advanced-diagnostics", img: "https://images.unsplash.com/photo-1576091160550-2187d80a85bc?q=80&w=2000&auto=format&fit=crop", desc: "Using AI-powered OCT and topographic mapping for early detection of conditions before symptoms appear." },
-        { title: "Robotic Surgery", link: "/services/robotic-surgery", img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop", desc: "Precision-guided femtosecond lasers for perfect cataract and refractive surgery outcomes." },
-        { title: "Pediatric Care", link: "/services/pediatric-care", img: "https://images.unsplash.com/photo-1532153955177-f59af40d6472?q=80&w=2000&auto=format&fit=crop", desc: "Specialized gentle care for our youngest patients with myopia control and vision therapy." },
-        { title: "Emergency Trauma", link: "/services/emergency-trauma", img: "https://images.unsplash.com/photo-1516574187841-6930022476c9?q=80&w=2000&auto=format&fit=crop", desc: "24/7 rapid response unit for complex ocular injuries and urgent eye conditions." },
+        { title: "Advanced Diagnostics", link: "/services/advanced-diagnostics", img: "/assets/images/services/advanced-diagnostics.png", desc: "Using AI-powered OCT and topographic mapping for early detection of conditions before symptoms appear." },
+        { title: "Robotic Surgery", link: "/services/robotic-surgery", img: "/assets/images/services/cataract-surgery.png", desc: "Precision-guided femtosecond lasers for perfect cataract and refractive surgery outcomes." },
+        { title: "Pediatric Care", link: "/services/pediatric-care", img: "/assets/images/services/pediatric-vision.png", desc: "Specialized gentle care for our youngest patients with myopia control and vision therapy." },
+        { title: "Emergency Trauma", link: "/services/emergency-trauma", img: "/assets/images/services/emergency-care.png", desc: "24/7 rapid response unit for complex ocular injuries and urgent eye conditions." },
     ];
 
     return (
@@ -66,7 +66,7 @@ export default function VisionCare({ onBook }) {
                         <div className="order-1 lg:order-2 relative">
                             <div className="relative z-10 rounded-tl-[80px] rounded-br-[80px] overflow-hidden aspect-square shadow-2xl">
                                 <img
-                                    src="https://images.unsplash.com/photo-1576091160550-2187d80a85bc?q=80&w=2000&auto=format&fit=crop"
+                                    src="/assets/images/services/advanced-diagnostics.png"
                                     alt="Vision Care Excellence"
                                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                                 />
@@ -122,9 +122,9 @@ export default function VisionCare({ onBook }) {
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
                             <span className="text-brand-blue font-bold tracking-widest uppercase text-xs mb-2 block">Why Choose Us</span>
-                            <h2 className="text-3xl font-bold text-brand-dark mb-6">The Visionary Difference</h2>
+                            <h2 className="text-3xl font-bold text-brand-dark mb-6">The Romashka Difference</h2>
                             <p className="text-gray-600 mb-8 leading-relaxed">
-                                At Visionary Eye Care, we combine medical excellence with a patient-first approach. Every treatment plan is personalized, every procedure is precise, and every patient is family.
+                                At Romashka Health Care, we combine medical excellence with a patient-first approach. Every treatment plan is personalized, every procedure is precise, and every patient is family.
                             </p>
 
                             <div className="space-y-4">
@@ -144,7 +144,7 @@ export default function VisionCare({ onBook }) {
 
                         <div className="relative">
                             <img
-                                src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop"
+                                src="/assets/images/services/advanced-diagnostics.png"
                                 alt="Medical Excellence"
                                 className="rounded-3xl shadow-xl w-full h-[400px] object-cover"
                             />

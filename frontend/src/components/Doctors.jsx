@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, ChevronDown, Calendar, GraduationCap, Clock, Languages, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronDown, Calendar, GraduationCap, Clock, Languages, ChevronLeft, ChevronRight, User } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -59,7 +59,7 @@ export default function Doctors({ onBook, data }) {
         <section id="doctors" className="py-24 px-6 max-w-[95%] mx-auto z-10 relative">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-blue/5 rounded-full blur-3xl -z-10"></div>
 
-            <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
+            <div className="flex flex-col lg:flex-row items-end justify-between mb-16 gap-6">
                 <div className="text-left">
                     <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-4">Our Medical Experts</h2>
                     <p className="text-gray-500 max-w-2xl text-lg">World-class doctors dedicated to your vision health.</p>
@@ -94,64 +94,76 @@ export default function Doctors({ onBook, data }) {
             </div>
 
             {/* Carousel Container */}
-            <div
-                id="doctors-container"
-                className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar p-4"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-                {filteredDoctors.slice(0, showAll ? undefined : showCount).map((doc, idx) => (
-                    <div key={idx} className="min-w-[320px] md:min-w-[400px] snap-center group relative bg-white rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
-
-                        {/* Large Image Area */}
-                        <div className="h-[20rem] w-full relative bg-gray-100">
-                            <img src={doc.img} alt={doc.name} loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
-                            <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <div className="absolute bottom-6 left-6 text-white">
-                                <h3 className="text-2xl font-bold mb-1">{doc.name}</h3>
-                                <p className="text-white/80 font-medium uppercase tracking-wide text-sm">{doc.role}</p>
-                            </div>
-                        </div>
-
-                        {/* Professional Details - Very Clear Icons */}
-                        <div className="p-8 pt-6 flex-1 flex flex-col gap-4">
-                            <div className="grid grid-cols-2 gap-4 mb-2">
-                                <div className="flex items-center gap-3 p-3 bg-brand-cream/50 rounded-2xl">
-                                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-blue shadow-sm">
-                                        <GraduationCap size={20} />
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Education</p>
-                                        <p className="text-brand-dark font-bold text-sm leading-tight">{doc.qualification}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3 p-3 bg-brand-cream/50 rounded-2xl">
-                                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-blue shadow-sm">
-                                        <Clock size={20} />
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Experience</p>
-                                        <p className="text-brand-dark font-bold text-sm leading-tight">{doc.experience}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Languages Pill */}
-                            <div className="flex items-center gap-2 text-sm text-gray-500 px-2">
-                                <Languages size={16} className="text-brand-blue" />
-                                <span>Speaks:</span>
-                                <span className="font-medium text-brand-dark">{(doc.languages || ['English']).join(", ")}</span>
-                            </div>
-
-                            <div className="mt-auto pt-4">
-                                <button onClick={() => onBook(doc.name)} className="w-full py-4 rounded-2xl bg-brand-blue text-white font-bold text-lg hover:bg-brand-dark transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/30 hover:shadow-xl hover:shadow-brand-dark/20 active:scale-95">
-                                    <Calendar size={20} />
-                                    Book Appointment
-                                </button>
-                            </div>
-                        </div>
+            {filteredDoctors.length === 0 && !loading ? (
+                <div className="flex flex-col items-center justify-center py-16 bg-white rounded-[2.5rem] shadow-sm border border-brand-peach/20 mx-4">
+                    <div className="w-20 h-20 bg-brand-cream rounded-full flex items-center justify-center mb-6">
+                        <User size={32} className="text-brand-dark/40" />
                     </div>
-                ))}
-            </div>
+                    <h3 className="text-2xl font-bold text-brand-dark mb-2">No Doctors Available</h3>
+                    <p className="text-gray-500 text-center max-w-md">
+                        There are currently no doctors listed in the directory. Please check back later.
+                    </p>
+                </div>
+            ) : (
+                <div
+                    id="doctors-container"
+                    className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory hide-scrollbar p-4"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                    {filteredDoctors.slice(0, showAll ? undefined : showCount).map((doc, idx) => (
+                        <div key={idx} className="min-w-[300px] sm:min-w-[320px] lg:min-w-[400px] snap-center group relative bg-white rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
+
+                            {/* Large Image Area */}
+                            <div className="h-[20rem] w-full relative bg-gray-100">
+                                <img src={doc.img} alt={doc.name} loading="lazy" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <div className="absolute bottom-6 left-6 text-white">
+                                    <h3 className="text-2xl font-bold mb-1">{doc.name}</h3>
+                                    <p className="text-white/80 font-medium uppercase tracking-wide text-sm">{doc.role}</p>
+                                </div>
+                            </div>
+
+                            {/* Professional Details - Very Clear Icons */}
+                            <div className="p-8 pt-6 flex-1 flex flex-col gap-4">
+                                <div className="grid grid-cols-2 gap-4 mb-2">
+                                    <div className="flex items-center gap-3 p-3 bg-brand-cream/50 rounded-2xl">
+                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-blue shadow-sm">
+                                            <GraduationCap size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Education</p>
+                                            <p className="text-brand-dark font-bold text-sm leading-tight">{doc.qualification}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3 p-3 bg-brand-cream/50 rounded-2xl">
+                                        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-brand-blue shadow-sm">
+                                            <Clock size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Experience</p>
+                                            <p className="text-brand-dark font-bold text-sm leading-tight">{doc.experience}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Languages Pill */}
+                                <div className="flex items-center gap-2 text-sm text-gray-500 px-2">
+                                    <Languages size={16} className="text-brand-blue" />
+                                    <span>Speaks:</span>
+                                    <span className="font-medium text-brand-dark">{(doc.languages || ['English']).join(", ")}</span>
+                                </div>
+
+                                <div className="mt-auto pt-4">
+                                    <button onClick={() => onBook(doc.name)} className="w-full py-4 rounded-2xl bg-brand-blue text-white font-bold text-lg hover:bg-brand-dark transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/30 hover:shadow-xl hover:shadow-brand-dark/20 active:scale-95">
+                                        <Calendar size={20} />
+                                        Book Appointment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {/* Mobile Arrow Navigation - Visible only on mobile */}
             <div className="flex justify-center gap-4 mt-4 md:hidden">

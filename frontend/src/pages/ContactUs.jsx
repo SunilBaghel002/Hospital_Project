@@ -46,7 +46,7 @@ export default function ContactUs() {
                                     <div>
                                         <h3 className="text-xl font-bold text-brand-dark mb-1">Email</h3>
                                         <p className="text-gray-500 mb-1">Our friendly team is here to help.</p>
-                                        <p className="font-medium text-lg text-brand-blue">info@visionaryeye.in</p>
+                                        <p className="font-medium text-lg text-brand-blue">info@romashka.in</p>
                                     </div>
                                 </div>
 
@@ -97,22 +97,20 @@ export default function ContactUs() {
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-brand-dark ml-1">First Name</label>
-                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Rahul" />
+                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Enter Your First Name" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-brand-dark ml-1">Last Name</label>
-                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Sharma" />
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Last Name</label>
+                                    <input type="text" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Enter Your Last Name" />
                                 </div>
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-brand-dark ml-1">Email</label>
-                                <input type="email" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="rahul@example.com" />
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Email Address</label>
+                                <input type="email" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none" placeholder="Enter Your Email" />
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-brand-dark ml-1">Message</label>
-                                <textarea rows="4" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none resize-none" placeholder="How can we help you?"></textarea>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Message</label>
+                                <textarea rows="4" className="w-full px-6 py-4 bg-gray-50 rounded-xl border border-transparent focus:bg-white focus:border-brand-blue focus:ring-0 transition-all outline-none resize-none" placeholder="Enter Your Message Here..."></textarea>
                             </div>
 
                             <button className="w-full py-5 bg-brand-dark text-white rounded-xl font-bold text-lg hover:bg-brand-blue transition-all shadow-lg flex items-center justify-center gap-2 group">

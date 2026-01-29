@@ -245,7 +245,7 @@ export default function SiteSettingsEditor() {
                                         value={settings.navbar?.siteName || settings.siteName || ''}
                                         onChange={(e) => updateSetting('navbar.siteName', e.target.value)}
                                         className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 outline-none"
-                                        placeholder="Visionary"
+                                        placeholder="Romashka"
                                     />
                                 </div>
                                 <div>

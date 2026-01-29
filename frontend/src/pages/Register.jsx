@@ -56,7 +56,7 @@ const Register = () => {
                                     type="text"
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-brand-peach/30 rounded-xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                    placeholder="John Doe"
+                                    placeholder="Enter Your Full Name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
@@ -71,7 +71,7 @@ const Register = () => {
                                     type="email"
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-brand-peach/30 rounded-xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                    placeholder="your@email.com"
+                                    placeholder="Enter Your Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -86,7 +86,7 @@ const Register = () => {
                                     type="tel"
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-brand-peach/30 rounded-xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                    placeholder="1234567890"
+                                    placeholder="Enter Your Phone Number"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                 />
@@ -101,7 +101,7 @@ const Register = () => {
                                     type="password"
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-brand-peach/30 rounded-xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                    placeholder="••••••••"
+                                    placeholder="Enter Your Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />

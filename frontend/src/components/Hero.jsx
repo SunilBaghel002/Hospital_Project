@@ -33,7 +33,7 @@ export default function Hero({ onBook, data }) {
                     </div>
 
                     {/* Main Headline */}
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-brand-dark leading-[1.1] mb-8 tracking-tight">
+                    <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold text-brand-dark leading-[1.1] mb-8 tracking-tight">
                         {data?.title ? (
                             data.title
                         ) : (

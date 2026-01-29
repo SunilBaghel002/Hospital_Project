@@ -22,7 +22,7 @@ export default function SEOGuide({ data }) {
             answer: "Children's vision development is critical for learning. The American Academy of Ophthalmology recommends screenings at birth, age 1, age 3, and before first grade. Watch for signs like squinting, eye rubbing, or head tilting. Our pediatric specialists are trained to manage Amblyopia (Lazy Eye) and Strabismus (Crossed Eyes) using gentle, child-friendly therapies."
         },
         {
-            question: "Technology at Visionary Eye Care",
+            question: "Technology at Romashka Health Care",
             answer: "We pride ourselves on hosting the region's most advanced diagnostic suite. From Optical Coherence Tomography (OCT) for retinal cross-sections to Humphrey Visual Field testing for glaucoma monitoring, our equipment ensures no detail is missed. Our surgical suites are equipped with the Zeiss Callisto Eye system for precise astigmatism management during cataract surgery."
         }
     ];

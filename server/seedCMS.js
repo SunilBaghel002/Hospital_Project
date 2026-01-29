@@ -61,17 +61,206 @@ const FAQ_ITEMS = [
     { question: 'Technology at Visionary Eye Care', answer: 'From OCT for retinal cross-sections to Humphrey Visual Field testing for glaucoma monitoring.' }
 ];
 
-// Services List
-const SERVICES = [
-    { id: 'cataract-surgery', title: 'Cataract Surgery', description: 'Blade-free femtosecond laser precision with advanced IOL implants.', icon: '👁️', link: '/services/cataract-surgery' },
-    { id: 'lasik-correction', title: 'LASIK Correction', description: 'Contoura® Vision topography-guided custom LASIK for 20/20 vision.', icon: '👓', link: '/services/lasik-correction' },
-    { id: 'glaucoma-care', title: 'Glaucoma Care', description: 'MIGS and SLT laser therapy for effective pressure control.', icon: '🩺', link: '/services/glaucoma-care' },
-    { id: 'retina-service', title: 'Retina Service', description: 'Expert Macular Degeneration and Diabetic Retinopathy management.', icon: '🔬', link: '/services/retina-service' },
-    { id: 'cornea-transplant', title: 'Cornea Transplant', description: 'DMEK and DSAEK partial thickness transplants.', icon: '🧊', link: '/services/cornea-transplant' },
-    { id: 'pediatric-vision', title: 'Pediatric Vision', description: 'Myopia control and squint correction for children.', icon: '👶', link: '/services/pediatric-vision' },
-    { id: 'dry-eye-spa', title: 'Dry Eye Spa', description: 'LipiFlow thermal pulsation and IPL therapy.', icon: '💧', link: '/services/dry-eye-spa' },
-    { id: 'oculoplastics', title: 'Oculoplastics', description: 'Cosmetic and reconstructive eyelid surgery.', icon: '🎨', link: '/services/oculoplastics' }
+// ======================== SERVICES DATA (From Frontend Source) ========================
+const ALL_SERVICES = [
+    {
+        id: "cataract-surgery",
+        title: "Cataract Surgery",
+        shortDesc: "Experience blade-free femtosecond laser precision. Our advanced IOL implants restore clear vision and vibrant colors, often eliminating the need for reading glasses post-surgery.",
+        img: "/assets/images/services/cataract-surgery.png",
+        heroTitle: "Restore Your Vision",
+        heroSubtitle: "Advanced Cataract Solutions",
+        heroTagline: "See the world in full color again.",
+        overviewTitle: "Blade-Free Precision",
+        overviewText: "Cataracts are a natural part of aging, but living with cloudy vision doesn't have to be. Our blade-free laser cataract surgery offers a level of precision and safety that traditional manual surgery simply cannot match. By using femtosecond laser technology, we customize the procedure to your unique eye structure.",
+        longDesc: "At Visionary eye care, we believe in providing not just surgery, but a complete visual rejuvenation. Cataract surgery is the most frequently performed surgery in the world, and modern technology has turned it into a refractive procedure that can correct nearsightedness, farsightedness, and astigmatism simultaneously.\n\nWe offer a wide range of premium Intraocular Lenses (IOLs), including multifocal and extended depth-of-focus lenses, which can reduce or even eliminate your dependence on glasses for both distance and near vision. Our counseling team works with you to understand your lifestyle—whether you love reading, golfing, or driving at night—to select the perfect lens for your needs.",
+        scopeTitle: "Comprehensive Care Journey",
+        scopeImg: "/assets/images/services/cataract-surgery.png",
+        scopePoints: [
+            { title: "Advanced Diagnostics", desc: "Biometry & OCT scans for precise lens calculation." },
+            { title: "Femto-Laser Assisted", desc: "Blade-free incisions for faster healing." },
+            { title: "Premium IOLs", desc: "Toric, Multifocal, and EDOF lens options." },
+            { title: "Dropless Surgery", desc: "Modern techniques reducing the need for post-op drops." }
+        ],
+        doctorRoleKeyword: "Cataract",
+        faqs: [
+            { question: "Is cataract surgery painful?", answer: "No, the procedure is performed under local anesthesia (eye drops) and is painless. You may feel mild pressure but no pain." },
+            { question: "How long does recovery take?", answer: "Most patients notice improved vision within 24 hours. Full recovery typically takes 2-4 weeks." }
+        ]
+    },
+    {
+        id: "lasik-correction",
+        title: "LASIK Correction",
+        shortDesc: "Achieve 20/20 vision or better with Contoura® Vision. This topography-guided custom LASIK maps 22,000 points on your cornea for a completely personalized treatment.",
+        img: "/assets/images/services/lasik.png",
+        heroTitle: "Freedom From Glasses",
+        heroSubtitle: "Contoura® Vision LASIK",
+        heroTagline: "Wake up and see the world clearly.",
+        overviewTitle: "Beyond 20/20 Vision",
+        overviewText: "Imagine waking up and seeing the alarm clock without reaching for your glasses. With Contoura® Vision, this is a reality for thousands of our patients. This isn't just LASIK; it's topography-guided laser vision correction that treats your cornea's unique irregularities.",
+        longDesc: "Standard LASIK treats everyone with the same prescription the same way. But your eye is as unique as your fingerprint. Topography-Guided LASIK maps 22,000 unique elevation points on your cornea to create a completely personalized treatment profile.\n\nThis level of detail allows us to not only correct your prescription (nearsightedness, farsightedness, astigmatism) but also smooth out microscopic irregularities that affect the quality of your vision. The result? Sharper, crisper vision, reduced glare at night, and a life free from the hassles of contacts and glasses.",
+        scopeTitle: "Refractive Excellence",
+        scopeImg: "/assets/images/services/lasik.png",
+        scopePoints: [
+            { title: "Eligibility Exam", desc: "Pentacam & Corvis scans to ensure absolute safety." },
+            { title: "Contoura® Vision", desc: "Topography-guided ablation for superior results." },
+            { title: "Blade-Free Flap", desc: "Femtosecond laser creation of the corneal flap." },
+            { title: "Lifetime Enhancement", desc: "Our commitment to your long-term vision stability." }
+        ],
+        doctorRoleKeyword: "Refractive",
+        faqs: [
+            { question: "Am I eligible for LASIK?", answer: "We perform a comprehensive 7-point check to determine eligibility. Most healthy adults over 18 with stable prescriptions are good candidates." },
+            { question: "Is it permanent?", answer: "Yes, LASIK permanently reshapes your cornea. However, age-related reading vision changes (presbyopia) may still occur later in life." }
+        ]
+    },
+    {
+        id: "glaucoma-care",
+        title: "Glaucoma Care",
+        shortDesc: "Protect your optic nerve with our 'Silent Thief of Sight' protocol. We offer MIGS (Minimally Invasive Glaucoma Surgery) and SLT laser therapy for effective pressure control.",
+        img: "/assets/images/services/glaucoma.png",
+        heroTitle: "Preserving Your Sight",
+        heroSubtitle: "Advanced Glaucoma Management",
+        heroTagline: "Early detection is your best protection.",
+        overviewTitle: "The Silent Thief of Sight",
+        overviewText: "Glaucoma often has no early symptoms, slowly stealing your peripheral vision before you notice. Our mission is to detect it early and manage it aggressively to preserve your sight for a lifetime.",
+        longDesc: "We take a proactive approach to Glaucoma management. Gone are the days when heavy medication was the only option. We utilize the latest in diagnostic technology, including OCT Angiography and Visual Field analysis, to track changes at a microscopic level.\n\nOur treatment philosophy prioritizes Quality of Life. We offer SLT (Selective Laser Trabeculoplasty) as a first-line treatment to reduce dependence on drops. For surgical cases, we specialize in MIGS (Minimally Invasive Glaucoma Surgery), which uses microscopic stents to bypass blockages, offering safer outcomes and faster recovery than traditional filtration surgeries.",
+        scopeTitle: "Holistic Pressure Control",
+        scopeImg: "/assets/images/services/glaucoma.png",
+        scopePoints: [
+            { title: "Early Detection", desc: "RNFL Analysis & OCT Angiography." },
+            { title: "SLT Laser", desc: "Painless, non-invasive pressure reduction." },
+            { title: "MIGS Stents", desc: "iStent & Hydrus implantations." },
+            { title: "Tube Shunts", desc: "Complex management for advanced cases." }
+        ],
+        doctorRoleKeyword: "Glaucoma",
+        faqs: [
+            { question: "Can glaucoma damage be reversed?", answer: "No, vision lost to glaucoma cannot be restored. This is why early detection and regular monitoring are critical." }
+        ]
+    },
+    {
+        id: "retina-service",
+        title: "Retina Service",
+        shortDesc: "Expert management of Macular Degeneration and Diabetic Retinopathy. We use high-resolution OCT imaging and pain-free intravitreal injections to preserve central vision.",
+        img: "/assets/images/services/retina.png",
+        heroTitle: "Protecting Central Vision",
+        heroSubtitle: "Expert Retina Care",
+        heroTagline: "Precision care for the eye's most vital layer.",
+        overviewTitle: "Guardians of the Retina",
+        overviewText: "The retina is the film of the camera that is your eye. Damage here can be permanent, which is why our retina specialists are available 24/7 for emergencies and use the most advanced imaging systems available.",
+        longDesc: "From Age-Related Macular Degeneration (AMD) to Diabetic Retinopathy, retinal diseases require vigilant monitoring and precise intervention. Our clinic is equipped with high-definition OCT scans that allow us to see layers of the retina that are invisible to the naked eye.\n\nWe specialize in pain-free, specialized injection therapies that have revolutionized the treatment of wet AMD, halting vision loss in its tracks. For surgical cases like retinal detachments or macular holes, our surgeons use 25-gauge and 27-gauge sutureless vitrectomy systems for minimally invasive repairs and quicker recovery.",
+        scopeTitle: "Retinal Therapeutics",
+        scopeImg: "/assets/images/services/retina.png",
+        scopePoints: [
+            { title: "Diabetic Screening", desc: "AI-assisted fundus analysis." },
+            { title: "Intravitreal Injections", desc: "Anti-VEGF therapy for AMD & edema." },
+            { title: "Sutureless Vitrectomy", desc: "Minimally invasive retinal repair." },
+            { title: "Laser Photocoagulation", desc: "Treatment for tears and vascular leaks." }
+        ],
+        doctorRoleKeyword: "Retina",
+        faqs: [
+            { question: "What is diabetic retinopathy?", answer: "It's a complication of diabetes that affects the eyes, caused by damage to the blood vessels of the light-sensitive tissue at the back of the eye (retina)." }
+        ]
+    },
+    {
+        id: "cornea-transplant",
+        title: "Cornea Transplant",
+        shortDesc: "Leaders in partial thickness transplants like DMEK and DSAEK. These ultra-thin grafts provide faster visual recovery and lower rejection rates than traditional methods.",
+        img: "/assets/images/services/cornea-transplant.png",
+        heroTitle: "Clearer Vision Ahead",
+        heroSubtitle: "Advanced Cornea Care",
+        heroTagline: "Restoring clarity, layer by layer.",
+        overviewTitle: "The Window to Your Vision",
+        overviewText: "The cornea is the eye's outermost layer. When it becomes cloudy or scarred, vision fades. We specialize in restoring that clarity through advanced transplantation techniques.",
+        longDesc: "Corneal transplantation has evolved. We no longer replace the entire cornea unless absolutely necessary. Instead, we perform component separation transplants (DMEK/DSAEK), replacing only the damaged layers.\n\nThis approach significantly reduces rejection risk and speeds up visual recovery from months to weeks. We also manage keratoconus with Collagen Cross-Linking (CXL) to halt progression and Scleral Lenses for visual rehabilitation.",
+        scopeTitle: "Corneal Services",
+        scopeImg: "/assets/images/services/cornea-transplant.png",
+        scopePoints: [
+            { title: "DMEK / DSAEK", desc: "Partial thickness transplants." },
+            { title: "C3R / CXL", desc: "Collagen Cross-Linking for Keratoconus." },
+            { title: "Dry Eye Clinic", desc: "Comprehensive surface management." },
+            { title: "Pterygium Surgery", desc: "Autograft technique for low recurrence." }
+        ],
+        doctorRoleKeyword: "Cornea",
+        faqs: [
+            { question: "What is a cornea transplant?", answer: "It's a surgical procedure to replace part of your cornea with corneal tissue from a donor." }
+        ]
+    },
+    {
+        id: "pediatric-vision",
+        title: "Pediatric Vision",
+        shortDesc: "Specialized care for developing eyes. From myopia control using atropine or Ortho-K to gentle squint (strabismus) correction surgeries for perfect alignment.",
+        img: "/assets/images/services/pediatric-vision.png",
+        heroTitle: "Little Eyes, Big Dreams",
+        heroSubtitle: "Pediatric Ophthalmology",
+        heroTagline: "Nurturing vision for a lifetime of learning.",
+        overviewTitle: "Care Designed for Kids",
+        overviewText: "Children aren't just small adults. Their eyes are constantly developing, and vision issues can impact learning and confidence. We create a fun, fearless environment for our youngest patients.",
+        longDesc: "80% of classroom learning is visual. Undiagnosed vision problems can be misdiagnosed as learning disabilities. Our pediatric team is skilled in examining even non-verbal children using specialized equipment.\n\nWe are leaders in Myopia Control, using Atropine therapy and Ortho-K lenses to slow down the progression of nearsightedness. We also perform delicate strabismus (squint) surgeries to align eyes perfectly, ensuring proper 3D vision development.",
+        scopeTitle: "Pediatric Services",
+        scopeImg: "/assets/images/services/pediatric-vision.png",
+        scopePoints: [
+            { title: "Myopia Control", desc: "Atropine & Ortho-K management." },
+            { title: "Squint Surgery", desc: "Muscle correction for alignment." },
+            { title: "Amblyopia Therapy", desc: "Lazy eye patch & digital therapy." },
+            { title: "ROP Screening", desc: "Retinal care for premature infants." }
+        ],
+        doctorRoleKeyword: "Pediatric",
+        faqs: [
+            { question: "When should my child have their first eye exam?", answer: "The American Academy of Ophthalmology recommends screenings at birth, age 1, age 3, and before first grade." }
+        ]
+    },
+    {
+        id: "dry-eye-spa",
+        title: "Dry Eye Spa",
+        shortDesc: "Relief for gritty, tired eyes. Our Dry Eye Spa features LipiFlow thermal pulsation and IPL therapy to unclog glands and restore your natural tear film.",
+        img: "/assets/images/services/dry-eye-spa.png",
+        heroTitle: "Soothe Your Eyes",
+        heroSubtitle: "Advanced Dry Eye Spa",
+        heroTagline: "Relief from the digital strain of modern life.",
+        overviewTitle: "More Than Just Drops",
+        overviewText: "Chronic dry eye is a disease of the surface. Artificial tears only mask the symptoms. We treat the root cause—blocked oil glands and inflammation—to provide lasting relief.",
+        longDesc: "Our Dry Eye Spa is a sanctuary for tired eyes. We utilize LipiFlow® Thermal Pulsation technology to gently heat and massage the Meibomian glands, clearing blockages that cause evaporative dry eye.\n\nCombined with IPL (Intense Pulsed Light) therapy to reduce inflammation and BlephEx treatments for lid hygiene, we restore the natural balance of your tear film. Perfect for IT professionals and anyone suffering from digital eye strain.",
+        scopeTitle: "Spa Treatments",
+        scopeImg: "/assets/images/services/dry-eye-spa.png",
+        scopePoints: [
+            { title: "LipiFlow", desc: "Thermal pulsation for MGD." },
+            { title: "IPL Therapy", desc: "Light therapy for inflammation." },
+            { title: "BlephEx", desc: "Microblepharoexfoliation for lid hygiene." },
+            { title: "Punctal Plugs", desc: "Tear conservation method." }
+        ],
+        doctorRoleKeyword: "General",
+        faqs: [
+            { question: "What causes dry eyes?", answer: "Dry eyes can be caused by many factors, including aging, certain medications, environmental conditions, and Meibomian Gland Dysfunction (MGD)." }
+        ]
+    },
+    {
+        id: "oculoplastics",
+        title: "Oculoplastics",
+        shortDesc: "Cosmetic and reconstructive eyelid surgery. We treat droopy eyelids (ptosis), removes bags, and reconstruct after tumor removal with aesthetic precision.",
+        img: "/assets/images/services/oculoplastics.png",
+        heroTitle: "Aesthetic Precision",
+        heroSubtitle: "Oculoplastic Surgery",
+        heroTagline: "Where ophthalmology meets artistry.",
+        overviewTitle: "Form Meets Function",
+        overviewText: "Your eyes are the focal point of your face. Whether reconstructive or cosmetic, our oculoplastic procedures are designed to enhance appearance while protecting the health of your eyes.",
+        longDesc: "Oculoplastics is a specialized field combining the microsurgery of ophthalmology with the aesthetic principles of plastic surgery. We treat functional issues like Ptosis (droopy eyelids) that obstruct vision, as well as Entropion/Ectropion.\n\nOn the cosmetic side, we offer Blepharoplasty (eyelid lifts) to remove excess skin and bags, giving you a rejuvenated, rested appearance. All procedures are performed with a deep understanding of eye anatomy to ensure safety and natural-looking results.",
+        scopeTitle: "Aesthetic Services",
+        scopeImg: "/assets/images/services/oculoplastics.png",
+        scopePoints: [
+            { title: "Blepharoplasty", desc: "Eyelid lifting & bag removal." },
+            { title: "Ptosis Repair", desc: "Correction of droopy eyelids." },
+            { title: "Botox & Fillers", desc: "Non-surgical rejuvenation." },
+            { title: "Orbit Surgery", desc: "Trauma and tumor management." }
+        ],
+        doctorRoleKeyword: "Oculoplastic",
+        faqs: [
+            { question: "What is blepharoplasty?", answer: "It's a type of surgery that repairs droopy eyelids and may involve removing excess skin, muscle and fat." }
+        ]
+    }
 ];
+
+// Services List (Subset for Homepage)
+const SERVICES = ALL_SERVICES.slice(0, 8);
 
 // ======================== DOCTORS DATA ========================
 const DOCTORS = [
@@ -143,15 +332,15 @@ const seedData = async () => {
         console.log('🗑️  Cleared existing CMS data');
 
         // ======================= SEED DOCTORS =======================
-        await Doctor.insertMany(DOCTORS);
-        console.log(`👨‍⚕️ Seeded ${DOCTORS.length} doctors`);
+        // await Doctor.insertMany(DOCTORS);
+        // console.log(`👨‍⚕️ Seeded ${DOCTORS.length} doctors`);
 
         // ======================= SEED BLOGS =======================
         await Blog.insertMany(BLOG_POSTS);
         console.log(`📝 Seeded ${BLOG_POSTS.length} blogs`);
 
         // ======================= HOME PAGE (12 sections) =======================
-        const homePage = await Page.create({ slug: 'home', title: 'Home', type: 'main', navbarOrder: 0, isPublished: true, showInNavbar: false, metaTitle: 'Visionary Eye Care - World-Class Eye Care' });
+        const homePage = await Page.create({ slug: 'home', title: 'Home', type: 'main', navbarOrder: 0, isPublished: true, showInNavbar: false, metaTitle: 'Romashka Health Care - World-Class Eye Care' });
 
         await Section.create([
             { pageId: homePage._id, type: 'advertisement', order: 0, title: 'Advertisement Popup', isVisible: true, data: { enabled: true, ctaText: 'Limited Time Offer. Visit us today!', showFrequency: '1 hour', image: 'https://images.unsplash.com/photo-1606166187734-a4b78643dd60?q=80&w=600' } },
@@ -170,11 +359,11 @@ const seedData = async () => {
         console.log('📄 Home page: 12 sections');
 
         // ======================= ABOUT US PAGE (6 sections) =======================
-        const aboutPage = await Page.create({ slug: 'about', title: 'About Us', type: 'main', navbarOrder: 1, isPublished: true, showInNavbar: true, metaTitle: 'About Us - Visionary Eye Care' });
+        const aboutPage = await Page.create({ slug: 'about', title: 'About Us', type: 'main', navbarOrder: 1, isPublished: true, showInNavbar: true, metaTitle: 'About Us - Romashka Health Care' });
 
         await Section.create([
-            { pageId: aboutPage._id, type: 'hero', order: 0, title: 'About Hero', isVisible: true, data: { tagline: 'Our Story', title: 'We see the world differently.', subtitle: "Visionary isn't just a clinic. It's a promise to restore not just sight, but the connection to the world around you.", ctaText: "Meet Our Team", backgroundImage: 'https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2080' } },
-            { pageId: aboutPage._id, type: 'content', order: 1, title: 'Full Width Image', isVisible: true, data: { image: 'https://images.unsplash.com/photo-1516574187841-6930022476c9?q=80&w=2080', content: '"Precision is not an act, it is a habit. Our surgeons cultivate this habit every single day."' } },
+            { pageId: aboutPage._id, type: 'hero', order: 0, title: 'About Hero', isVisible: true, data: { tagline: 'Our Story', title: 'We see the world differently.', subtitle: "Romashka isn't just a clinic. It's a promise to restore not just sight, but the connection to the world around you.", ctaText: "Meet Our Team", backgroundImage: '/assets/images/hero-bg.jpg' } },
+            { pageId: aboutPage._id, type: 'content', order: 1, title: 'Full Width Image', isVisible: true, data: { image: '/assets/images/services/advanced-diagnostics.png', content: '"Precision is not an act, it is a habit. Our surgeons cultivate this habit every single day."' } },
             { pageId: aboutPage._id, type: 'content', order: 2, title: 'Our Philosophy', isVisible: true, data: { content: "In an era of assembly-line medicine, we chose a different path. We believe that every eye has a story. We don't hide behind complex medical jargon. We believe clarity begins with communication." } },
             { pageId: aboutPage._id, type: 'stats', order: 3, title: 'Legacy Timeline', isVisible: true, data: { stats: [{ number: '1995', label: 'Born from a desire to do better.' }, { number: '2008', label: 'First blade-free studio in the region.' }, { number: '2019', label: 'Recognized globally for safety standards.' }, { number: 'Now', label: 'Pioneering AI in preventative care.' }] } },
             { pageId: aboutPage._id, type: 'cards', order: 4, title: 'We stand for...', isVisible: true, data: { headline: 'We stand for...', cards: [{ icon: '🌟', title: 'Transparency', description: 'No hidden costs. No surprise procedures. Complete clarity.' }, { icon: '🔭', title: 'Innovation', description: 'Investing in the future of sight, today.' }, { icon: '💙', title: 'Compassion', description: 'Treating the person, not just the condition.' }] } },
@@ -184,20 +373,20 @@ const seedData = async () => {
         console.log('📄 About page: 7 sections');
 
         // ======================= DOCTORS PAGE (3 sections) =======================
-        const doctorsPage = await Page.create({ slug: 'doctors', title: 'Our Doctors', type: 'main', navbarOrder: 2, isPublished: true, showInNavbar: true, metaTitle: 'Our Expert Doctors - Visionary Eye Care' });
+        const doctorsPage = await Page.create({ slug: 'doctors', title: 'Our Doctors', type: 'main', navbarOrder: 2, isPublished: true, showInNavbar: true, metaTitle: 'Our Expert Doctors - Romashka Health Care' });
 
         await Section.create([
-            { pageId: doctorsPage._id, type: 'hero', order: 0, title: 'Doctors Hero', isVisible: true, data: { title: 'World-class expertise.', tagline: 'Visionary care for a clearer tomorrow.', subtitle: 'Meet our team of world-class ophthalmologists and vision care experts.', backgroundImage: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=2000' } },
+            { pageId: doctorsPage._id, type: 'hero', order: 0, title: 'Doctors Hero', isVisible: true, data: { title: 'World-class expertise.', tagline: 'Visionary care for a clearer tomorrow.', subtitle: 'Meet our team of world-class ophthalmologists and vision care experts.', backgroundImage: '/assets/images/services/retina.png' } },
             { pageId: doctorsPage._id, type: 'doctors', order: 1, title: 'All Doctors', isVisible: true, data: { showAll: true, layout: 'grid', showSearch: true, showBookButton: true } },
             { pageId: doctorsPage._id, type: 'testimonials', order: 2, title: 'What Our Patients Say', isVisible: true, data: { tagline: 'Testimonials', headline: 'What Our Patients Say', testimonials: TESTIMONIALS } }
         ]);
         console.log('📄 Doctors page: 3 sections');
 
         // ======================= CONTACT PAGE (4 sections) =======================
-        const contactPage = await Page.create({ slug: 'contact', title: 'Contact', type: 'main', navbarOrder: 5, isPublished: true, showInNavbar: true, metaTitle: 'Contact Us - Visionary Eye Care' });
+        const contactPage = await Page.create({ slug: 'contact', title: 'Contact', type: 'main', navbarOrder: 5, isPublished: true, showInNavbar: true, metaTitle: 'Contact Us - Romashka Health Care' });
 
         await Section.create([
-            { pageId: contactPage._id, type: 'hero', order: 0, title: 'Contact Hero', isVisible: true, data: { title: 'Get in Touch', subtitle: "We're here to help. Reach out to us for appointments, inquiries, or just to say hello.", backgroundImage: 'https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6?q=80&w=2000' } },
+            { pageId: contactPage._id, type: 'hero', order: 0, title: 'Contact Hero', isVisible: true, data: { title: 'Get in Touch', subtitle: "We're here to help. Reach out to us for appointments, inquiries, or just to say hello.", backgroundImage: '/assets/images/services/emergency-care.png' } },
             { pageId: contactPage._id, type: 'contact', order: 1, title: 'Contact Information', isVisible: true, data: { showForm: true, showInfo: true } },
             { pageId: contactPage._id, type: 'faq', order: 2, title: 'FAQ', isVisible: true, data: { headline: 'Frequently Asked Questions', faqs: FAQ_ITEMS } },
             { pageId: contactPage._id, type: 'map', order: 3, title: 'Location Map', isVisible: true, data: { embedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56066.65089631422!2d77.33685559999999!3d28.6124282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5a43173357b%3A0x37ffce30c87cc03f!2sSector%2062%2C%20Noida!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin' } }
@@ -205,143 +394,26 @@ const seedData = async () => {
         console.log('📄 Contact page: 4 sections');
 
         // ======================= BLOGS PAGE (2 sections) =======================
-        const blogsPage = await Page.create({ slug: 'blogs', title: 'Blogs', type: 'main', navbarOrder: 4, isPublished: true, showInNavbar: true, metaTitle: 'Eye Health Blog - Visionary Eye Care' });
+        const blogsPage = await Page.create({ slug: 'blogs', title: 'Blogs', type: 'main', navbarOrder: 4, isPublished: true, showInNavbar: true, metaTitle: 'Eye Health Blog - Romashka Health Care' });
 
         await Section.create([
-            { pageId: blogsPage._id, type: 'hero', order: 0, title: 'Blog Hero', isVisible: true, data: { tagline: 'The Visionary Journal', title: 'Medical Insights', showSearch: true, backgroundImage: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2000' } },
+            { pageId: blogsPage._id, type: 'hero', order: 0, title: 'Blog Hero', isVisible: true, data: { tagline: 'The Romashka Journal', title: 'Medical Insights', showSearch: true, backgroundImage: '/assets/images/services/genetic-testing.png' } },
             { pageId: blogsPage._id, type: 'blogs', order: 1, title: 'All Blog Posts', isVisible: true, data: { showAll: true, layout: 'grid', showSearch: true } }
         ]);
         console.log('📄 Blogs page: 2 sections');
 
         // ======================= SPECIALITIES PAGE (4 sections) =======================
-        const specialtiesPage = await Page.create({ slug: 'specialties', title: 'Specialties', type: 'main', navbarOrder: 3, isPublished: true, showInNavbar: true, metaTitle: 'Eye Care Specialties - Visionary Eye Care' });
+        const specialtiesPage = await Page.create({ slug: 'specialties', title: 'Specialties', type: 'main', navbarOrder: 3, isPublished: true, showInNavbar: true, metaTitle: 'Eye Care Specialties - Romashka Health Care' });
 
         await Section.create([
-            { pageId: specialtiesPage._id, type: 'hero', order: 0, title: 'Specialties Hero', isVisible: true, data: { title: 'Precision in every procedure.', tagline: 'Advanced technology. Human touch.', subtitle: 'Comprehensive eye care services powered by the latest medical technology.', backgroundImage: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2000' } },
+            { pageId: specialtiesPage._id, type: 'hero', order: 0, title: 'Specialties Hero', isVisible: true, data: { title: 'Precision in every procedure.', tagline: 'Advanced technology. Human touch.', subtitle: 'Comprehensive eye care services powered by the latest medical technology.', backgroundImage: '/assets/images/services/advanced-diagnostics.png' } },
             { pageId: specialtiesPage._id, type: 'services', order: 1, title: 'All Services', isVisible: true, data: { services: SERVICES } },
             { pageId: specialtiesPage._id, type: 'cards', order: 2, title: 'Your Journey to Clear Vision', isVisible: true, data: { tagline: 'How It Works', headline: 'Your Journey to Clear Vision', cards: [{ icon: '1', title: 'Holistic Exam', description: 'We use AI topography to map 22,000 points of your eye for a complete health profile.' }, { icon: '2', title: 'Custom Plan', description: 'Your treatment is 100% personalized to your lifestyle.' }, { icon: '3', title: 'Precision Care', description: 'Blade-free Femtosecond lasers for micron-level accuracy.' }, { icon: '4', title: 'Lifetime Support', description: 'Our post-op care ensures your results remain stable for years.' }] } },
             { pageId: specialtiesPage._id, type: 'technology', order: 3, title: 'Technology', isVisible: true, data: { tagline: 'Innovation', headline: 'World-Class Technology', technologies: TECHNOLOGY } }
         ]);
         console.log('📄 Specialties page: 4 sections');
 
-        // ======================= SERVICE SUBPAGES (18 services) =======================
-        const ALL_SERVICES = [
-            {
-                id: 'cataract-surgery',
-                title: 'Cataract Surgery',
-                heroTitle: 'Restore Your Vision',
-                heroSubtitle: 'Advanced Cataract Solutions',
-                heroTagline: 'See the world in full color again.',
-                overviewTitle: 'Blade-Free Precision',
-                overviewText: 'Our blade-free laser cataract surgery offers precision and safety that traditional manual surgery cannot match. We use the most advanced Femtosecond laser technology to ensure your procedure is painless, accurate, and provides rapid recovery.',
-                scopeTitle: 'Comprehensive Care Journey',
-                scopePoints: ['Advanced Diagnostics', 'Femto-Laser Assisted', 'Premium IOLs', 'Dropless Surgery'],
-                faqs: [
-                    { question: "Is cataract surgery painful?", answer: "No, the procedure is performed under local anesthesia (eye drops) and is painless. You may feel mild pressure but no pain." },
-                    { question: "How long does recovery take?", answer: "Most patients notice improved vision within 24 hours. Full recovery typically takes 2-4 weeks." }
-                ]
-            },
-            {
-                id: 'lasik-correction',
-                title: 'LASIK Correction',
-                heroTitle: 'Freedom From Glasses',
-                heroSubtitle: 'Contoura® Vision LASIK',
-                heroTagline: 'Wake up and see the world clearly.',
-                overviewTitle: 'Beyond 20/20 Vision',
-                overviewText: 'Topography-guided LASIK maps 22,000 unique elevation points on your cornea for highly personalized treatment. This results in sharper vision, fewer side effects, and better night vision compared to standard LASIK.',
-                scopeTitle: 'Refractive Excellence',
-                scopePoints: ['Eligibility Exam', 'Contoura® Vision', 'Blade-Free Flap', 'Lifetime Enhancement'],
-                faqs: [
-                    { question: "Am I eligible for LASIK?", answer: "We perform a comprehensive 7-point check to determine eligibility. Most healthy adults over 18 with stable prescriptions are good candidates." },
-                    { question: "Is it permanent?", answer: "Yes, LASIK permanently reshapes your cornea. However, age-related reading vision changes (presbyopia) may still occur later in life." }
-                ]
-            },
-            {
-                id: 'glaucoma-treatment',
-                title: 'Glaucoma Treatment',
-                heroTitle: 'Protect Your Sight',
-                heroSubtitle: 'Advanced Glaucoma Management',
-                heroTagline: 'Silent thief of sight, stopped here.',
-                overviewTitle: 'Early Detection is Key',
-                overviewText: 'Glaucoma often has no symptoms until permanent damage occurs. We specialize in early detection using OCT technology and offer treatments ranging from drops and lasers to Minimally Invasive Glaucoma Surgery (MIGS).',
-                scopeTitle: 'Preserving Vision',
-                scopePoints: ['OCT Imaging', 'Laser Therapy (SLT)', 'MIGS Surgery', 'Pressure Monitoring'],
-                faqs: [
-                    { question: "Can glaucoma damage be reversed?", answer: "No, vision lost to glaucoma cannot be restored. This is why early detection and regular monitoring are critical." }
-                ]
-            },
-            {
-                id: 'retina-care',
-                title: 'Retina Care',
-                heroTitle: 'Expert Retina Services',
-                heroSubtitle: 'Diabetic Retinopathy & Macular Care',
-                heroTagline: 'Advanced care for complex conditions.',
-                overviewTitle: 'Specialized Retinal Therapy',
-                overviewText: 'Our retina specialists manage complex conditions like Diabetic Retinopathy, Macular Degeneration, and Retinal Detachments using state-of-the-art injections, lasers, and vitrectomy surgery.',
-                scopeTitle: 'Retinal Solutions',
-                scopePoints: ['Diabetic Screening', 'Anti-VEGF Injections', 'Vitrectomy', 'Laser Photocoagulation'],
-                faqs: [
-                    { question: "What are symptoms of retinal detachment?", answer: "Sudden flashes of light, a shower of floaters, or a curtain-like shadow over your vision are medical emergencies." }
-                ]
-            },
-            {
-                id: 'pediatric-ophthalmology',
-                title: 'Pediatric Ophthalmology',
-                heroTitle: 'Little Eyes, Big Dreams',
-                heroSubtitle: 'Child-Friendly Eye Care',
-                heroTagline: 'Gentle care for your little ones.',
-                overviewTitle: 'Vision Development Experts',
-                overviewText: 'We treat squint (strabismus), lazy eye (amblyopia), and refractive errors in children. Our approach is gentle, using fun and engaging methods to ensure accurate diagnosis.',
-                scopeTitle: 'Pediatric Services',
-                scopePoints: ['Vision Screening', 'Squint Surgery', 'Amblyopia Therapy', 'Myopia Control'],
-                faqs: [
-                    { question: "When should my child have their first exam?", answer: "We recommend screening at birth, then at age 1, age 3, and before starting school." }
-                ]
-            },
-            {
-                id: 'dry-eye-clinic',
-                title: 'Dry Eye Clinic',
-                heroTitle: 'Relief is Here',
-                heroSubtitle: 'Advanced Dry Eye Solutions',
-                heroTagline: 'Comfortable eyes, all day long.',
-                overviewTitle: 'Treating the Root Cause',
-                overviewText: 'Dry eye is more than just irritation. It can damage your cornea. We diagnose the specific type of dry eye (aqueous or evaporative) and offer IPL therapy, warm pulsation, and plugs for lasting relief.',
-                scopeTitle: 'Dry Eye Therapies',
-                scopePoints: ['Lipiview Analysis', 'IPL Therapy', 'Punctal Plugs', 'BlephEx Treatment'],
-                faqs: [
-                    { question: "Why are my eyes dry properly?", answer: "It could be screen time, environment, or gland dysfunction. Our diagnostic suite identifies the exact cause." }
-                ]
-            },
-            {
-                id: 'cornea-transplant',
-                title: 'Cornea Transplant',
-                heroTitle: 'Restoring Clarity',
-                heroSubtitle: 'Modern Keratoplasty Services',
-                heroTagline: 'New vision, new life.',
-                overviewTitle: 'Layer-Specific Transplants',
-                overviewText: 'We perform advanced partial-thickness transplants (DSEK/DMEK) which offer faster recovery and lower rejection rates than traditional full-thickness transplants.',
-                scopeTitle: 'Corneal Excellence',
-                scopePoints: ['DSEK/DMEK', 'Full Thickness (PK)', 'Collagen Crosslinking', 'Keratoconus Care'],
-                faqs: [
-                    { question: "How long is the wait for a cornea?", answer: "We have partnerships with major eye banks, significantly reducing wait times for scheduled surgeries." }
-                ]
-            },
-            {
-                id: 'optical-boutique',
-                title: 'Optical Boutique',
-                heroTitle: 'Style Meets Vision',
-                heroSubtitle: 'Premium Eyewear Collection',
-                heroTagline: 'Look good. See better.',
-                overviewTitle: 'Curated Fashion',
-                overviewText: 'Discover our collection of international designer frames and premium lens technologies including Crizal, Varilux, and Blue-light filters tailored to your digital lifestyle.',
-                scopeTitle: 'Optical Services',
-                scopePoints: ['Designer Frames', 'Progressive Lenses', 'Contact Lenses', 'Repair & Adjustment'],
-                faqs: [
-                    { question: "Do you have prescription sunglasses?", answer: "Yes, we can customize any frame with your prescription and polarization." }
-                ]
-            }
-        ];
-
+        // ======================= SERVICE SUBPAGES (Generated from ALL_SERVICES) =======================
         for (const service of ALL_SERVICES) {
             const subPage = await Page.create({
                 slug: `services/${service.id}`,
@@ -350,15 +422,15 @@ const seedData = async () => {
                 parentPage: specialtiesPage._id,
                 isPublished: true,
                 showInNavbar: false,
-                metaTitle: `${service.title} - Visionary Eye Care`
+                metaTitle: `${service.title} - Romashka Health Care`
             });
 
             await Section.create([
-                { pageId: subPage._id, type: 'hero', order: 0, title: `${service.title} Hero`, isVisible: true, data: { tagline: 'Clinical Excellence', title: service.heroTitle, subtitle: service.heroTagline, backgroundImage: 'https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=2000' } },
+                { pageId: subPage._id, type: 'hero', order: 0, title: `${service.title} Hero`, isVisible: true, data: { tagline: 'Clinical Excellence', title: service.heroTitle, subtitle: service.heroTagline, backgroundImage: service.img } },
                 { pageId: subPage._id, type: 'content', order: 1, title: 'Overview', isVisible: true, data: { tagline: service.overviewTitle, content: service.overviewText } },
-                { pageId: subPage._id, type: 'cards', order: 2, title: 'Scope of Services', isVisible: true, data: { tagline: 'What We Offer', headline: service.scopeTitle, cards: service.scopePoints.map((p, i) => ({ title: p, description: `Expert ${p.toLowerCase()} solutions.` })) } },
+                { pageId: subPage._id, type: 'cards', order: 2, title: 'Scope of Services', isVisible: true, data: { tagline: 'What We Offer', headline: service.scopeTitle, cards: service.scopePoints.map(p => ({ title: p.title, description: p.desc })) } },
                 { pageId: subPage._id, type: 'doctors', order: 3, title: 'Specialists', isVisible: true, data: { showCount: 3, layout: 'grid', showBookButton: true } },
-                { pageId: subPage._id, type: 'faq', order: 4, title: 'Common Questions', isVisible: true, data: { headline: 'Frequently Asked Questions', faqs: service.faqs || [] } },
+                { pageId: subPage._id, type: 'faq', order: 4, title: 'Common Questions', isVisible: true, data: { headline: 'Frequently Asked Questions', faqs: service.faqs || service.faq || [] } },
                 { pageId: subPage._id, type: 'cta', order: 5, title: 'Book Now', isVisible: true, data: { title: 'Ready to restore your vision?', subtitle: 'Schedule your comprehensive evaluation today.', buttonText: 'Book Appointment', buttonLink: '/appointment' } }
             ]);
         }
@@ -366,13 +438,13 @@ const seedData = async () => {
 
         // ======================= SITE SETTINGS =======================
         await SiteSettings.findOneAndUpdate({}, {
-            siteName: 'Visionary Eye Care',
+            siteName: 'Romashka Health Care',
             tagline: 'World-Class Eye Care',
-            contact: { address: 'Sector 62, Noida, Uttar Pradesh 201301', phone: '+91 120 456 7890', email: 'info@visionaryeye.in', emergencyNumber: '1800-EYE-CARE', workingHours: { weekdays: '8:00 AM - 8:00 PM', saturday: '9:00 AM - 5:00 PM', sunday: 'Emergency Only' } },
-            social: { facebook: 'https://facebook.com/visionaryeyecare', twitter: 'https://twitter.com/visionaryeye', instagram: 'https://instagram.com/visionaryeyecare', linkedin: 'https://linkedin.com/company/visionaryeyecare', youtube: 'https://youtube.com/visionaryeyecare' },
+            contact: { address: 'Sector 62, Noida, Uttar Pradesh 201301', phone: '+91 120 456 7890', email: 'info@romashka.in', emergencyNumber: '1800-ROMASHKA', workingHours: { weekdays: '8:00 AM - 8:00 PM', saturday: '9:00 AM - 5:00 PM', sunday: 'Emergency Only' } },
+            social: { facebook: 'https://facebook.com/romashka', twitter: 'https://twitter.com/romashka', instagram: 'https://instagram.com/romashka', linkedin: 'https://linkedin.com/company/romashka', youtube: 'https://youtube.com/romashka' },
             navbar: {
-                siteName: 'Visionary',
-                logoInitial: 'V',
+                siteName: 'Romashka',
+                logoInitial: 'R',
                 ctaText: 'Book an Appointment',
                 ctaLink: '/appointment',
                 items: [
@@ -386,7 +458,7 @@ const seedData = async () => {
             },
             footer: {
                 description: 'Providing clarity and vision to the world through advanced ophthalmology and compassionate care.',
-                copyright: '© 2024 Visionary Eye Care. All rights reserved.',
+                copyright: '© 2026 Romashka Health Care. All rights reserved.',
                 quickLinks: [
                     { name: 'Home', href: '/' },
                     { name: 'About Us', href: '/about' },
@@ -408,6 +480,7 @@ const seedData = async () => {
         console.log('\n✅ DATABASE SEEDED WITH COMPREHENSIVE CONTENT!');
         process.exit(0);
     } catch (error) {
+
         console.error('❌ Seed error:', error);
         process.exit(1);
     }

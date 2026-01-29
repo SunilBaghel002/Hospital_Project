@@ -143,6 +143,22 @@ router.post('/', adminAuth, async (req, res) => {
     }
 });
 
+// TOGGLE Online Status (Doctor/Admin)
+router.put('/:id/availability', adminAuth, async (req, res) => {
+    try {
+        const { isOnline } = req.body;
+        const doctor = await Doctor.findByIdAndUpdate(
+            req.params.id,
+            { isOnline },
+            { new: true }
+        );
+        if (!doctor) return res.status(404).json({ message: 'Doctor not found' });
+        res.json(doctor);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 // REISSUE Password (admin)
 router.post('/reissue-password/:id', adminAuth, async (req, res) => {
     try {

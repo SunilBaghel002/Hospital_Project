@@ -23,7 +23,7 @@ export default function Blogs() {
                             animate={{ opacity: 1 }}
                             className="text-brand-blue font-bold tracking-widest uppercase text-xs mb-2 block"
                         >
-                            The Visionary Journal
+                            The Romashka Journal
                         </motion.span>
                         <motion.h1
                             initial={{ y: 20, opacity: 0 }}

@@ -74,7 +74,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed top-10 md:top-16 left-0 right-0 z-50 px-3 md:px-6 flex justify-center pointer-events-none">
+            <nav className="fixed top-10 md:top-10 left-0 right-0 z-50 px-3 md:px-6 flex justify-center pointer-events-none">
                 <div className="pointer-events-auto bg-white/80 backdrop-blur-xl border border-white/40 shadow-sm rounded-full pl-2 md:pl-3 pr-2 py-1.5 md:py-2 flex items-center gap-2 md:gap-6 max-w-7xl w-full justify-between">
                     {/* Logo - Responsive */}
                     <Link to="/" className="flex items-center gap-1.5 md:gap-2 pl-1 md:pl-2 min-w-0">
@@ -83,11 +83,11 @@ export default function Navbar() {
                         ) : (
                             <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-tr from-brand-blue to-emerald-400 rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold text-sm md:text-base shadow-lg shadow-emerald-200 flex-shrink-0">{logoInitial}</div>
                         )}
-                        <span className="text-sm md:text-xl font-bold text-brand-dark tracking-tight font-sans truncate max-w-[120px] sm:max-w-[180px] md:max-w-none">{siteName}</span>
+                        <span className="text-sm lg:text-xl font-bold text-brand-dark tracking-tight font-sans truncate max-w-[120px] sm:max-w-[180px] md:max-w-none">{siteName}</span>
                     </Link>
 
                     {/* Nav Content - Desktop */}
-                    <div className="hidden md:flex items-center relative">
+                    <div className="hidden lg:flex items-center relative">
                         {links.map((link, index) => (
                             <NavLink
                                 key={link.name}
@@ -114,12 +114,12 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <Link to={ctaLink} className="hidden md:block bg-brand-blue text-white px-6 py-2.5 rounded-full font-medium hover:bg-brand-blue/90 transition-all hover:shadow-lg hover:shadow-emerald-200 active:scale-95 text-sm">
+                        <Link to={ctaLink} className="hidden lg:block bg-brand-blue text-white px-6 py-2.5 rounded-full font-medium hover:bg-brand-blue/90 transition-all hover:shadow-lg hover:shadow-emerald-200 active:scale-95 text-sm">
                             {ctaText}
                         </Link>
 
                         {/* Mobile Menu Button */}
-                        <button className="md:hidden text-gray-700 p-2 hover:bg-gray-100 rounded-full transition-colors relative z-50" onClick={() => setIsOpen(!isOpen)}>
+                        <button className="lg:hidden text-gray-700 p-2 hover:bg-gray-100 rounded-full transition-colors relative z-50" onClick={() => setIsOpen(!isOpen)}>
                             {isOpen ? <X size={22} className="text-brand-dark" /> : <Menu size={22} />}
                         </button>
                     </div>
@@ -133,7 +133,7 @@ export default function Navbar() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => setIsOpen(false)}
-                    className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+                    className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
                 />
             )}
 
@@ -142,7 +142,7 @@ export default function Navbar() {
                 initial={{ x: '100%' }}
                 animate={{ x: isOpen ? 0 : '100%' }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white/95 backdrop-blur-xl shadow-2xl z-40 md:hidden flex flex-col pointer-events-auto"
+                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white/95 backdrop-blur-xl shadow-2xl z-40 lg:hidden flex flex-col pointer-events-auto"
             >
                 <div className="p-6 flex flex-col h-full overflow-y-auto">
                     <div className="flex flex-col gap-1 flex-1 mt-24">

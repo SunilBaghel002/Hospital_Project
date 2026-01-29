@@ -54,7 +54,7 @@ const Login = () => {
                                     type="email"
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-brand-peach/30 rounded-xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                    placeholder="your@email.com"
+                                    placeholder="Enter Your Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -62,14 +62,15 @@ const Login = () => {
                         </div>
 
                         <div>
-                            <label className="text-sm font-semibold text-gray-700 ml-1 mb-1 block">Password</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">Password</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                                 <input
                                     type="password"
+                                    name="password"
                                     required
-                                    className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-brand-peach/30 rounded-xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                    placeholder="••••••••"
+                                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 transition-all outline-none"
+                                    placeholder="Enter Your Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />

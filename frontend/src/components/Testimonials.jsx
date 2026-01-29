@@ -11,8 +11,8 @@ export default function Testimonials({ data }) {
             id: 1,
             name: "Priya Mehta",
             role: "Glaucoma Patient",
-            quote: "I was terrified when I was diagnosed with early-stage glaucoma. The team at Visionary Eye Care didn't just treat my eyes; they treated my fears. The laser treatment was painless, and for the first time in years, I feel confident about my future vision.",
-            poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop",
+            quote: "I was terrified when I was diagnosed with early-stage glaucoma. The team at Romashka Health Care didn't just treat my eyes; they treated my fears. The laser treatment was painless, and for the first time in years, I feel confident about my future vision.",
+            poster: "/assets/images/services/low-vision-aids.png",
             video: "https://assets.mixkit.co/videos/preview/mixkit-portrait-of-a-woman-in-a-park-1275-large.mp4"
         },
         {
@@ -20,7 +20,7 @@ export default function Testimonials({ data }) {
             name: "Arjun Patel",
             role: "LASIK Patient",
             quote: "Waking up and seeing the alarm clock clearly without reaching for glasses is a miracle I experience every day now. The recovery was faster than I imagined. Best investment I've ever made in myself.",
-            poster: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
+            poster: "/assets/images/services/neuro-ophthal.png",
             video: "https://assets.mixkit.co/videos/preview/mixkit-young-man-looking-at-the-horizon-standing-on-the-beach-1163-large.mp4"
         },
         {
@@ -28,7 +28,7 @@ export default function Testimonials({ data }) {
             name: "Lakshmi Reddy",
             role: "Cataract Surgery",
             quote: "The colors! I had forgotten how vibrant the world actually is. Dr. Sharma explained every step, and the blade-free procedure was over before I knew it. I'm painting again for the first time in a decade.",
-            poster: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop",
+            poster: "/assets/images/services/lasik.png",
             video: "https://assets.mixkit.co/videos/preview/mixkit-senior-woman-smiling-portrait-looking-at-camera-3367-large.mp4"
         }
     ];
@@ -131,7 +131,7 @@ export default function Testimonials({ data }) {
                                 ) : (
                                     <>
                                         <img
-                                            src={currentTestimonial.poster || currentTestimonial.img || "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070"}
+                                            src={currentTestimonial.poster || currentTestimonial.img || "/assets/images/services/lasik.png"}
                                             alt={currentTestimonial.name}
                                             loading="lazy"
                                             className="w-full h-full object-cover opacity-80"

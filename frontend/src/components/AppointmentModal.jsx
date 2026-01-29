@@ -17,7 +17,8 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         email: '',
         doctor: '',
         date: null,
-        time: ''
+        time: '',
+        consultationFee: 150 // Default fallback
     });
 
     // Auto-fill user data if logged in
@@ -76,7 +77,12 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
         if (isOpen) {
             document.body.style.overflow = 'hidden';
             if (initialDoctor) {
-                setFormData(prev => ({ ...prev, doctor: initialDoctor }));
+                const doc = doctors.find(d => d.name === initialDoctor);
+                setFormData(prev => ({
+                    ...prev,
+                    doctor: initialDoctor,
+                    consultationFee: doc?.consultationFee || 150
+                }));
             }
             // Reset states
             setStep(1);
@@ -86,7 +92,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
             document.body.style.overflow = 'unset';
         }
         return () => { document.body.style.overflow = 'unset'; }
-    }, [isOpen, initialDoctor]);
+    }, [isOpen, initialDoctor, doctors]);
 
     // Fetch available slots when date or doctor changes
     useEffect(() => {
@@ -203,7 +209,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                 doctor: formData.doctor,
                 date: dateString,
                 time: formData.time,
-                amount: 150.00
+                amount: formData.consultationFee
             });
 
             if (response.success) {
@@ -386,7 +392,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                             autoFocus
                                                             type="text"
                                                             className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                            placeholder="Enter your full name"
+                                                            placeholder="Enter Your Full Name"
                                                             value={formData.name}
                                                             onChange={e => setFormData({ ...formData, name: e.target.value })}
                                                         />
@@ -399,7 +405,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                         required
                                                         type="tel"
                                                         className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                        placeholder="Enter your phone number"
+                                                        placeholder="Enter Your Phone Number"
                                                         value={formData.phone}
                                                         onChange={e => {
                                                             const val = e.target.value.replace(/\D/g, ''); // Remove non-digits
@@ -414,7 +420,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                         required
                                                         type="email"
                                                         className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark"
-                                                        placeholder="Enter your email address"
+                                                        placeholder="Enter Your Email Address"
                                                         value={formData.email}
                                                         onChange={e => setFormData({ ...formData, email: e.target.value })}
                                                     />
@@ -434,7 +440,16 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                     required
                                                     className="w-full pl-12 pr-10 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-medium text-brand-dark appearance-none cursor-pointer"
                                                     value={formData.doctor}
-                                                    onChange={e => setFormData({ ...formData, doctor: e.target.value, time: '' })}
+                                                    onChange={e => {
+                                                        const selectedDocName = e.target.value;
+                                                        const doc = doctors.find(d => d.name === selectedDocName);
+                                                        setFormData({
+                                                            ...formData,
+                                                            doctor: selectedDocName,
+                                                            time: '',
+                                                            consultationFee: doc?.consultationFee || 150
+                                                        });
+                                                    }}
                                                 >
                                                     <option value="">Choose a Doctor...</option>
                                                     {doctors.map((doc, idx) => (
@@ -547,7 +562,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                         <div className="bg-gradient-to-r from-brand-blue to-brand-purple p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
                                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
                                             <p className="opacity-80 text-sm font-medium mb-1">Total Amount</p>
-                                            <h3 className="text-3xl font-bold">₹1,500.00</h3>
+                                            <h3 className="text-3xl font-bold">₹{formData.consultationFee}.00</h3>
                                             <div className="mt-4 flex items-center gap-2 opacity-60 text-xs">
                                                 <CreditCard size={14} /> Secure Encryption
                                             </div>
@@ -559,7 +574,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                 required
                                                 type="text"
                                                 className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all font-mono"
-                                                placeholder="Enter your card number"
+                                                placeholder="Enter Your Card Number"
                                                 maxLength={19}
                                             />
                                         </div>
@@ -571,7 +586,7 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
                                                     required
                                                     type="text"
                                                     className="w-full px-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-brand-blue focus:shadow-lg focus:shadow-brand-blue/10 outline-none transition-all text-center"
-                                                    placeholder="MM/YY"
+                                                    placeholder="MM / YY"
                                                     maxLength={5}
                                                 />
                                             </div>

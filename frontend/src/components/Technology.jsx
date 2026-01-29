@@ -1,8 +1,8 @@
 export default function Technology({ data }) {
     const techs = data?.technologies || [
-        { name: "Femtosecond Laser", desc: "Precision corneal incisions for blade-free cataract surgery.", img: "https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=2070&auto=format&fit=crop" },
-        { name: "OCT Imaging", desc: "High-resolution cross-sectional retinal imaging.", img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop" },
-        { name: "Digital Phoropter", desc: "Advanced automated refraction for pinpoint accuracy.", img: "https://plus.unsplash.com/premium_photo-1661766569022-1b7f918ac3f3?q=80&w=2000&auto=format&fit=crop" },
+        { name: "Femtosecond Laser", desc: "Precision corneal incisions for blade-free cataract surgery.", img: "/assets/images/services/cataract-surgery.png" },
+        { name: "OCT Imaging", desc: "High-resolution cross-sectional retinal imaging.", img: "/assets/images/services/retina.png" },
+        { name: "Digital Phoropter", desc: "Advanced automated refraction for pinpoint accuracy.", img: "/assets/images/services/advanced-diagnostics.png" },
     ];
 
     const tagline = data?.tagline || "Innovation";

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Calendar, Clock, User, Phone, CheckCircle, XCircle,
-    AlertCircle, Loader2, ArrowRight, TrendingUp, Users, FileText, Award, AlertTriangle
+    AlertCircle, Loader2, ArrowRight, TrendingUp, Users, FileText, Award, AlertTriangle, Calendar, Clock, User, Phone, CheckCircle, XCircle,
 } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -68,76 +67,76 @@ export default function DoctorDashboard() {
         }
     };
 
-    const handleStatusUpdate = async (id, status) => {
-        setActionLoading(id);
+    const handleUpdateLimit = async (newLimit) => {
         try {
             const token = localStorage.getItem('adminToken');
-            const res = await fetch(`${API_URL}/doctors/appointments/${id}/status`, {
+            const res = await fetch(`${API_URL}/doctors/${doctor._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ status })
+                body: JSON.stringify({ appointmentsPerHour: newLimit })
             });
 
             if (res.ok) {
-                setAppointments(prev => prev.map(app =>
-                    app._id === id ? { ...app, status } : app
-                ));
+                const updatedDoc = await res.json();
+                setDoctor(doc => ({ ...doc, appointmentsPerHour: updatedDoc.appointmentsPerHour }));
+                // Show toast or slight visual feedback? For now, automatic update is fine.
             }
         } catch (err) {
-            console.error('Failed to update status:', err);
-        } finally {
-            setActionLoading(null);
+            console.error('Failed to update limit:', err);
         }
     };
 
-    // Time parser
+    // Toggle Online Status
+    const handleToggleOnline = async () => {
+        try {
+            const token = localStorage.getItem('adminToken');
+            const res = await fetch(`${API_URL}/doctors/${doctor._id}/availability`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ isOnline: !doctor.isOnline })
+            });
+
+            if (res.ok) {
+                const updatedDoc = await res.json();
+                setDoctor(doc => ({ ...doc, isOnline: updatedDoc.isOnline }));
+            }
+        } catch (err) {
+            console.error('Failed to toggle status:', err);
+        }
+    };
     const parseTime = (timeStr) => {
         if (!timeStr) return 0;
-        const normalized = timeStr.toLowerCase().replace(/\./g, '').trim();
-        let time, modifier;
-        if (normalized.includes(' ')) {
-            [time, modifier] = normalized.split(' ');
-        } else {
-            const match = normalized.match(/(\d+:\d+)([ap]m)/);
-            if (match) { time = match[1]; modifier = match[2]; }
-        }
-        if (!time || !modifier) return 0;
-        let [hours, minutes] = time.split(':').map(n => parseInt(n, 10));
-        if (hours === 12) hours = 0;
-        if (modifier === 'pm') hours += 12;
+        const [time, modifier] = timeStr.trim().split(/\s+/); // Handle "10:00 AM" or "10:00AM"
+        let [hours, minutes] = time.split(':');
+        hours = parseInt(hours, 10);
+        minutes = parseInt(minutes, 10);
+        if (hours === 12 && modifier.toUpperCase() === 'AM') hours = 0;
+        if (hours !== 12 && modifier.toUpperCase() === 'PM') hours += 12;
         return hours * 60 + minutes;
     };
 
     const handleStartConsultation = (app) => {
+        const appTime = parseTime(app.time);
         const now = new Date();
         const currentMinutes = now.getHours() * 60 + now.getMinutes();
-        const appointmentMinutes = parseTime(app.time);
-
-        // Check if starting early (more than 5 minutes before scheduled time)
-        if (currentMinutes < appointmentMinutes - 5) {
-            const minutesEarly = appointmentMinutes - currentMinutes;
-            setEarlyWarning({ app, minutesEarly });
+        
+        // 10 minutes early allowance
+        if (appTime - currentMinutes > 10) {
+            setEarlyWarning({ app, minutesEarly: appTime - currentMinutes });
             return;
         }
-
-        // Proceed normally
+        
         proceedToConsultation(app);
     };
 
     const proceedToConsultation = (app) => {
-        // Store actual start time
-        const startedAt = new Date().toISOString();
-        navigate('/doctor/consultation', {
-            state: {
-                appointment: {
-                    ...app,
-                    actualStartTime: startedAt
-                }
-            }
-        });
+        navigate(`/doctor/consultation/${app._id}`);
     };
 
     if (loading) {
@@ -174,13 +173,6 @@ export default function DoctorDashboard() {
         if (app.status !== 'confirmed') return false;
         return parseTime(app.time) > currentMinutes;
     }).sort((a, b) => parseTime(a.time) - parseTime(b.time));
-
-    // ALL pending requests (any date - sorted by nearest first)
-    const allPending = appointments.filter(app => app.status === 'pending')
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    // Top 5 pending for dashboard
-    const top5Pending = allPending.slice(0, 5);
 
     // Today's completed
     const todaysCompleted = appointments.filter(app => {
@@ -234,11 +226,44 @@ export default function DoctorDashboard() {
             {/* Header */}
             <div className="bg-white border-b border-brand-peach/30 px-8 py-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between md:items-center gap-4">
-                    <div>
-                        <p className="text-sm text-brand-blue font-medium">Welcome back,</p>
-                        <h1 className="text-2xl font-bold text-brand-dark">Dr. {doctor?.name}</h1>
-                    </div>
                     <div className="flex items-center gap-4">
+                        <div>
+                            <p className="text-sm text-brand-blue font-medium">Welcome back,</p>
+                            <h1 className="text-2xl font-bold text-brand-dark">{doctor?.name}</h1>
+                        </div>
+                        {/* Online/Offline Badge */}
+                        <div className={`px-3 py-1 rounded-full text-xs font-bold border ${doctor?.isOnline ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-100 text-gray-500 border-gray-200'}`}>
+                            {doctor?.isOnline ? 'ONLINE' : 'OFFLINE'}
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        {/* Duty Toggle Switch */}
+                        <button
+                            onClick={handleToggleOnline}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-bold text-sm ${doctor?.isOnline
+                                    ? 'bg-green-500 text-white shadow-lg shadow-green-200 hover:bg-green-600'
+                                    : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
+                                }`}
+                        >
+                            <div className={`w-3 h-3 rounded-full ${doctor?.isOnline ? 'bg-white' : 'bg-gray-400'}`} />
+                            {doctor?.isOnline ? 'On Duty' : 'Off Duty'}
+                        </button>
+
+                        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-brand-peach/50 shadow-sm">
+                            <div className="flex flex-col items-end">
+                                <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Hourly Limit</span>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="20"
+                                    value={doctor?.appointmentsPerHour || 5}
+                                    onChange={(e) => handleUpdateLimit(parseInt(e.target.value))}
+                                    className="w-12 text-right font-bold text-brand-dark focus:outline-none"
+                                />
+                            </div>
+                            <Clock size={16} className="text-brand-blue mb-1" />
+                        </div>
                         <div className="bg-brand-cream px-4 py-2 rounded-xl text-sm font-medium text-brand-dark flex items-center gap-2 border border-brand-peach/50">
                             <Calendar size={16} className="text-brand-blue" />
                             {now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
@@ -254,7 +279,7 @@ export default function DoctorDashboard() {
                         <TrendingUp size={16} />
                         Overall Statistics
                     </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="bg-white rounded-2xl p-5 border border-brand-peach/30 shadow-sm">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 bg-brand-blue/10 rounded-xl flex items-center justify-center">
@@ -302,11 +327,26 @@ export default function DoctorDashboard() {
                     </div>
                 </div>
 
-                <div className="grid lg:grid-cols-3 gap-8">
-                    {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-6">
+                <div className="grid lg:grid-cols-1 gap-8">
+                    {/* Main Content - Full Width */}
+                    <div className="space-y-6">
                         {/* Today's Schedule */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-brand-peach/30 p-6">
+                        <div className={`bg-white rounded-2xl shadow-sm border border-brand-peach/30 p-6 ${!doctor?.isOnline ? 'opacity-75 grayscale-[0.5] relative overflow-hidden' : ''}`}>
+                            {!doctor?.isOnline && (
+                                <div className="absolute inset-0 bg-gray-50/50 z-10 flex items-center justify-center backdrop-blur-[1px]">
+                                    <div className="bg-white px-6 py-4 rounded-2xl shadow-xl border border-gray-200 text-center">
+                                        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+                                        </div>
+                                        <h3 className="text-lg font-bold text-gray-800">You are currently Off Duty</h3>
+                                        <p className="text-gray-500 text-sm mb-4">Go online to manage appointments</p>
+                                        <button onClick={handleToggleOnline} className="text-brand-blue font-bold text-sm hover:underline">
+                                            Switch to On Duty
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
                             <h2 className="text-lg font-bold text-brand-dark mb-6 flex items-center gap-2">
                                 <Clock size={20} className="text-brand-blue" />
                                 Today's Schedule
@@ -347,94 +387,29 @@ export default function DoctorDashboard() {
                         </div>
 
                         {/* Today's Summary */}
-                        <div className="bg-gradient-to-br from-brand-dark to-gray-800 rounded-2xl p-6 text-white">
-                            <h3 className="font-bold mb-4">Today's Summary</h3>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="bg-white/10 rounded-xl p-4 text-center">
-                                    <p className="text-3xl font-bold">{todaysUpcoming.length}</p>
-                                    <p className="text-xs opacity-80">Remaining</p>
-                                </div>
-                                <div className="bg-white/10 rounded-xl p-4 text-center">
-                                    <p className="text-3xl font-bold">{todaysCompleted.length}</p>
-                                    <p className="text-xs opacity-80">Completed</p>
-                                </div>
-                                <div className="bg-white/10 rounded-xl p-4 text-center">
-                                    <p className="text-3xl font-bold">{allPending.length}</p>
-                                    <p className="text-xs opacity-80">Pending</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Sidebar: Pending Requests Section - TOP 5 ONLY */}
-                    <div className="space-y-6">
-                        <div className="bg-white rounded-2xl shadow-sm border border-brand-peach/30 p-6">
-                            <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-lg font-bold text-brand-dark flex items-center gap-2">
-                                    <AlertCircle size={20} className="text-amber-500" />
-                                    Pending Requests
-                                </h2>
-                                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">
-                                    {allPending.length}
-                                </span>
+                        <div className="bg-gradient-to-br from-brand-dark to-gray-800 rounded-2xl p-6 text-white text-center sm:text-left">
+                            <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+                                <h3 className="font-bold text-lg">Today's Performance</h3>
+                                <p className="text-sm opacity-60 bg-white/10 px-3 py-1 rounded-full">
+                                    {now.toLocaleDateString()}
+                                </p>
                             </div>
 
-                            <div className="space-y-3">
-                                {allPending.length === 0 ? (
-                                    <div className="text-center py-12 bg-brand-cream rounded-xl border-2 border-dashed border-brand-peach">
-                                        <CheckCircle size={32} className="mx-auto text-green-500 mb-2" />
-                                        <p className="text-sm text-brand-dark/60">All caught up!</p>
-                                        <p className="text-xs text-gray-400">No pending requests</p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-white/10 rounded-2xl p-5 relative overflow-hidden group hover:bg-white/15 transition-colors">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+                                        <Clock size={60} />
                                     </div>
-                                ) : (
-                                    <>
-                                        {top5Pending.map(app => (
-                                            <div key={app._id} className="bg-brand-cream/50 p-4 rounded-xl border border-brand-peach/30">
-                                                <div className="mb-3">
-                                                    <div className="flex justify-between items-start gap-2">
-                                                        <div>
-                                                            <p className="font-bold text-brand-dark">{app.name}</p>
-                                                            <p className="text-xs text-gray-500 mt-0.5">{app.phone}</p>
-                                                        </div>
-                                                        <div className="text-right">
-                                                            <span className="block text-xs font-bold text-brand-blue">
-                                                                {new Date(app.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                                                            </span>
-                                                            <span className="text-[10px] text-gray-500">{app.time}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-2">
-                                                    <button
-                                                        onClick={() => handleStatusUpdate(app._id, 'cancelled')}
-                                                        disabled={actionLoading === app._id}
-                                                        className="py-2 text-xs font-bold text-red-600 bg-white border border-red-100 rounded-lg hover:bg-red-50 transition-colors"
-                                                    >
-                                                        Reject
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleStatusUpdate(app._id, 'confirmed')}
-                                                        disabled={actionLoading === app._id}
-                                                        className="py-2 text-xs font-bold text-white bg-brand-dark rounded-lg hover:opacity-90 shadow-sm transition-all flex items-center justify-center"
-                                                    >
-                                                        {actionLoading === app._id ? <Loader2 className="animate-spin" size={12} /> : 'Accept'}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                        {/* View All Button */}
-                                        {allPending.length > 5 && (
-                                            <button
-                                                onClick={() => navigate('/doctor/requests')}
-                                                className="w-full py-3 mt-2 bg-brand-cream text-brand-dark rounded-xl font-semibold text-sm hover:bg-brand-peach/30 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                View All {allPending.length} Requests
-                                                <ArrowRight size={16} />
-                                            </button>
-                                        )}
-                                    </>
-                                )}
+                                    <p className="text-4xl font-bold mb-1">{todaysUpcoming.length}</p>
+                                    <p className="text-sm opacity-80 uppercase tracking-wider">Remaining</p>
+                                </div>
+                                <div className="bg-white/10 rounded-2xl p-5 relative overflow-hidden group hover:bg-white/15 transition-colors">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
+                                        <CheckCircle size={60} />
+                                    </div>
+                                    <p className="text-4xl font-bold mb-1">{todaysCompleted.length}</p>
+                                    <p className="text-sm opacity-80 uppercase tracking-wider">Completed</p>
+                                </div>
                             </div>
                         </div>
                     </div>

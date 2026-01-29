@@ -37,7 +37,7 @@ export default function Appointment() {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-400">Email Address</p>
-                                    <p className="font-semibold text-brand-dark">care@visionary.com</p>
+                                    <p className="font-semibold text-brand-dark">care@romashka.in</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
@@ -78,12 +78,12 @@ export default function Appointment() {
                         <div className="w-24 h-24 bg-gradient-to-br from-brand-blue to-brand-purple rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl shadow-brand-blue/30">
                             <Calendar className="text-white" size={40} />
                         </div>
-                        
+
                         <h2 className="text-3xl font-bold text-brand-dark mb-4">Start Your Booking</h2>
                         <p className="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">
                             Click below to open our secure booking wizard. It only takes 2 minutes to schedule your appointment!
                         </p>
-                        
+
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="bg-brand-dark text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-brand-dark/30 hover:scale-105 transition-all w-full max-w-xs group"
@@ -95,7 +95,7 @@ export default function Appointment() {
                                 </svg>
                             </span>
                         </button>
-                        
+
                         <div className="mt-10 flex items-center justify-center gap-8 text-sm text-gray-400">
                             <span className="flex items-center gap-2">
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -121,9 +121,9 @@ export default function Appointment() {
             </main>
 
             {/* Appointment Modal */}
-            <AppointmentModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
+            <AppointmentModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
             />
         </>
     );
