@@ -157,6 +157,7 @@ function AppContent() {
           <Route path="/" element={<Home onBook={openBookModal} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Protected User Routes */}
           <Route path="/dashboard" element={
@@ -172,9 +173,7 @@ function AppContent() {
 
           {/* Custom Layout Routes for Vision Care */}
           <Route path="/services/advanced-diagnostics" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="advanced-diagnostics" />} />
-          <Route path="/services/robotic-surgery" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="robotic-surgery" />} />
-          <Route path="/services/pediatric-care" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="pediatric-care" />} />
-          <Route path="/services/emergency-trauma" element={<VisionCareServiceDetail onBook={openBookModal} serviceSlug="emergency-trauma" />} />
+
 
           <Route path="/services/:slug" element={<ServiceDetail onBook={openBookModal} />} />
           <Route path="/appointment" element={<Appointment />} />
@@ -185,7 +184,7 @@ function AppContent() {
           <Route path="/blogs/tag/:tag" element={<Blogs />} />
 
           {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
