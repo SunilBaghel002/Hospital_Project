@@ -473,19 +473,6 @@ export default function SiteSettingsEditor() {
                                     placeholder="+91 XXX XXX XXXX"
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
-                                    <Phone size={16} className="inline mr-2" />
-                                    Emergency Number
-                                </label>
-                                <input
-                                    type="text"
-                                    value={settings.contact?.emergencyNumber || ''}
-                                    onChange={(e) => updateSetting('contact.emergencyNumber', e.target.value)}
-                                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
-                                    placeholder="1800-XXX-XXXX"
-                                />
-                            </div>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">

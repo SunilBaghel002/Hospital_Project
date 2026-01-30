@@ -33,9 +33,7 @@ const NETWORK_CENTERS = [
 // About Features
 const ABOUT_FEATURES = [
     { title: 'Advanced Diagnostics', link: '/services/advanced-diagnostics', img: '/assets/about/diagnostics.png', desc: 'Using AI-powered OCT and topographic mapping for early detection.' },
-    { title: 'Robotic Surgery', link: '/services/robotic-surgery', img: '/assets/about/surgery.png', desc: 'Precision-guided femtosecond lasers for perfect cataract outcomes.' },
-    { title: 'Pediatric Care', link: '/services/pediatric-care', img: '/assets/about/pediatric.png', desc: 'Specialized gentle care for our youngest patients with myopia control.' },
-    { title: 'Emergency Trauma', link: '/services/emergency-trauma', img: '/assets/about/emergency.png', desc: '24/7 rapid response unit for complex ocular injuries.' }
+    { title: 'Pediatric Vision', link: '/services/pediatric-vision', img: '/assets/about/pediatric.png', desc: 'Specialized gentle care for our youngest patients with myopia control.' }
 ];
 
 // Technology
@@ -66,195 +64,241 @@ const ALL_SERVICES = [
     {
         id: "cataract-surgery",
         title: "Cataract Surgery",
-        shortDesc: "Experience blade-free femtosecond laser precision. Our advanced IOL implants restore clear vision and vibrant colors, often eliminating the need for reading glasses post-surgery.",
+        shortDesc: "Advanced cataract removal including Phoco and Sics methods.",
         img: "/assets/images/services/cataract-surgery.png",
         heroTitle: "Restore Your Vision",
-        heroSubtitle: "Advanced Cataract Solutions",
-        heroTagline: "See the world in full color again.",
-        overviewTitle: "Blade-Free Precision",
-        overviewText: "Cataracts are a natural part of aging, but living with cloudy vision doesn't have to be. Our blade-free laser cataract surgery offers a level of precision and safety that traditional manual surgery simply cannot match. By using femtosecond laser technology, we customize the procedure to your unique eye structure.",
-        longDesc: "At Visionary eye care, we believe in providing not just surgery, but a complete visual rejuvenation. Cataract surgery is the most frequently performed surgery in the world, and modern technology has turned it into a refractive procedure that can correct nearsightedness, farsightedness, and astigmatism simultaneously.\n\nWe offer a wide range of premium Intraocular Lenses (IOLs), including multifocal and extended depth-of-focus lenses, which can reduce or even eliminate your dependence on glasses for both distance and near vision. Our counseling team works with you to understand your lifestyle—whether you love reading, golfing, or driving at night—to select the perfect lens for your needs.",
-        scopeTitle: "Comprehensive Care Journey",
+        heroSubtitle: "Phoco & Sics Methods",
+        heroTagline: "Expert care for clear vision.",
+        overviewTitle: "Advanced Cataract Solutions",
+        overviewText: "We offer both Phacoemulsification (Phoco) and Small Incision Cataract Surgery (Sics) to treat cataracts effectively.",
+        longDesc: "Cataract surgery is a safe and effective procedure to restore vision. We specialize in two primary methods: Phacoemulsification (Phoco), a modern technique using ultrasound to break up the cataract with a minimal incision, and Small Incision Cataract Surgery (Sics), a trusted manual technique ideal for advanced cataracts. Our team ensures the best method is chosen for your specific eye health and lifestyle needs.",
+        scopeTitle: "Our Techniques",
         scopeImg: "/assets/images/services/cataract-surgery.png",
         scopePoints: [
-            { title: "Advanced Diagnostics", desc: "Biometry & OCT scans for precise lens calculation." },
-            { title: "Femto-Laser Assisted", desc: "Blade-free incisions for faster healing." },
-            { title: "Premium IOLs", desc: "Toric, Multifocal, and EDOF lens options." },
-            { title: "Dropless Surgery", desc: "Modern techniques reducing the need for post-op drops." }
+            { title: "Phoco Method", desc: "Ultrasound phacoemulsification for quick recovery." },
+            { title: "Sics Method", desc: "Small incision surgery for mature cataracts." },
+            { title: "IOL Implantation", desc: "Premium lens options for best visual outcome." },
+            { title: "Post-Op Care", desc: "Comprehensive follow-up to ensure healing." }
         ],
         doctorRoleKeyword: "Cataract",
         faqs: [
-            { question: "Is cataract surgery painful?", answer: "No, the procedure is performed under local anesthesia (eye drops) and is painless. You may feel mild pressure but no pain." },
-            { question: "How long does recovery take?", answer: "Most patients notice improved vision within 24 hours. Full recovery typically takes 2-4 weeks." }
+            { question: "Which method is better, Phoco or Sics?", answer: "Phoco is generally preferred for its smaller incision and faster recovery, but Sics is excellent for harder, more mature cataracts. Your doctor will recommend the best option for you." }
         ]
     },
     {
-        id: "lasik-correction",
-        title: "LASIK Correction",
-        shortDesc: "Achieve 20/20 vision or better with Contoura® Vision. This topography-guided custom LASIK maps 22,000 points on your cornea for a completely personalized treatment.",
-        img: "/assets/images/services/lasik.png",
-        heroTitle: "Freedom From Glasses",
-        heroSubtitle: "Contoura® Vision LASIK",
-        heroTagline: "Wake up and see the world clearly.",
-        overviewTitle: "Beyond 20/20 Vision",
-        overviewText: "Imagine waking up and seeing the alarm clock without reaching for your glasses. With Contoura® Vision, this is a reality for thousands of our patients. This isn't just LASIK; it's topography-guided laser vision correction that treats your cornea's unique irregularities.",
-        longDesc: "Standard LASIK treats everyone with the same prescription the same way. But your eye is as unique as your fingerprint. Topography-Guided LASIK maps 22,000 unique elevation points on your cornea to create a completely personalized treatment profile.\n\nThis level of detail allows us to not only correct your prescription (nearsightedness, farsightedness, astigmatism) but also smooth out microscopic irregularities that affect the quality of your vision. The result? Sharper, crisper vision, reduced glare at night, and a life free from the hassles of contacts and glasses.",
-        scopeTitle: "Refractive Excellence",
-        scopeImg: "/assets/images/services/lasik.png",
-        scopePoints: [
-            { title: "Eligibility Exam", desc: "Pentacam & Corvis scans to ensure absolute safety." },
-            { title: "Contoura® Vision", desc: "Topography-guided ablation for superior results." },
-            { title: "Blade-Free Flap", desc: "Femtosecond laser creation of the corneal flap." },
-            { title: "Lifetime Enhancement", desc: "Our commitment to your long-term vision stability." }
-        ],
-        doctorRoleKeyword: "Refractive",
-        faqs: [
-            { question: "Am I eligible for LASIK?", answer: "We perform a comprehensive 7-point check to determine eligibility. Most healthy adults over 18 with stable prescriptions are good candidates." },
-            { question: "Is it permanent?", answer: "Yes, LASIK permanently reshapes your cornea. However, age-related reading vision changes (presbyopia) may still occur later in life." }
-        ]
-    },
-    {
-        id: "glaucoma-care",
-        title: "Glaucoma Care",
-        shortDesc: "Protect your optic nerve with our 'Silent Thief of Sight' protocol. We offer MIGS (Minimally Invasive Glaucoma Surgery) and SLT laser therapy for effective pressure control.",
-        img: "/assets/images/services/glaucoma.png",
-        heroTitle: "Preserving Your Sight",
-        heroSubtitle: "Advanced Glaucoma Management",
-        heroTagline: "Early detection is your best protection.",
-        overviewTitle: "The Silent Thief of Sight",
-        overviewText: "Glaucoma often has no early symptoms, slowly stealing your peripheral vision before you notice. Our mission is to detect it early and manage it aggressively to preserve your sight for a lifetime.",
-        longDesc: "We take a proactive approach to Glaucoma management. Gone are the days when heavy medication was the only option. We utilize the latest in diagnostic technology, including OCT Angiography and Visual Field analysis, to track changes at a microscopic level.\n\nOur treatment philosophy prioritizes Quality of Life. We offer SLT (Selective Laser Trabeculoplasty) as a first-line treatment to reduce dependence on drops. For surgical cases, we specialize in MIGS (Minimally Invasive Glaucoma Surgery), which uses microscopic stents to bypass blockages, offering safer outcomes and faster recovery than traditional filtration surgeries.",
-        scopeTitle: "Holistic Pressure Control",
-        scopeImg: "/assets/images/services/glaucoma.png",
-        scopePoints: [
-            { title: "Early Detection", desc: "RNFL Analysis & OCT Angiography." },
-            { title: "SLT Laser", desc: "Painless, non-invasive pressure reduction." },
-            { title: "MIGS Stents", desc: "iStent & Hydrus implantations." },
-            { title: "Tube Shunts", desc: "Complex management for advanced cases." }
-        ],
-        doctorRoleKeyword: "Glaucoma",
-        faqs: [
-            { question: "Can glaucoma damage be reversed?", answer: "No, vision lost to glaucoma cannot be restored. This is why early detection and regular monitoring are critical." }
-        ]
-    },
-    {
-        id: "retina-service",
-        title: "Retina Service",
-        shortDesc: "Expert management of Macular Degeneration and Diabetic Retinopathy. We use high-resolution OCT imaging and pain-free intravitreal injections to preserve central vision.",
-        img: "/assets/images/services/retina.png",
-        heroTitle: "Protecting Central Vision",
-        heroSubtitle: "Expert Retina Care",
-        heroTagline: "Precision care for the eye's most vital layer.",
-        overviewTitle: "Guardians of the Retina",
-        overviewText: "The retina is the film of the camera that is your eye. Damage here can be permanent, which is why our retina specialists are available 24/7 for emergencies and use the most advanced imaging systems available.",
-        longDesc: "From Age-Related Macular Degeneration (AMD) to Diabetic Retinopathy, retinal diseases require vigilant monitoring and precise intervention. Our clinic is equipped with high-definition OCT scans that allow us to see layers of the retina that are invisible to the naked eye.\n\nWe specialize in pain-free, specialized injection therapies that have revolutionized the treatment of wet AMD, halting vision loss in its tracks. For surgical cases like retinal detachments or macular holes, our surgeons use 25-gauge and 27-gauge sutureless vitrectomy systems for minimally invasive repairs and quicker recovery.",
-        scopeTitle: "Retinal Therapeutics",
-        scopeImg: "/assets/images/services/retina.png",
-        scopePoints: [
-            { title: "Diabetic Screening", desc: "AI-assisted fundus analysis." },
-            { title: "Intravitreal Injections", desc: "Anti-VEGF therapy for AMD & edema." },
-            { title: "Sutureless Vitrectomy", desc: "Minimally invasive retinal repair." },
-            { title: "Laser Photocoagulation", desc: "Treatment for tears and vascular leaks." }
-        ],
-        doctorRoleKeyword: "Retina",
-        faqs: [
-            { question: "What is diabetic retinopathy?", answer: "It's a complication of diabetes that affects the eyes, caused by damage to the blood vessels of the light-sensitive tissue at the back of the eye (retina)." }
-        ]
-    },
-    {
-        id: "cornea-transplant",
-        title: "Cornea Transplant",
-        shortDesc: "Leaders in partial thickness transplants like DMEK and DSAEK. These ultra-thin grafts provide faster visual recovery and lower rejection rates than traditional methods.",
+        id: "pterygium-surgery",
+        title: "Pterygium Surgery",
+        shortDesc: "Specialized removal using the Autografting method for low recurrence.",
         img: "/assets/images/services/cornea-transplant.png",
-        heroTitle: "Clearer Vision Ahead",
-        heroSubtitle: "Advanced Cornea Care",
-        heroTagline: "Restoring clarity, layer by layer.",
-        overviewTitle: "The Window to Your Vision",
-        overviewText: "The cornea is the eye's outermost layer. When it becomes cloudy or scarred, vision fades. We specialize in restoring that clarity through advanced transplantation techniques.",
-        longDesc: "Corneal transplantation has evolved. We no longer replace the entire cornea unless absolutely necessary. Instead, we perform component separation transplants (DMEK/DSAEK), replacing only the damaged layers.\n\nThis approach significantly reduces rejection risk and speeds up visual recovery from months to weeks. We also manage keratoconus with Collagen Cross-Linking (CXL) to halt progression and Scleral Lenses for visual rehabilitation.",
-        scopeTitle: "Corneal Services",
+        heroTitle: "Clear the Surface",
+        heroSubtitle: "Autografting Method",
+        heroTagline: "Restoring the natural look of your eye.",
+        overviewTitle: "Pterygium Removal",
+        overviewText: "Pterygium is a growth on the eye's surface that can affect vision and appearance. We use the superior Autografting method.",
+        longDesc: "Pterygium surgery involves removing non-cancerous growths from the conjunctiva. We utilize the Autografting method, where a small piece of your own healthy tissue is used to fill the gap left by the removal. This technique significantly reduces the chance of regrowth compared to traditional bare-sclera techniques and ensures a cosmetically pleasing result.",
+        scopeTitle: "Procedure Details",
         scopeImg: "/assets/images/services/cornea-transplant.png",
         scopePoints: [
-            { title: "DMEK / DSAEK", desc: "Partial thickness transplants." },
-            { title: "C3R / CXL", desc: "Collagen Cross-Linking for Keratoconus." },
-            { title: "Dry Eye Clinic", desc: "Comprehensive surface management." },
-            { title: "Pterygium Surgery", desc: "Autograft technique for low recurrence." }
+            { title: "Autografting", desc: "Using your own tissue for best results." },
+            { title: "Sutureless Options", desc: "Advanced glue usage for patient comfort." },
+            { title: "Cosmetic Restoration", desc: "Returns the eye to a normal white appearance." },
+            { title: "Prevention", desc: "Guidance on UV protection to prevent recurrence." }
         ],
         doctorRoleKeyword: "Cornea",
         faqs: [
-            { question: "What is a cornea transplant?", answer: "It's a surgical procedure to replace part of your cornea with corneal tissue from a donor." }
+            { question: "Will the growth come back?", answer: "With the autografting method we use, the recurrence rate is extremely low compared to older techniques." }
         ]
     },
     {
-        id: "pediatric-vision",
-        title: "Pediatric Vision",
-        shortDesc: "Specialized care for developing eyes. From myopia control using atropine or Ortho-K to gentle squint (strabismus) correction surgeries for perfect alignment.",
-        img: "/assets/images/services/pediatric-vision.png",
-        heroTitle: "Little Eyes, Big Dreams",
-        heroSubtitle: "Pediatric Ophthalmology",
-        heroTagline: "Nurturing vision for a lifetime of learning.",
-        overviewTitle: "Care Designed for Kids",
-        overviewText: "Children aren't just small adults. Their eyes are constantly developing, and vision issues can impact learning and confidence. We create a fun, fearless environment for our youngest patients.",
-        longDesc: "80% of classroom learning is visual. Undiagnosed vision problems can be misdiagnosed as learning disabilities. Our pediatric team is skilled in examining even non-verbal children using specialized equipment.\n\nWe are leaders in Myopia Control, using Atropine therapy and Ortho-K lenses to slow down the progression of nearsightedness. We also perform delicate strabismus (squint) surgeries to align eyes perfectly, ensuring proper 3D vision development.",
-        scopeTitle: "Pediatric Services",
-        scopeImg: "/assets/images/services/pediatric-vision.png",
-        scopePoints: [
-            { title: "Myopia Control", desc: "Atropine & Ortho-K management." },
-            { title: "Squint Surgery", desc: "Muscle correction for alignment." },
-            { title: "Amblyopia Therapy", desc: "Lazy eye patch & digital therapy." },
-            { title: "ROP Screening", desc: "Retinal care for premature infants." }
-        ],
-        doctorRoleKeyword: "Pediatric",
-        faqs: [
-            { question: "When should my child have their first eye exam?", answer: "The American Academy of Ophthalmology recommends screenings at birth, age 1, age 3, and before first grade." }
-        ]
-    },
-    {
-        id: "dry-eye-spa",
-        title: "Dry Eye Spa",
-        shortDesc: "Relief for gritty, tired eyes. Our Dry Eye Spa features LipiFlow thermal pulsation and IPL therapy to unclog glands and restore your natural tear film.",
-        img: "/assets/images/services/dry-eye-spa.png",
-        heroTitle: "Soothe Your Eyes",
-        heroSubtitle: "Advanced Dry Eye Spa",
-        heroTagline: "Relief from the digital strain of modern life.",
-        overviewTitle: "More Than Just Drops",
-        overviewText: "Chronic dry eye is a disease of the surface. Artificial tears only mask the symptoms. We treat the root cause—blocked oil glands and inflammation—to provide lasting relief.",
-        longDesc: "Our Dry Eye Spa is a sanctuary for tired eyes. We utilize LipiFlow® Thermal Pulsation technology to gently heat and massage the Meibomian glands, clearing blockages that cause evaporative dry eye.\n\nCombined with IPL (Intense Pulsed Light) therapy to reduce inflammation and BlephEx treatments for lid hygiene, we restore the natural balance of your tear film. Perfect for IT professionals and anyone suffering from digital eye strain.",
-        scopeTitle: "Spa Treatments",
-        scopeImg: "/assets/images/services/dry-eye-spa.png",
-        scopePoints: [
-            { title: "LipiFlow", desc: "Thermal pulsation for MGD." },
-            { title: "IPL Therapy", desc: "Light therapy for inflammation." },
-            { title: "BlephEx", desc: "Microblepharoexfoliation for lid hygiene." },
-            { title: "Punctal Plugs", desc: "Tear conservation method." }
-        ],
-        doctorRoleKeyword: "General",
-        faqs: [
-            { question: "What causes dry eyes?", answer: "Dry eyes can be caused by many factors, including aging, certain medications, environmental conditions, and Meibomian Gland Dysfunction (MGD)." }
-        ]
-    },
-    {
-        id: "oculoplastics",
-        title: "Oculoplastics",
-        shortDesc: "Cosmetic and reconstructive eyelid surgery. We treat droopy eyelids (ptosis), removes bags, and reconstruct after tumor removal with aesthetic precision.",
+        id: "dcr-surgery",
+        title: "DCR Surgery",
+        shortDesc: "Dacryocystorhinostomy (DCR) surgery to treat blocked tear ducts.",
         img: "/assets/images/services/oculoplastics.png",
-        heroTitle: "Aesthetic Precision",
-        heroSubtitle: "Oculoplastic Surgery",
-        heroTagline: "Where ophthalmology meets artistry.",
-        overviewTitle: "Form Meets Function",
-        overviewText: "Your eyes are the focal point of your face. Whether reconstructive or cosmetic, our oculoplastic procedures are designed to enhance appearance while protecting the health of your eyes.",
-        longDesc: "Oculoplastics is a specialized field combining the microsurgery of ophthalmology with the aesthetic principles of plastic surgery. We treat functional issues like Ptosis (droopy eyelids) that obstruct vision, as well as Entropion/Ectropion.\n\nOn the cosmetic side, we offer Blepharoplasty (eyelid lifts) to remove excess skin and bags, giving you a rejuvenated, rested appearance. All procedures are performed with a deep understanding of eye anatomy to ensure safety and natural-looking results.",
-        scopeTitle: "Aesthetic Services",
+        heroTitle: "Relief from Watering Eyes",
+        heroSubtitle: "Dacryocystorhinostomy (DCR)",
+        heroTagline: "Unblocking tear ducts for lasting comfort.",
+        overviewTitle: "Tear Duct Surgery",
+        overviewText: "DCR is a procedure to create a new drainage path for tears between the eye and the nose.",
+        longDesc: "When the nasolacrimal duct becomes blocked, it causes excessive tearing and risk of infection. Dacryocystorhinostomy (DCR) surgery constructs a new pathway for tear drainage, bypassing the blockage. This procedure acts as a permanent solution to chronic watering eyes and dacryocystitis (infection of the tear sac).",
+        scopeTitle: "Surgical Benefits",
         scopeImg: "/assets/images/services/oculoplastics.png",
         scopePoints: [
-            { title: "Blepharoplasty", desc: "Eyelid lifting & bag removal." },
-            { title: "Ptosis Repair", desc: "Correction of droopy eyelids." },
-            { title: "Botox & Fillers", desc: "Non-surgical rejuvenation." },
-            { title: "Orbit Surgery", desc: "Trauma and tumor management." }
+            { title: "Tear Drainage", desc: "Restores natural tear flow." },
+            { title: "Infection Control", desc: "Prevents recurrent eye infections." },
+            { title: "Minimally Invasive", desc: "External and Endoscopic options available." },
+            { title: "Recovery", desc: "Quick return to normal activities." }
         ],
         doctorRoleKeyword: "Oculoplastic",
         faqs: [
-            { question: "What is blepharoplasty?", answer: "It's a type of surgery that repairs droopy eyelids and may involve removing excess skin, muscle and fat." }
+            { question: "Is DCR surgery major surgery?", answer: "It is a standard procedure with a high success rate. Most patients go home the same day." }
+        ]
+    },
+    {
+        id: "glaucoma-surgery",
+        title: "Glaucoma Surgery",
+        shortDesc: "Advanced surgical interventions to lower eye pressure and protect sight.",
+        img: "/assets/images/services/glaucoma.png",
+        heroTitle: "Preserving Vision",
+        heroSubtitle: "Glaucoma Surgery",
+        heroTagline: "Effective management of intraocular pressure.",
+        overviewTitle: "Fighting the Silent Thief",
+        overviewText: "When drops and laser are not enough, surgery helps control Glaucoma and prevent further vision loss.",
+        longDesc: "Glaucoma surgery aims to reduce intraocular pressure (IOP) to a safe level to prevent damage to the optic nerve. We offer various procedures ranging from Trabeculectomy (filtration surgery) to the implantation of Tube Shunts for complex cases. Our goal is to stabilize your vision and preserve it for the future.",
+        scopeTitle: "Surgical Options",
+        scopeImg: "/assets/images/services/glaucoma.png",
+        scopePoints: [
+            { title: "Trabeculectomy", desc: "Creating a new drainage channel." },
+            { title: "Tube Shunts", desc: "Implants for controlled pressure reduction." },
+            { title: "MIGS", desc: "Minimally Invasive Glaucoma Surgery." },
+            { title: "Post-Op Monitoring", desc: "Strict follow-up for pressure control." }
+        ],
+        doctorRoleKeyword: "Glaucoma",
+        faqs: [
+            { question: "Will surgery restore my lost vision?", answer: "No, glaucoma surgery is done to prevent further vision loss. It cannot restore vision already lost." }
+        ]
+    },
+    {
+        id: "vitrectomy-surgery",
+        title: "Vitrectomy Surgery",
+        shortDesc: "Micro-surgical procedure for retinal detachments and vitreous issues.",
+        img: "/assets/images/services/retina.png",
+        heroTitle: "Retinal Repair",
+        heroSubtitle: "Vitrectomy Surgery",
+        heroTagline: "Restoring the eye's internal clarity.",
+        overviewTitle: "Complex Retinal Care",
+        overviewText: "Vitrectomy involves removing the vitreous gel to access and repair the retina.",
+        longDesc: "Vitrectomy is a vital surgery for treating various conditions affecting the retina and vitreous. It is used for retinal detachments, macular holes, diabetic retinopathy complications, and removing vitreous floaters or hemorrhages. Our specialized surgeons use high-precision gauge instruments for minimally invasive entry and faster healing.",
+        scopeTitle: "Conditions Treated",
+        scopeImg: "/assets/images/services/retina.png",
+        scopePoints: [
+            { title: "Retinal Detachment", desc: "Urgent repair to save vision." },
+            { title: "Macular Hole", desc: "Restoring central vision." },
+            { title: "Vitreous Hemorrhage", desc: "Clearing blood from the eye." },
+            { title: "Floaters", desc: "Removal of significant visual obstructions." }
+        ],
+        doctorRoleKeyword: "Retina",
+        faqs: [
+            { question: "What is the recovery position?", answer: "Depending on the gas or oil used, you may need to keep your head in a specific position (face-down) for a few days to help the retina heal." }
+        ]
+    },
+    {
+        id: "cornea-checkup",
+        title: "Cornea Check-up",
+        shortDesc: "Comprehensive examination of the cornea health and clarity.",
+        img: "/assets/images/services/cornea-transplant.png",
+        heroTitle: "Surface Health",
+        heroSubtitle: "Cornea Check-up",
+        heroTagline: "Ensuring the clarity of your eye's window.",
+        overviewTitle: "Clear Vision Starts Here",
+        overviewText: "The cornea is the clear front surface of the eye. Its health is vital for sharp vision.",
+        longDesc: "A dedicated Cornea Check-up assesses the health of the anterior segment of your eye. We check for signs of dry eye, karateconus, infections, dystrophies, and contact lens related complications. Using advanced slit-lamp bio-microscopy and topography, we ensure your cornea remains clear and healthy.",
+        scopeTitle: "Examination Areas",
+        scopeImg: "/assets/images/services/cornea-transplant.png",
+        scopePoints: [
+            { title: "Slit Lamp Exam", desc: "Detailed microscopic view." },
+            { title: "Topography", desc: "Mapping the corneal shape." },
+            { title: "Dry Eye Assessment", desc: "Evaluating tear film stability." },
+            { title: "Pachymetry", desc: "Measuring corneal thickness." }
+        ],
+        doctorRoleKeyword: "Cornea",
+        faqs: [
+            { question: "Does it hurt?", answer: "No, a cornea check-up is painless and non-invasive." }
+        ]
+    },
+    {
+        id: "vision-checkup",
+        title: "Vision Check-up",
+        shortDesc: "Routine eye exams to assess visual acuity and prescription needs.",
+        img: "/assets/images/services/advanced-diagnostics.png",
+        heroTitle: "See Clearly",
+        heroSubtitle: "Comprehensive Vision Check",
+        heroTagline: "Sharp vision for a better life.",
+        overviewTitle: "Annual Vision Screening",
+        overviewText: "Regular vision check-ups are essential to detect refractive errors and ensure you are seeing your best.",
+        longDesc: "Our Vision Check-up is more than just reading a chart. We carefully evaluate your refractive status to diagnose nearsightedness (myopia), farsightedness (hyperopia), and astigmatism. We also screen for early signs of eye strain and computer vision syndrome, ensuring your prescription is perfectly tailored to your visual needs.",
+        scopeTitle: "Check-up Includes",
+        scopeImg: "/assets/images/services/advanced-diagnostics.png",
+        scopePoints: [
+            { title: "Refraction", desc: "Determining precise glass power." },
+            { title: "Acuity Testing", desc: "Distance and near vision check." },
+            { title: "Binocular Vision", desc: "Checking how eyes work together." },
+            { title: "Health Screening", desc: "Quick look at general eye health." }
+        ],
+        doctorRoleKeyword: "Optometrist",
+        faqs: [
+            { question: "How often should I get my eyes checked?", answer: "We recommend a comprehensive eye exam every 1-2 years, or more frequently if you have existing conditions." }
+        ]
+    },
+    {
+        id: "glass-checkup",
+        title: "Glass Check-up",
+        shortDesc: "Verification and prescription of corrective spectacles.",
+        img: "/assets/images/services/optical-shop.png",
+        heroTitle: "Perfect Prescription",
+        heroSubtitle: "Glass Check-up",
+        heroTagline: "Precision optics for your lifestyle.",
+        overviewTitle: "Accuracy You Can Trust",
+        overviewText: "Is your current prescription up to date? We verify your glasses and update your power for maximum clarity.",
+        longDesc: "A Glass Check-up focuses on determining the accurate power for your spectacles. Whether you need single vision lenses, bifocals, or progressive lenses, our optometry team ensures your prescription provides comfortable and distinct vision. We also check your current glasses for alignment and lens condition.",
+        scopeTitle: "Optical Services",
+        scopeImg: "/assets/images/services/optical-shop.png",
+        scopePoints: [
+            { title: "Power Check", desc: "Auto-refractometer & subjective testing." },
+            { title: "Frame Alignment", desc: "Ensuring proper fit and focus." },
+            { title: "Lens Advice", desc: "Guidance on anti-glare & blue cut options." },
+            { title: "Progressive Fitting", desc: "Marking centers for multifocals." }
+        ],
+        doctorRoleKeyword: "Optometrist",
+        faqs: [
+            { question: "Can I use my old frames?", answer: "Yes, if they are in good condition, we can often fit new lenses into your existing frames." }
+        ]
+    },
+    {
+        id: "colour-vision-checkup",
+        title: "Colour Vision Check-up",
+        shortDesc: "Testing for color blindness and deficiency.",
+        img: "/assets/images/services/neuro-ophthal.png",
+        heroTitle: "Full Spectrum",
+        heroSubtitle: "Colour Vision Testing",
+        heroTagline: "Experience the world in true colors.",
+        overviewTitle: "Detecting Color Deficiency",
+        overviewText: "Color vision deficiency can affect career choices and daily life. We offer standardized testing.",
+        longDesc: "Our Colour Vision Check-up utilizes Ishihara plates and other advanced contrast tests to identify different types of color blindness, such as red-green or blue-yellow deficiencies. This testing is crucial for school children, as well as for medical and clearance exams for various professions requiring perfect color discrimination.",
+        scopeTitle: "Testing Methods",
+        scopeImg: "/assets/images/services/neuro-ophthal.png",
+        scopePoints: [
+            { title: "Ishihara Test", desc: "Standard plates for red-green defects." },
+            { title: "Farnsworth D-15", desc: "Arrangement test for severity." },
+            { title: "Career Screening", desc: "Certification for pilots/drivers." },
+            { title: "Genetic Advice", desc: "Understanding the inheritance pattern." }
+        ],
+        doctorRoleKeyword: "General",
+        faqs: [
+            { question: "Is there a cure for color blindness?", answer: "Currently, there is no cure for inherited color blindness, but special glasses may help some people distinguish colors better." }
+        ]
+    },
+    {
+        id: "retina-checkup",
+        title: "Retina Check-up",
+        shortDesc: "Detailed evaluation of the retina for diabetes, AMD, and holes.",
+        img: "/assets/images/services/retina.png",
+        heroTitle: "Retinal Health",
+        heroSubtitle: "Retina Check-up",
+        heroTagline: "Protecting the film of your eye.",
+        overviewTitle: "Deep Eye Exam",
+        overviewText: "The retina is crucial for vision. We check it thoroughly for any signs of disease or damage.",
+        longDesc: "A Retina Check-up involves dilating your pupils to get a wide view of the back of your eye. We look for crucial conditions like Diabetic Retinopathy, Age-related Macular Degeneration (AMD), retinal tears, and vascular occlusions. Early detection of these conditions is often the only way to prevent permanent vision loss.",
+        scopeTitle: "Exam Components",
+        scopeImg: "/assets/images/services/retina.png",
+        scopePoints: [
+            { title: "Dilated Exam", desc: "Full view of the fundus." },
+            { title: "OCT Scan", desc: "Cross-sectional retinal imaging." },
+            { title: "Diabetic Screen", desc: "Checking for bleeds and swelling." },
+            { title: "Peripheral Check", desc: "Looking for weak spots or tears." }
+        ],
+        doctorRoleKeyword: "Retina",
+        faqs: [
+            { question: "Why do I need drops?", answer: "Drops dilate the pupil, opening the window wide so we can see the entire retina, not just the center." }
         ]
     }
 ];
@@ -440,7 +484,7 @@ const seedData = async () => {
         await SiteSettings.findOneAndUpdate({}, {
             siteName: 'Romashka Health Care',
             tagline: 'World-Class Eye Care',
-            contact: { address: 'Sector 62, Noida, Uttar Pradesh 201301', phone: '+91 120 456 7890', email: 'info@romashka.in', emergencyNumber: '1800-ROMASHKA', workingHours: { weekdays: '8:00 AM - 8:00 PM', saturday: '9:00 AM - 5:00 PM', sunday: 'Emergency Only' } },
+            contact: { address: 'Sector 62, Noida, Uttar Pradesh 201301', phone: '+91 120 456 7890', email: 'info@romashka.in', workingHours: { weekdays: '8:00 AM - 8:00 PM', saturday: '9:00 AM - 5:00 PM', sunday: 'Closed' } },
             social: { facebook: 'https://facebook.com/romashka', twitter: 'https://twitter.com/romashka', instagram: 'https://instagram.com/romashka', linkedin: 'https://linkedin.com/company/romashka', youtube: 'https://youtube.com/romashka' },
             navbar: {
                 siteName: 'Romashka',
@@ -468,10 +512,10 @@ const seedData = async () => {
                 ],
                 servicesLinks: [
                     { name: 'Cataract Surgery', href: '/services/cataract-surgery' },
-                    { name: 'LASIK Correction', href: '/services/lasik-correction' },
-                    { name: 'Glaucoma Treatment', href: '/services/glaucoma-treatment' },
-                    { name: 'Retina Care', href: '/services/retina-care' },
-                    { name: 'Pediatric Eye Care', href: '/services/pediatric-ophthalmology' }
+                    { name: 'Glaucoma Surgery', href: '/services/glaucoma-surgery' },
+                    { name: 'Retina Check-up', href: '/services/retina-checkup' },
+                    { name: 'Vision Check-up', href: '/services/vision-checkup' },
+                    { name: 'Pediatric Vision', href: '/services/pediatric-vision' }
                 ]
             }
         }, { upsert: true });

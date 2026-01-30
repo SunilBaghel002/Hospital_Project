@@ -92,11 +92,11 @@ export default function Footer() {
                     <h4 className="font-bold text-brand-dark mb-6">Services</h4>
                     <ul className="space-y-4">
                         {(settings?.footer?.servicesLinks?.length > 0 ? settings.footer.servicesLinks : [
-                            { name: 'Cataract Surgery', href: '/services/cataract' },
-                            { name: 'LASIK', href: '/services/lasik' },
-                            { name: 'Glaucoma Treatment', href: '/services/glaucoma' },
-                            { name: 'Retina Care', href: '/services/retina' },
-                            { name: 'Pediatric Ophthalmology', href: '/services/pediatric' }
+                            { name: 'Cataract Surgery', href: '/services/cataract-surgery' },
+                            { name: 'Glaucoma Surgery', href: '/services/glaucoma-surgery' },
+                            { name: 'Retina Check-up', href: '/services/retina-checkup' },
+                            { name: 'Vision Check-up', href: '/services/vision-checkup' },
+                            { name: 'Pediatric Vision', href: '/services/pediatric-vision' }
                         ]).map((link, i) => (
                             <li key={i}><a href={link.href} className="text-gray-500 hover:text-brand-blue transition-colors">{link.name}</a></li>
                         ))}

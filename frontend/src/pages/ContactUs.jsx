@@ -80,7 +80,7 @@ export default function ContactUs() {
                                 </div>
                                 <div className="flex justify-between text-gray-600">
                                     <span>Sunday</span>
-                                    <span className="font-bold text-red-500">Emergency Only</span>
+                                    <span className="font-bold text-red-500">Closed</span>
                                 </div>
                             </div>
                         </div>

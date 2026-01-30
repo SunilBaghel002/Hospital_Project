@@ -3,7 +3,8 @@ import { servicesData } from '../data/services';
 import { Link } from 'react-router-dom';
 
 export default function Services({ data }) {
-    const services = data?.services || data?.cards || servicesData; // Handle both keys
+    // const services = data?.services || data?.cards || servicesData; // Handle both keys
+    const services = servicesData; // Force local data update for now (User request)
     const tagline = data?.tagline || 'Premium Care';
     const title = data?.title || 'Our Specialities';
     const subtitle = data?.subtitle || 'Comprehensive eye care solutions tailored to your unique vision needs, powered by advanced technology.';
