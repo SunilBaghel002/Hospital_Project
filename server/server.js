@@ -51,9 +51,13 @@ app.use(cors({
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
-        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+        // Check if origin is allowed or if it's a Vercel deployment (local or preview)
+        if (allowedOrigins.indexOf(origin) !== -1 ||
+            process.env.NODE_ENV === 'development' ||
+            origin.endsWith('.vercel.app')) { // Allow all Vercel domains for now to fix CORS on preview/prod
             return callback(null, true);
         } else {
+            console.log('Blocked Origin:', origin); // Debugging
             return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'));
         }
     },
