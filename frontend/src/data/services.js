@@ -5,7 +5,7 @@ export const servicesData = [
     title: "Cataract Surgery",
     shortDesc: "Advanced cataract removal including Phoco and Sics methods.",
     typeDesc: "Type of two method: Phoco and Sics", // Helping with specific user text if they want to display it
-    img: "/assets/images/services/cataract-surgery.png",
+    img: "/assets/images/services/cataract-surgery-real.jpg",
 
     // Header
     heroTitle: "Restore Your Vision",
@@ -36,7 +36,7 @@ export const servicesData = [
     id: "pterygium-surgery",
     title: "Pterygium Surgery",
     shortDesc: "Specialized removal using the Autografting method for low recurrence.",
-    img: "/assets/images/services/cornea-transplant.png", // Reusing cornea image as it is surface related
+    img: "/assets/images/services/pterygium-surgery-real.jpg", // Reusing cornea image as it is surface related
 
     heroTitle: "Clear the Surface",
     heroSubtitle: "Autografting Method",
@@ -62,7 +62,7 @@ export const servicesData = [
     id: "dcr-surgery",
     title: "DCR Surgery",
     shortDesc: "Dacryocystorhinostomy (DCR) surgery to treat blocked tear ducts.",
-    img: "/assets/images/services/oculoplastics.png", // Reusing oculoplastics image
+    img: "/assets/images/services/dcr-surgery-real.jpg", // Reusing oculoplastics image
 
     heroTitle: "Relief from Watering Eyes",
     heroSubtitle: "Dacryocystorhinostomy (DCR)",
@@ -88,7 +88,7 @@ export const servicesData = [
     id: "glaucoma-surgery",
     title: "Glaucoma Surgery",
     shortDesc: "Advanced surgical interventions to lower eye pressure and protect sight.",
-    img: "/assets/images/services/glaucoma.png",
+    img: "/assets/images/services/glaucoma-surgery-real.jpg",
 
     heroTitle: "Preserving Vision",
     heroSubtitle: "Glaucoma Surgery",
@@ -114,7 +114,7 @@ export const servicesData = [
     id: "vitrectomy-surgery",
     title: "Vitrectomy Surgery",
     shortDesc: "Micro-surgical procedure for retinal detachments and vitreous issues.",
-    img: "/assets/images/services/retina.png",
+    img: "/assets/images/services/vitrectomy-surgery-real.jpg",
 
     heroTitle: "Retinal Repair",
     heroSubtitle: "Vitrectomy Surgery",
@@ -140,7 +140,7 @@ export const servicesData = [
     id: "cornea-checkup",
     title: "Cornea Check-up",
     shortDesc: "Comprehensive examination of the cornea health and clarity.",
-    img: "/assets/images/services/cornea-transplant.png",
+    img: "/assets/images/services/cornea-checkup-real.jpg",
 
     heroTitle: "Surface Health",
     heroSubtitle: "Cornea Check-up",
@@ -166,7 +166,7 @@ export const servicesData = [
     id: "vision-checkup",
     title: "Vision Check-up",
     shortDesc: "Routine eye exams to assess visual acuity and prescription needs.",
-    img: "/assets/images/services/advanced-diagnostics.png",
+    img: "/assets/images/services/vision-checkup-real.jpg",
 
     heroTitle: "See Clearly",
     heroSubtitle: "Comprehensive Vision Check",
@@ -192,7 +192,7 @@ export const servicesData = [
     id: "glass-checkup",
     title: "Glass Check-up",
     shortDesc: "Verification and prescription of corrective spectacles.",
-    img: "/assets/images/services/optical-shop.png",
+    img: "/assets/images/services/glass-checkup-real.jpg",
 
     heroTitle: "Perfect Prescription",
     heroSubtitle: "Glass Check-up",
@@ -218,7 +218,7 @@ export const servicesData = [
     id: "colour-vision-checkup",
     title: "Colour Vision Check-up",
     shortDesc: "Testing for color blindness and deficiency.",
-    img: "/assets/images/services/neuro-ophthal.png", // Using neuro image as fallback
+    img: "/assets/images/services/colour-vision-checkup-real.jpg", // Using neuro image as fallback
 
     heroTitle: "Full Spectrum",
     heroSubtitle: "Colour Vision Testing",
@@ -244,7 +244,7 @@ export const servicesData = [
     id: "retina-checkup",
     title: "Retina Check-up",
     shortDesc: "Detailed evaluation of the retina for diabetes, AMD, and holes.",
-    img: "/assets/images/services/retina.png",
+    img: "/assets/images/services/retina-checkup-real.jpg",
 
     heroTitle: "Retinal Health",
     heroSubtitle: "Retina Check-up",
