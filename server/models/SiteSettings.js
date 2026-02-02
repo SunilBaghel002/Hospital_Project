@@ -66,12 +66,12 @@ const siteSettingsSchema = new mongoose.Schema({
         description: { type: String, default: 'Providing clarity and vision to the world through advanced ophthalmology and compassionate care.' },
         copyright: { type: String, default: '© 2024 Visionary Eye Care. All rights reserved.' },
         quickLinks: [{
-            label: String,
-            url: String
+            name: String,
+            href: String
         }],
-        services: [{
-            label: String,
-            url: String
+        servicesLinks: [{
+            name: String,
+            href: String
         }]
     },
     
