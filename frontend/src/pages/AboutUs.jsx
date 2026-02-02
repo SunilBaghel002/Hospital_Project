@@ -32,7 +32,8 @@ export default function AboutUs({ onBook }) {
         fetchPageData();
     }, []);
 
-    if (loading) {
+    // Show loading until data is fetched - no default content
+    if (loading || !pageData) {
         return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div></div>;
     }
 

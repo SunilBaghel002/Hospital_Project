@@ -21,7 +21,6 @@ export default function Home({ onBook }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log('Home Component MOUNTED');
         const fetchPageData = async () => {
             try {
                 const res = await fetch(`${API_URL}/public/page/home`);
@@ -38,11 +37,10 @@ export default function Home({ onBook }) {
             }
         };
         fetchPageData();
-
-        return () => console.log('Home Component UNMOUNTED');
     }, []);
 
-    if (loading) {
+    // Show loading until data is fetched - no default content
+    if (loading || !pageData) {
         return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div></div>;
     }
 

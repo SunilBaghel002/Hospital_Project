@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect, Suspense, lazy } from 'react';
+import { homeLoader, aboutLoader, dynamicPageLoader } from './loaders/pageLoaders';
 
 // Components
 import TopBar from './components/TopBar';
