@@ -43,6 +43,11 @@ export default function Footer() {
     const socialLinks = settings?.social || {};
     const mapUrl = settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56066.65089631422!2d77.33685559999999!3d28.6124282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce5a43173357b%3A0x37ffce30c87cc03f!2sSector%2062%2C%20Noida%2C%20Uttar%20Pradesh%20201301!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
 
+    // Don't render until data is loaded
+    if (loading || !settings) {
+        return null;
+    }
+
     return (
         <footer id="footer" className="bg-white pt-20 pb-10 border-t border-brand-blue/10 mt-20">
             <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">

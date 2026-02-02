@@ -8,15 +8,9 @@ import { useAuth } from '../context/AuthContext';
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const [links, setLinks] = useState([
-        { name: 'Home', href: '/' },
-        { name: 'About US', href: '/about' },
-        { name: 'Doctors', href: '/doctors' },
-        { name: 'Specialities', href: '/specialties' },
-        { name: 'Blogs', href: '/blogs' },
-        { name: 'Contact', href: '/contact' },
-    ]);
-    const [settings, setSettings] = useState({});
+    const [links, setLinks] = useState(null); // Start with null instead of default array
+    const [settings, setSettings] = useState(null); // Start with null
+    const [loading, setLoading] = useState(true); // Add loading state
     const location = useLocation();
     const { token } = useAuth();
 
@@ -31,6 +25,7 @@ export default function Navbar() {
                     // If navbar items are defined in settings, use them
                     if (settingsRes.data?.navbar?.items?.length > 0) {
                         setLinks(settingsRes.data.navbar.items);
+                        setLoading(false);
                         return;
                     }
                 }
@@ -43,9 +38,30 @@ export default function Navbar() {
                         href: page.isCustomLink ? page.link : `/${page.slug === 'home' ? '' : page.slug}`
                     }));
                     setLinks(navLinks);
+                } else {
+                    // Set default links only if API fails
+                    setLinks([
+                        { name: 'Home', href: '/' },
+                        { name: 'About US', href: '/about' },
+                        { name: 'Doctors', href: '/doctors' },
+                        { name: 'Specialities', href: '/specialties' },
+                        { name: 'Blogs', href: '/blogs' },
+                        { name: 'Contact', href: '/contact' },
+                    ]);
                 }
             } catch (err) {
                 console.error("Failed to fetch navbar:", err);
+                // Set default links on error
+                setLinks([
+                    { name: 'Home', href: '/' },
+                    { name: 'About US', href: '/about' },
+                    { name: 'Doctors', href: '/doctors' },
+                    { name: 'Specialities', href: '/specialties' },
+                    { name: 'Blogs', href: '/blogs' },
+                    { name: 'Contact', href: '/contact' },
+                ]);
+            } finally {
+                setLoading(false);
             }
         };
         fetchNavbar();
@@ -66,13 +82,18 @@ export default function Navbar() {
     }, [isOpen]);
 
     // Get navbar settings with defaults
-    const siteName = settings.navbar?.siteName || settings.siteName || 'Romashka Health Care';
-    const logoInitial = settings.navbar?.logoInitial || 'R';
-    const logoImage = settings.navbar?.logoImage;
+    const siteName = settings?.navbar?.siteName || settings?.siteName || 'Romashka Health Care';
+    const logoInitial = settings?.navbar?.logoInitial || 'R';
+    const logoImage = settings?.navbar?.logoImage;
 
     // Auth Button Logic
     const ctaText = token ? 'Dashboard' : 'Login';
     const ctaLink = token ? '/dashboard' : '/login';
+
+    // Don't render until data is loaded
+    if (loading || !links) {
+        return null;
+    }
 
     return (
         <>
