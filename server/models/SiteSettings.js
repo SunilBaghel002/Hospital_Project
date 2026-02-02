@@ -54,6 +54,13 @@ const siteSettingsSchema = new mongoose.Schema({
         linkedin: { type: String, default: '' },
         youtube: { type: String, default: '' }
     },
+
+    // WhatsApp settings
+    whatsapp: {
+        enabled: { type: Boolean, default: true },
+        number: { type: String, default: '' },
+        defaultMessage: { type: String, default: 'Hello! I would like to know more about your services.' }
+    },
     
     // Google Maps embed URL
     mapEmbedUrl: {

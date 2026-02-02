@@ -85,6 +85,7 @@ export default function SiteSettingsEditor() {
         { id: 'footer', label: 'Footer', icon: LayoutGrid },
         { id: 'contact', label: 'Contact', icon: Phone },
         { id: 'social', label: 'Social', icon: Share2 },
+        { id: 'whatsapp', label: 'WhatsApp', icon: Phone },
         { id: 'seo', label: 'SEO', icon: Palette },
     ];
 
@@ -559,6 +560,73 @@ export default function SiteSettingsEditor() {
                                 />
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {activeTab === 'whatsapp' && (
+                    <div className="space-y-6">
+                        <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold text-green-800">WhatsApp Quick Chat</h3>
+                                    <p className="text-sm text-green-600">Configure the WhatsApp button shown on all pages</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={settings.whatsapp?.enabled !== false}
+                                    onChange={(e) => updateSetting('whatsapp.enabled', e.target.checked)}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                            <span className="text-sm font-medium text-slate-700">Enable WhatsApp Button</span>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-2">WhatsApp Number</label>
+                            <div className="flex gap-2">
+                                <span className="px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-500">+</span>
+                                <input
+                                    type="text"
+                                    value={settings.whatsapp?.number || ''}
+                                    onChange={(e) => updateSetting('whatsapp.number', e.target.value.replace(/[^0-9]/g, ''))}
+                                    className="flex-1 px-4 py-3 border border-slate-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none"
+                                    placeholder="919999999999 (country code + number, no spaces)"
+                                />
+                            </div>
+                            <p className="text-xs text-slate-500 mt-1">Enter full number with country code (e.g., 919876543210 for India)</p>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-2">Default Message</label>
+                            <textarea
+                                value={settings.whatsapp?.defaultMessage || ''}
+                                onChange={(e) => updateSetting('whatsapp.defaultMessage', e.target.value)}
+                                rows={3}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none resize-none"
+                                placeholder="Hello! I would like to know more about your services."
+                            />
+                            <p className="text-xs text-slate-500 mt-1">This message will be pre-filled when users click the WhatsApp button</p>
+                        </div>
+
+                        {settings.whatsapp?.number && (
+                            <div className="p-4 bg-slate-50 rounded-xl">
+                                <p className="text-sm text-slate-600 mb-2">Preview link:</p>
+                                <code className="text-xs text-green-600 break-all">
+                                    https://wa.me/{settings.whatsapp.number}?text={encodeURIComponent(settings.whatsapp?.defaultMessage || '')}
+                                </code>
+                            </div>
+                        )}
                     </div>
                 )}
 
