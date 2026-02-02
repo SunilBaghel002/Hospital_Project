@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ImageUploader from '../../components/admin/ImageUploader';
+import MediaUploader from '../../components/admin/MediaUploader';
 import ArrayEditor from '../../components/admin/ArrayEditor';
 
 // ==================== HERO SECTION EDITOR ====================
