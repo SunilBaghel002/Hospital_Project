@@ -402,27 +402,19 @@ export function TestimonialsEditor({ data = {}, onChange }) {
                             className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none resize-none"
                             placeholder="What did the patient say?"
                         />
-                        <div className="grid grid-cols-2 gap-2">
-                            <div>
-                                <label className="block text-xs text-slate-500 mb-1">📷 Image URL</label>
-                                <input
-                                    type="text"
-                                    value={t.img || ''}
-                                    onChange={(e) => update({ img: e.target.value })}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none text-sm"
-                                    placeholder="https://..."
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs text-slate-500 mb-1">🎬 Video URL (optional)</label>
-                                <input
-                                    type="text"
-                                    value={t.video || ''}
-                                    onChange={(e) => update({ video: e.target.value })}
-                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none text-sm"
-                                    placeholder="https://youtube.com/..."
-                                />
-                            </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <MediaUploader
+                                value={t.img || ''}
+                                onChange={(url) => update({ img: url })}
+                                label="📷 Patient Image"
+                                type="image"
+                            />
+                            <MediaUploader
+                                value={t.video || ''}
+                                onChange={(url) => update({ video: url })}
+                                label="🎬 Video Testimonial (optional)"
+                                type="video"
+                            />
                         </div>
                         <select
                             value={t.rating || 5}
