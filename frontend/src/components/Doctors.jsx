@@ -48,6 +48,8 @@ export default function Doctors({ onBook, data }) {
     );
 
     const scrollContainer = (direction) => {
+        if (typeof window === 'undefined') return;
+        
         const container = document.getElementById('doctors-container');
         if (container) {
             const scrollAmount = direction === 'left' ? -420 : 420;

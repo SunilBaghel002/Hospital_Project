@@ -60,7 +60,7 @@ const PrivateRoute = ({ children }) => {
   return token ? children : <Navigate to="/login" />;
 };
 
-function AppContent() {
+export function AppContent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const location = useLocation();
@@ -77,7 +77,9 @@ function AppContent() {
       openBookModal(doctorName);
     };
 
-    window.addEventListener('open-appointment-modal', handleOpenModal);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('open-appointment-modal', handleOpenModal);
+    }
 
     // Keep the old ID logic as a fallback for potential legacy buttons if any, 
     // or just remove it if we are sure. The user didn't complain about other buttons. 
@@ -105,13 +107,17 @@ function AppContent() {
     // I'll add the window event listener here.
 
     return () => {
-      window.removeEventListener('open-appointment-modal', handleOpenModal);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('open-appointment-modal', handleOpenModal);
+      }
     };
   }, []); // Run once on mount is enough for window listener
 
   // Maintain the old ID logic for backward compatibility in a separate effect or same one?
   // The old logic re-ran on `[location]`.
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleBtnClick = () => openBookModal();
     const triggerBtn = document.getElementById('trigger-appointment-modal');
     if (triggerBtn) {
@@ -125,6 +131,8 @@ function AppContent() {
   // Admin Shortcut: Ctrl + Shift + F
   const navigate = useNavigate();
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleKeyDown = (e) => {
       if (e.ctrlKey && e.shiftKey && (e.key === 'F' || e.key === 'f')) {
         e.preventDefault();
@@ -233,16 +241,4 @@ function AppContent() {
   );
 }
 
-function App() {
-  return (
-    <ErrorProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <AppContent />
-        </BrowserRouter>
-      </AuthProvider>
-    </ErrorProvider>
-  );
-}
-
-export default App;
+export default AppContent;

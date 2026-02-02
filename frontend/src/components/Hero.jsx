@@ -61,7 +61,7 @@ export default function Hero({ onBook, data }) {
                         {(data?.secondaryCtaText || !data?.title) && (
                             <button
                                 onClick={() => {
-                                    if (data?.secondaryCtaLink) {
+                                    if (data?.secondaryCtaLink && typeof window !== 'undefined') {
                                         window.open(data.secondaryCtaLink, '_blank');
                                     }
                                 }}

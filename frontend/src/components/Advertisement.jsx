@@ -13,7 +13,7 @@ export default function Advertisement({ data }) {
     const showAd = data?.isVisible !== false; // Active by default unless explicitly disabled in data
 
     useEffect(() => {
-        if (!adImage || !showAd) return;
+        if (!adImage || !showAd || typeof window === 'undefined') return;
 
         const lastShown = localStorage.getItem('lastAdShown');
         const now = Date.now();
@@ -27,6 +27,8 @@ export default function Advertisement({ data }) {
 
     // Lock body scroll when ad is visible
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
         if (isVisible) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -39,7 +41,9 @@ export default function Advertisement({ data }) {
 
     const handleClose = () => {
         setIsVisible(false);
-        localStorage.setItem('lastAdShown', Date.now().toString());
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('lastAdShown', Date.now().toString());
+        }
     };
 
     if (!isVisible || !adImage) return null;

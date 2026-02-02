@@ -10,6 +10,8 @@ export default function Services({ data }) {
     const subtitle = data?.subtitle || 'Comprehensive eye care solutions tailored to your unique vision needs, powered by advanced technology.';
 
     const scrollContainer = (direction) => {
+        if (typeof window === 'undefined') return;
+        
         const container = document.getElementById('services-container');
         if (container) {
             const scrollAmount = direction === 'left' ? -400 : 400;

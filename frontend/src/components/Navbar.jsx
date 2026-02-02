@@ -53,6 +53,8 @@ export default function Navbar() {
 
     // Lock body scroll when menu is open
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -74,7 +76,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="fixed top-10 md:top-10 left-0 right-0 z-50 px-3 md:px-6 flex justify-center pointer-events-none">
+            <nav className="fixed top-[44px] sm:top-[44px] md:top-[44px] left-0 right-0 z-50 px-3 md:px-6 flex justify-center pointer-events-none">
                 <div className="pointer-events-auto bg-white/80 backdrop-blur-xl border border-white/40 shadow-sm rounded-full pl-2 md:pl-3 pr-2 py-1.5 md:py-2 flex items-center gap-2 md:gap-6 max-w-7xl w-full justify-between">
                     {/* Logo - Responsive */}
                     <Link to="/" className="flex items-center gap-1.5 md:gap-2 pl-1 md:pl-2 min-w-0">

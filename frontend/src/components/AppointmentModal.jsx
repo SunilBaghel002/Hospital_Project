@@ -74,6 +74,8 @@ export default function AppointmentModal({ isOpen, onClose, initialDoctor = null
     ];
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
         if (isOpen) {
             document.body.style.overflow = 'hidden';
             if (initialDoctor) {

@@ -108,7 +108,7 @@ export default function Chatbot() {
     };
 
     const handleWhatsAppClick = () => {
-        if (whatsappLink) {
+        if (whatsappLink && typeof window !== 'undefined') {
             window.open(whatsappLink, '_blank');
         }
         setIsExpanded(false);

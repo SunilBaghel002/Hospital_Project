@@ -1,13 +1,21 @@
 const API_BASE = import.meta.env.VITE_API_URL;
 
 // Get stored token
-const getToken = () => localStorage.getItem('adminToken');
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
 
 // Set token
-const setToken = (token) => localStorage.setItem('adminToken', token);
+const setToken = (token) => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('adminToken', token);
+    }
+};
 
 // Remove token
-const removeToken = () => localStorage.removeItem('adminToken');
+const removeToken = () => {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('adminToken');
+    }
+};
 
 // API request helper with auth
 const apiRequest = async (endpoint, options = {}) => {
