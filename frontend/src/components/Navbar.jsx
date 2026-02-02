@@ -94,18 +94,20 @@ export default function Navbar() {
                                 to={link.href}
                                 onMouseEnter={() => setHoveredIndex(index)}
                                 onMouseLeave={() => setHoveredIndex(null)}
-                                className={({ isActive }) => `relative px-4 py-2.5 text-sm font-medium transition-colors z-10 ${isActive ? 'text-brand-blue' : 'text-gray-600 hover:text-brand-blue'}`}
+                                className={({ isActive }) => `relative px-4 py-2.5 text-sm font-medium transition-all duration-300 z-10 ${isActive ? 'text-brand-blue' : 'text-gray-600 hover:text-brand-blue'}`}
                             >
                                 {({ isActive }) => (
                                     <>
-                                        {(hoveredIndex === index || isActive) && (
-                                            <motion.div
-                                                layoutId="navbar-hover"
-                                                className="absolute inset-0 bg-brand-cream rounded-full"
-                                                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                                initial={false}
-                                            />
-                                        )}
+                                        {/* Border Grow Effect */}
+                                        <motion.div
+                                            className="absolute inset-0 rounded-full border-2 border-brand-blue/50"
+                                            initial={{ scale: 0.8, opacity: 0 }}
+                                            animate={{ 
+                                                scale: (hoveredIndex === index || isActive) ? 1 : 0.8,
+                                                opacity: (hoveredIndex === index || isActive) ? 1 : 0
+                                            }}
+                                            transition={{ duration: 0.2 }}
+                                        />
                                         <span className="relative z-10">{link.name}</span>
                                     </>
                                 )}
