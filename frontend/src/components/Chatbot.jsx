@@ -191,8 +191,8 @@ export default function Chatbot() {
                     >
                         {/* Chat Button */}
                         <motion.button
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
@@ -205,21 +205,23 @@ export default function Chatbot() {
                             </span>
                         </motion.button>
 
-                        {/* WhatsApp Button */}
-                        <motion.button
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.15 }}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={handleWhatsAppClick}
-                            className="w-12 h-12 bg-[#25D366] text-white rounded-full shadow-lg shadow-green-500/30 flex items-center justify-center group relative"
-                        >
-                            <WhatsAppIcon size={24} />
-                            <span className="absolute right-full mr-3 px-3 py-1.5 bg-gray-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                WhatsApp
-                            </span>
-                        </motion.button>
+                        {/* WhatsApp Button - Only show if enabled and number is set */}
+                        {showWhatsApp && (
+                            <motion.button
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.15 }}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={handleWhatsAppClick}
+                                className="w-12 h-12 bg-[#25D366] text-white rounded-full shadow-lg shadow-green-500/30 flex items-center justify-center group relative"
+                            >
+                                <WhatsAppIcon size={24} />
+                                <span className="absolute right-full mr-3 px-3 py-1.5 bg-gray-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                                    WhatsApp
+                                </span>
+                            </motion.button>
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
